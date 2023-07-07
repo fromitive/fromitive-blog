@@ -9,6 +9,7 @@ nav:
   - Coding Interview : coding-interview.md
 theme:
   name: material
+  custom_dir : override
   icon:
     logo : material/shark
   features:
@@ -39,6 +40,8 @@ theme:
       accent: light blue
 extra_css:
   - stylesheets/extra.css
+extra_javascript:
+  - javascripts/extra.js
 
 plugins:
   - social
