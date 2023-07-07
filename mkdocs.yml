@@ -1,10 +1,18 @@
-site_name: fromitive's blog
+site_name: 백상아리의 발칙한 상상
+
+nav:
+  - Home : index.md
+  - Coding Interview : coding-interview.md
 theme:
   name: material
+  icon:
+    logo : material/shark
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.tracking
     - navigation.sections
-    - toc.integrate
+    - navigation.indexes
     - navigation.top
     - search.suggest
     - search.highlight
@@ -15,20 +23,44 @@ theme:
   palette:
     - scheme: default
       toggle:
-        icon: material/toggle-switch-off-outline 
+        icon: material/brightness-7
         name: Switch to dark mode
-      primary: teal
-      accent: purple 
+      primary: custom
+      accent: light blue
     - scheme: slate 
       toggle:
-        icon: material/toggle-switch
+        icon: material/brightness-3
         name: Switch to light mode    
-      primary: teal
-      accent: lime
+      primary: custom
+      accent: light blue
+extra_css:
+  - stylesheets/extra.css
 
 plugins:
   - social
-  - search
+  - search:
+      lang:
+        - en
+        - ko
+  - blogging:
+      # INDIVIDUAL CATEGORIES: configs for {{ blog_content name }}
+      categories:
+        - name: coding-interview
+          dirs:
+            - coding-interview
+          paging: true
+          size : 3
+          show_total : true
+   
+      # GLOBAL CONFIG: configs apply to all categories
+      time_format: '%Y-%m-%d %H:%M'
+      meta_time_format: '%Y-%m-%d %H:%M:%S'
+      features:
+        tags:
+          index_page: tags.md
+          insert: bottom
+        
+      locale: ko_KR
 
 extra:
   social:

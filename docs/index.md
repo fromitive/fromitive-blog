@@ -1,56 +1,16 @@
-# Homepage
+---
+hide:
+  - navigation
+  - toc
+---
+# 홈페이지 소개
 
-For Full documantaion visit [mkdocs.org](https://www.mkdocs.org)
+안녕하세요 백상아리의 발칙한 상상 블로그에 오신 걸 환영합니다. 
 
-## Code Annotation Examples
+---
 
-### Codeblocks
+## 소개하는 컨탠츠
 
-Some `code` goes here.
+### [Coding Interview](/coding-interview)
 
-### Plain code block
-
-A plain codeblock:
-
-``` text
-Some code here
-def myfunction()
-// some comment
-```
-
-### Code for a specific language
-
-Some more code with the `py` at the start:
-
-``` py
-import tensoflow as tf
-def whatever()
-```
-
-### With a title
-
-``` py title="bublle_sort.py"
-import tensoflow as tf
-def whatever()
-```
-
-
-### With line numbers
-
-``` py linenums="1"
-import tensoflow as tf
-def whatever()
-```
-
-### With line numbers and highlight number
-
-``` py linenums="1" hl_lines="1"
-import tensoflow as tf
-def whatever()
-```
-
-## Icons and Emojs
-
-:smile:
-
-:fontawesome-regular-face-laugh-wink:
+코딩 인터뷰를 준비하면서 들었던 생각들을 정리하는 공간 입니다.
