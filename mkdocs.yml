@@ -92,5 +92,11 @@ markdown_extensions:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
 
+## google analytics
+extra:
+  analytics:
+    provider: google
+    property: G-Y55B987JCP
+
 copyright: |
-  &copy; 2023 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">백상아리(fromitive)</a>
+  &copy; 2023 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">백상아리(fromitive@gmail.com)</a>
