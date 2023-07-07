@@ -9,8 +9,8 @@ hide:
 
 ---
 
-## 소개하는 컨탠츠
+## Contents
 
-### [Coding Interview](/coding-interview)
+### [Coding Interview](/fromitive-blog/coding-interview)
 
 코딩 인터뷰를 준비하면서 들었던 생각들을 정리하는 공간 입니다.
