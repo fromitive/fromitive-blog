@@ -44,7 +44,11 @@ extra_javascript:
   - javascripts/extra.js
 
 plugins:
-  - social
+  - social:
+      cards_layout_options:
+        font_family: Noto Sans KR
+        background_color: "#6096B4"
+        color: "#FFFFFF"
   - search:
       lang:
         - en
