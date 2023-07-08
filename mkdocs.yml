@@ -95,6 +95,12 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.mark
   - attr_list
+  - md_in_html
+  - pymdownx.critic:
+      mode: view
+  - pymdownx.caret
+  - pymdownx.tilde
+  - pymdownx.keys
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
