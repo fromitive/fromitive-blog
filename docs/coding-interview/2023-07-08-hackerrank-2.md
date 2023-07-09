@@ -11,7 +11,8 @@ tags:
 
 # 문제 요약
 
-* 문제 링크 : [Super Reduced String](https://www.hackerrank.com/challenges/reduced-string/problem)
+!!! note ""
+    * 문제 링크 : [Super Reduced String](https://www.hackerrank.com/challenges/reduced-string/problem)
 
 문자열 `s` 를 주어지면 인접한 한 쌍의 문자가 같으면 해당 문자를 지우는 방식으로 최종적으로 남겨진 문자를 출력하거나 비어 있을 경우 `Empty String`을 출력하는 문제이다.
 

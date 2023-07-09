@@ -11,7 +11,8 @@ tags:
 
 # 문제 요약
 
-* 문제 링크 : [Number Line Jumps](https://www.hackerrank.com/challenges/kangaroo/problem)
+!!! note ""
+    * 문제 링크 : [Number Line Jumps](https://www.hackerrank.com/challenges/kangaroo/problem)
 
 캥거루 2마리가 한 방향으로 시간이 지날 때마다 일정한 거리로 점프를 하게 되는데 이때, 두 캥거루가 같은 시간 대에 같은 위치에 존재할 수 있는지 확인하는 코드를 작성하는 문제이다.
 
