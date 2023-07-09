@@ -7,6 +7,7 @@ site_description: >-
 nav:
   - Home : index.md
   - Coding Interview : coding-interview.md
+  - Project : project.md
 theme:
   name: material
   custom_dir : override
@@ -50,7 +51,6 @@ plugins:
         background_color: "#6096B4"
         color: "#FFFFFF"
 
-
   - search:
       lang:
         - en
@@ -61,6 +61,12 @@ plugins:
         - name: coding-interview
           dirs:
             - coding-interview
+          paging: true
+          size : 3
+          show_total : true
+        - name: project
+          dirs:
+            - project
           paging: true
           size : 3
           show_total : true
@@ -105,7 +111,7 @@ extra:
   analytics:
     provider: google
     property: G-Y55B987JCP
-    
+
   social:
     - icon: fontawesome/brands/github-alt
       link: https://github.com/fromitive
