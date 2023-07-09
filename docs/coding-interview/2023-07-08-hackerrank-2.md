@@ -57,9 +57,9 @@ tags:
 def superReducedString(s:str) -> str:
     i = 0 
     while i < len(s) - 1:
-        if s[i] == s[i + 1]:
-            s = s[:i] + s[i + 2:]
-            i = 0
+        if s[i] == s[i + 1]:  # 인접한 두 문자가 같을 경우
+            s = s[:i] + s[i + 2:]  # 인접한 두 문자를 제외한 나머지 문자를 다시 결합한다.
+            i = 0  # 재 검사 하기
         else:
             i += 1
  

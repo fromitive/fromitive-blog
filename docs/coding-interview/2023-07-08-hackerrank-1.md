@@ -65,7 +65,7 @@ def kangaroo(x1:int, v1:int, x2:int, v2:int) -> str:
     if v1 <= v2:
         return "NO"
     
-    if (x2 - x1) % (v1 - v2) == 0:
+    if (x2 - x1) % (v1 - v2) == 0: # 두 캥거루가 만나기 위한 조건
         return "YES"
     else:
         return "NO"
