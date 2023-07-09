@@ -49,6 +49,8 @@ plugins:
         font_family: Noto Sans KR
         background_color: "#6096B4"
         color: "#FFFFFF"
+
+
   - search:
       lang:
         - en
@@ -73,14 +75,7 @@ plugins:
         
       locale: ko_KR
 
-extra:
-  social:
-    - icon: fontawesome/brands/github-alt
-      link: https://github.com/fromitive
-    - icon: fontawesome/brands/hackerrank
-      link: https://www.hackerrank.com/fromitive
-    - icon: fontawesome/brands/linkedin
-      link: https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/
+
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -110,6 +105,14 @@ extra:
   analytics:
     provider: google
     property: G-Y55B987JCP
+    
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/fromitive
+    - icon: fontawesome/brands/hackerrank
+      link: https://www.hackerrank.com/fromitive
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/
 
 copyright: |
   &copy; 2023 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">백상아리(fromitive@gmail.com)</a>
