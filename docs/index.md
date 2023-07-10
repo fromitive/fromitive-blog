@@ -19,3 +19,6 @@ hide:
 
 사이드 프로젝트 하면서 공부나 적용 했던 걸 정리하는 공간입니다.
 
+### [CS](/fromitive-blog/cs)
+
+학습한 Computer Science에 대해 정리하는 공간입니다.

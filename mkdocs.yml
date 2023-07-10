@@ -8,6 +8,7 @@ nav:
   - Home : index.md
   - Coding Interview : coding-interview.md
   - Project : project.md
+  - CS : cs.md
 theme:
   name: material
   custom_dir : override
@@ -70,6 +71,14 @@ plugins:
           paging: true
           size : 3
           show_total : true
+
+        - name: cs
+          dirs:
+            - cs
+          paging: true
+          size : 3
+          show_total : true
+   
    
       # GLOBAL CONFIG: configs apply to all categories
       time_format: '%Y-%m-%d %H:%M'
