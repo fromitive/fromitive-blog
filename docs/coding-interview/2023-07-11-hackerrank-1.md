@@ -41,11 +41,6 @@ tags:
 
 검색 계열의 문제는 검색을 최적화 하기 위해 정렬이 필수인 것 같다. 정렬하지 않으면 하나를 비교할 때마다 모든 경우의 수를 계산해야 할 것이고, 시간 복잡도가 올라갈 거라 생각한다.
 
-<figure markdown>
-  ![Image title](/fromitive-blog/assets/2023-07-10/city2.png){ width="600" }
-  <figcaption>그림 2 - 가용 범위 비교</figcaption>
-</figure>
-
 
 ### 2. 오른쪽으로 닿으면, 상대방 입장에서 왼쪽으로 전파가 닿는다.  
 
