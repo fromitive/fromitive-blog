@@ -15,6 +15,9 @@ tags:
 !!! note ""
     * 문제 링크 : [Hackerland Radio Transmitters](https://www.hackerrank.com/challenges/hackerland-radio-transmitters/problem?isFullScreen=true)
 
+!!! info ""
+    * 문제 해결본: [HackerRank - Hackerland Radio Transmitters #2](/fromitive-blog/coding-interview/2023-07-11-hackerrank-1)
+
 아래의 그림 처럼 1차원 공간에 Hackerland City가 있는데, 도시의 시장은 라디오 송수신기를 건물에 설치하여 도시에 라디오를 배포할 예정이다.
 
 라디오 송수신기의 허용 범위를 `k` Hackerland City에 속해있는, 각 집들의 위치정보 배열을 `x`라고 할 때 **라디오 송수신기의 최소 설치 개수**를 구하는 문제이다.
@@ -108,3 +111,4 @@ def hackerlandRadioTransmitters(x:List[int], k:int) -> int:
   ![Image title](/fromitive-blog/assets/2023-07-10/city4.png){ width="600" }
   <figcaption>문제 풀기 실패!</figcaption>
 </figure>
+
