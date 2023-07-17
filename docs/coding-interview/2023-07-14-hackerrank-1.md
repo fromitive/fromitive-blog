@@ -13,9 +13,9 @@ tags:
 # 개요
 
 !!! note "Sigle Linked List 문제 모음"
-    * 1. 데이터를 뒤에 추가하는 방법 - [Print the Elements of a Linked List](https://www.hackerrank.com/challenges/print-the-elements-of-a-linked-list/problem?isFullScreen=true)
-    * 2. 데이터를 앞에 추가하는 방법 - [Insert a node at the head of a linked list](https://www.hackerrank.com/challenges/insert-a-node-at-the-head-of-a-linked-list/problem?isFullScreen=true)
-    * 3. 데이터를 특정 index에 추가하는 방법 - [Insert a node at a specific position in a linked list](https://www.hackerrank.com/challenges/insert-a-node-at-a-specific-position-in-a-linked-list/problem?isFullScreen=true)
+    1. 데이터를 뒤에 추가하는 방법 - [Print the Elements of a Linked List](https://www.hackerrank.com/challenges/print-the-elements-of-a-linked-list/problem?isFullScreen=true)
+    2. 데이터를 앞에 추가하는 방법 - [Insert a node at the head of a linked list](https://www.hackerrank.com/challenges/insert-a-node-at-the-head-of-a-linked-list/problem?isFullScreen=true)
+    3. 데이터를 특정 index에 추가하는 방법 - [Insert a node at a specific position in a linked list](https://www.hackerrank.com/challenges/insert-a-node-at-a-specific-position-in-a-linked-list/problem?isFullScreen=true)
 
 sigle linked list 문제들을 풀면서 sigle linked list에 익숙해지도록 연습하였다.
 
@@ -102,14 +102,6 @@ if __name__ == '__main__':
 - [X] SinglyLinkedListNode의 맴버는 data와 next로 구성되어 있고, next는 SinglyLinkedListNode 종류의 값을 저장한다.
 
 이렇게 작성하면서 아래의 요구사항 전부를 만족하도록 구현하였다.
-
-
-
-
-<figure markdown>
-  ![Image title](/fromitive-blog/assets/2023-07-13/2d-array2.png){ width="600" }
-  <figcaption>그림 2 - glasshour의 이동 방식</figcaption>
-</figure>
 
 ## 문제 풀이
 ### 1. 데이터를 뒤에 추가하는 방법
