@@ -32,8 +32,8 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-      primary: custom
-      accent: light blue
+      primary: teal
+      accent: teal
     - scheme: slate 
       toggle:
         icon: material/brightness-3
