@@ -6,6 +6,16 @@
     --md-text-font:'Nanum-RobotoReqular';
   }
 
+.md-header{
+    background-image: url('ocean.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.md-tabs{
+    background-color: transparent;
+}
+
+
 @font-face {
     font-family: 'Nanum-RobotoReqular';
     font-style: normal;
