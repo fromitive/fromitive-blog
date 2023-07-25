@@ -38,8 +38,8 @@ theme:
       toggle:
         icon: material/brightness-3
         name: Switch to light mode    
-      primary: custom
-      accent: light blue
+      primary: teal
+      accent: teal
 extra_css:
   - stylesheets/extra.css
 extra_javascript:

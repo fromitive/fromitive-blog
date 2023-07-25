@@ -1,9 +1,10 @@
 
 :root {
-    --md-primary-fg-color:        #6096B4;
+    --md-primary-fg-color: #999999;
     --md-primary-fg-color--light: #6096B4;
     --md-primary-fg-color--dark:  #6096B4;
     --md-text-font:'Nanum-RobotoReqular';
+    --md-accent-fg-color: #6efac2;
   }
 
 .md-header{
