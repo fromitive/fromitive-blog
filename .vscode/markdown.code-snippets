@@ -30,7 +30,7 @@
 		"prefix": "*image*",
 		"body": [
 			"<figure markdown>",
-			"![Image title](/fromitive-diary/assets/$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE/$1){ width=\"$2\"}",
+			"![Image title](/fromitive-blog/assets/$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE/$1){ width=\"$2\"}",
 			"<figcaption>$3</figcaption>",
 			"</figure>",
 		],
