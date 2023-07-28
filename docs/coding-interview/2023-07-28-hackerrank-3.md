@@ -2,6 +2,7 @@
 title: "HackerRank - Delete a Node"
 description: "Delete a Node 문제 리뷰"
 time: 2023-07-28 22:20:36
+comments: true
 tags:
   - hackerrank
   - problem solving

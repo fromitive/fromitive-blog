@@ -2,6 +2,7 @@
 title: "HackerRank - Left Rotation"
 description: "Left Rotation 리뷰 - 배열을 순환하는 방법"
 time: 2023-07-28 21:34:56
+comments: true
 tags:
   - hackerrank
   - problem solving

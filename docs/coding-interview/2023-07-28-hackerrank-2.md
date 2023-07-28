@@ -2,6 +2,7 @@
 title: "HackerRank - Dyanamic Array"
 description: "Dynamic Array 문제 분석"
 time: 2023-07-28 21:52:50
+comments: true
 tags:
   - hackerrank
   - problem solving
