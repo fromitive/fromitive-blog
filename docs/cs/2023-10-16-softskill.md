@@ -8,13 +8,13 @@ tags:
   - soft-skill
 ---
 
-## 커밋 컨벤션 이란?
+## 🤝 커밋 컨벤션 이란?
 
 Git과 같은 소스코드 형상관리 툴로 여러 사람이 협업하는 환경에서, {==**코드의 수정이 어떻게 이루어 졌는지 기계와 사람이 쉽게 파악하기 위해 정한 규칙**==}[^1]으로 이라고 생각하면 됩니다.
 
 [^1]: https://www.conventionalcommits.org/ko/v1.0.0/
 
-## 커밋 컨밴션을 사용해야 하는 이유
+## 🤔 커밋 컨밴션을 사용해야 하는 이유
 
 `commit history`를 보고서 해당 코드가 어떻게 발전해왔는지 쉽게 확인할 수 있습니다.
 
@@ -25,7 +25,7 @@ commit message가 관리가 되지 않으면 프로젝트가 어떤 방향으로
 </figure>
 
 
-## 커밋 컨밴션의 구조
+## 🧱 커밋 컨밴션의 구조
 
 커밋 컨밴션의 구조는 아래와 같이 나타날 수 있습니다.
 
@@ -83,7 +83,7 @@ Closes #123
 Reverts 676104e, a215868
 ```
 
-### 사용 예제
+### 🧩 사용 예제
 
 이 파일을 업로드 하기 위한 commit을 작성하는 예제를 쓰면 아래와 같습니다.
 
@@ -100,16 +100,17 @@ commit convention에 대해 작성
 
 `footer`에는 별도의 요청사항이나, 코맨트가 없기 때문에 작성하지 않았습니다.
 
-### 결론
+### 🏁 결론
 
 커밋 컨밴션은 필수가 아니지만, 협업을 할 때, 자신의 코드를 다른 사람들에게 설명해 줄 때, 코드를 깔끔하게 유지하고 싶을 때 필요하기에 적용하기를 권장합니다.
 
 {==**잘 정리된 글은 기억을 더 쉽고 오랫동안 할 수 있게**==} 도와준다고 생각합니다.
 
 
-### 참고 자료
+### 📚 참고 자료
 
-conventional commits - https://www.conventionalcommits.org/ko/v1.0.0/
-Angular commit convention - https://github.com/angular/angular/blob/main/CONTRIBUTING.md#commit
+conventional commits - [https://www.conventionalcommits.org/ko/v1.0.0/](https://www.conventionalcommits.org/ko/v1.0.0/)
 
+Angular commit convention - [https://github.com/angular/angular/blob/main/CONTRIBUTING.md#commit](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#commit)
 
+Vue js commit convention - [https://github.com/vuejs/core/blob/main/.github/commit-convention.md](https://github.com/vuejs/core/blob/main/.github/commit-convention.md)
