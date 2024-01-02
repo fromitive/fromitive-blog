@@ -6,6 +6,11 @@ tags:
   - software-engineering
 ---
 
+<figure markdown>
+![Image title](/fromitive-blog/assets/2024-01-02/title.png){ width="500"}
+<figcaption>책 표지</figcaption>
+</figure>
+
 !!! abstract "요약"
     * 기능에 맞춰 추상적이고 무의미한 단어가 아닌 구체적인 단어를 선별하자
         - getPages : downloadPages // 인터넷에서 페이지를 가져오는 경우
