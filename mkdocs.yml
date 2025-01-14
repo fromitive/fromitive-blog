@@ -1,8 +1,8 @@
-site_name: 백상아리의 발칙한 상상
+site_name: fromitive's blog
 site_url: https://fromitive.github.io/fromitive-blog
 site_author: fromitive
 site_description: >-
-  코딩, 서비스 분석, 보안 등 IT 세상 속 에서 백상아리와 같이 자유롭게 돌아다니며 경험 했던 이야기들이 넘처나는 공간
+  본질과 핵심을 기록할수록 성장한다.
 
 nav:
   - Home : index.md
@@ -78,8 +78,7 @@ plugins:
           paging: true
           size : 3
           show_total : true
-   
-   
+
       # GLOBAL CONFIG: configs apply to all categories
       time_format: '%Y-%m-%d %H:%M'
       meta_time_format: '%Y-%m-%d %H:%M:%S'
@@ -125,10 +124,8 @@ extra:
   social:
     - icon: fontawesome/brands/github-alt
       link: https://github.com/fromitive
-    - icon: fontawesome/brands/hackerrank
-      link: https://www.hackerrank.com/fromitive
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/
 
 copyright: |
-  &copy; 2023 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">백상아리(fromitive@gmail.com)</a>
+  &copy; 2025 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">이무송</a>
