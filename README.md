@@ -1,7 +1,7 @@
 ## News Issuer
 
 ## 📌 Introduce
-[백상아리의 발칙한 상상 블로그](https://fromitive.github.io/fromitive-blog) 입니다. 주로, 코딩테스트, 개발 공부, 개발하면서 겪은 내용들을 올리고 있어요.
+[개인 블로그](https://fromitive.github.io/fromitive-blog)입니다. `코딩테스트`, `개발 공부`, `개발하면서 겪은 내용`들을 올리고 있어요.
 
 ## 📅 Development period
 2023.06 ~ 
