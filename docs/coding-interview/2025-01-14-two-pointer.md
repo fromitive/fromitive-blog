@@ -1,6 +1,6 @@
 ---
 title: "배열 탐색 전략 - two-pointer"
-description: "Two Pointer를 활용하여 배열을"
+description: "Two Pointer를 활용하여 정렬된 배열을 효율적으로 탐색하기"
 time: 2025-01-14 17:44:00
 comments: true
 tags:
