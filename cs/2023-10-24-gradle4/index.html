@@ -1,0 +1,1107 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="플러그인, 의존성, 테스트 프레임워크, gradle custom task 정의하는 법">
+      
+      
+        <meta name="author" content="fromitive">
+      
+      
+        <link rel="canonical" href="https://fromitive.github.io/fromitive-blog/cs/2023-10-24-gradle4/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>Gradle #4 - build.gradle 파일의 역할 - fromitive's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-Y55B987JCP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-Y55B987JCP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-Y55B987JCP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Gradle #4 - build.gradle 파일의 역할 - fromitive's blog" >
+      
+        <meta  property="og:description"  content="플러그인, 의존성, 테스트 프레임워크, gradle custom task 정의하는 법" >
+      
+        <meta  property="og:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/cs/2023-10-24-gradle4.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://fromitive.github.io/fromitive-blog/cs/2023-10-24-gradle4/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Gradle #4 - build.gradle 파일의 역할 - fromitive's blog" >
+      
+        <meta  name="twitter:description"  content="플러그인, 의존성, 테스트 프레임워크, gradle custom task 정의하는 법" >
+      
+        <meta  name="twitter:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/cs/2023-10-24-gradle4.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gradlebuild" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="fromitive&#39;s blog" class="md-header__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            fromitive's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Gradle #4 - build.gradle 파일의 역할
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54s-2.94 8.27-7 9.54c.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../coding-interview/" class="md-tabs__link">
+        
+  
+    
+  
+  Coding Interview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+    
+  
+  Project
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+    
+  
+  CS
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="fromitive&#39;s blog" class="md-nav__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    fromitive's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-interview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Coding Interview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Project
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CS
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gradlebuild" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔎 gradle.build 파일
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#buildgradle" class="md-nav__link">
+    <span class="md-ellipsis">
+      🩻 build.gradle 구조
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plugins" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔌 plugins
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔌 plugins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 plugin 변경 해보기
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#application" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Application 플러그인 적용해보기
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ Application 플러그인 적용해보기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-gradlebuild" class="md-nav__link">
+    <span class="md-ellipsis">
+      1️⃣ gradle.build 파일 수정
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-mainjava" class="md-nav__link">
+    <span class="md-ellipsis">
+      2️⃣ 프로젝트 Main.java 파일 추가
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3️⃣ 프로젝트 실행
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      🗃️ repositories
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🗃️ repositories">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#github" class="md-nav__link">
+    <span class="md-ellipsis">
+      😺 GitHub 자료를 참조하기 위한 구문
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⛓️ dependencies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⛓️ dependencies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#github-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      😺 GitHub에 있는 repository를 의존성에 추가하는 방법
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔎 프로젝트의 의존성을 확인할 수 있는 방법
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧪 test
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧪 test">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#junit-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✔ JUnit Platform?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      참고 자료
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Gradle #4 - build.gradle 파일의 역할</h1>
+
+<div class="admonition info">
+<p class="admonition-title">Gradle 시리즈</p>
+<ul>
+<li>
+<p><a href="../2023-10-23-gradle1">Gradle #1 - 프로젝트 통합 빌드 툴</a></p>
+</li>
+<li>
+<p><a href="../2023-10-23-gradle2">Gradle #2 - gradle이 지원하는 명령어</a></p>
+</li>
+<li>
+<p><a href="../2023-10-24-gradle3">Gradle #3 - settings.gradle 파일 용도</a></p>
+</li>
+<li>
+<p><a href="../2023-10-24-gradle4">Gradle #4 - build.gradle 파일의 역할</a></p>
+</li>
+</ul>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">글 요약</p>
+<ol>
+<li>
+<p><code>build.gradle</code> 파일을 통해, 프로젝트 빌드 옵션을 설정할 수 있다.</p>
+</li>
+<li>
+<p><code>build.gradle</code>의 구성요소는 크게 <code>plugins</code>, <code>repositories</code>, <code>dependencies</code>, <code>test</code>가 있다.</p>
+</li>
+<li>
+<p><code>plugin</code>은 Gradle에서 미리 만든 <code>build.gradle</code> 파일을 불러오는 데 사용한다.</p>
+</li>
+<li>
+<p><code>repositories</code>는 프로젝트를 빌드 할 외부 자료 저장소를 설정할 때 사용한다.</p>
+</li>
+<li>
+<p><code>dependencies</code>는 프로젝트를 빌드 할 때 사용하는 외부 자료 목록이 존재한다.</p>
+</li>
+<li>
+<p><code>test</code>는 프로젝트를 테스트 할 때 사용 할 JUnit5 등 테스트 프레임워크를 설정할 수 있다.</p>
+</li>
+</ol>
+</div>
+<h2 id="gradlebuild">🔎 gradle.build 파일</h2>
+<p><code>gradle.build</code>는 gradle을 이용해 <mark class="critic"><strong>프로젝트를 빌드할 때 사용하는 스크립트 파일</strong></mark>입니다. <a href="../2023-10-23-gradle1#gradle-java_1">이전 포스트</a>에서 생성한 프로젝트 내 <a href="../2023-10-24-gradle3">subProject</a>인 <code>lib/build.gradle</code> 파일을 살펴보겠습니다.</p>
+<h2 id="buildgradle">🩻 build.gradle 구조</h2>
+<p>build.gradle 파일은 보통 <mark class="critic"><strong>plugins, repositories, dependencies, test</strong></mark>로 구성되어 있습니다 아래의 파일 내용을 바탕으로 설명드리겠습니다.</p>
+<div class="highlight"><span class="filename">lib/build.gradle</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cm">/*</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cm"> * This file was generated by the Gradle &#39;init&#39; task.</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="cm"> *</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="cm"> * This generated file contains a sample Java library project to get you started.</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="cm"> * For more details on building Java &amp; JVM projects, please refer to https://docs.gradle.org/8.4/userguide/building_java_projects.html in the Gradle documentation.</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="cm"> */</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="c1">// Apply the java-library plugin for API and implementation separation.</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;java-library&#39;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="o">}</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="n">repositories</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="c1">// Use Maven Central for resolving dependencies.</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="n">mavenCentral</span><span class="o">()</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="o">}</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="n">dependencies</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="c1">// Use JUnit Jupiter for testing.</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="n">testImplementation</span><span class="w"> </span><span class="s1">&#39;org.junit.jupiter:junit-jupiter:5.9.3&#39;</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="n">testRuntimeOnly</span><span class="w"> </span><span class="s1">&#39;org.junit.platform:junit-platform-launcher&#39;</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="c1">// This dependency is exported to consumers, that is to say found on their compile classpath.</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">    </span><span class="n">api</span><span class="w"> </span><span class="s1">&#39;org.apache.commons:commons-math3:3.6.1&#39;</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">    </span><span class="c1">// This dependency is used internally, and not exposed to consumers on their own compile classpath.</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">    </span><span class="n">implementation</span><span class="w"> </span><span class="s1">&#39;com.google.guava:guava:32.1.1-jre&#39;</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="o">}</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="c1">// Apply a specific Java toolchain to ease working on different environments.</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="n">java</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">    </span><span class="n">toolchain</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">        </span><span class="n">languageVersion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JavaLanguageVersion</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">17</span><span class="o">)</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="o">}</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="n">tasks</span><span class="o">.</span><span class="na">named</span><span class="o">(</span><span class="s1">&#39;test&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">    </span><span class="c1">// Use JUnit Platform for unit tests.</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">    </span><span class="n">useJUnitPlatform</span><span class="o">()</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="o">}</span>
+</code></pre></div>
+<h2 id="plugins">🔌 plugins</h2>
+<p>plugins는 <mark class="critic"><strong>이미 정의된 task들을 가져다 쓰기 위해 사용</strong></mark>됩니다. 가져다 쓸 미리 정의된 plugin은 <code>id</code>를 이용하여 추가할 수 있습니다.</p>
+<p>예제 에서는 <code>java-library</code> 플러그인을 사용하고 있으며 <code>id</code> 값만 존재하기 때문에 <mark class="critic"><strong>Gradle 에서 제공하는 core plugin</strong></mark>을 사용한다는 의미로 볼 수 있습니다.</p>
+<div class="highlight"><span class="filename">build.gradle - plugins</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="c1">// Apply the java-library plugin for API and implementation separation.</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="hll"><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;java-library&#39;</span>
+</span><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="o">}</span>
+</code></pre></div>
+<p>Gradle이 제공하는 core plugin은 <a href="https://docs.gradle.org/current/userguide/plugin_reference.html">plugin reference</a>에서 찾아 보실 수 있습니다.</p>
+<h3 id="plugin">🔄 plugin 변경 해보기</h3>
+<p>플러그인을 아래와 같이 'application'으로 변경한 후, <code>./gradlew tasks</code>를 입력하면 <a href="../2023-10-23-gradle2#gradle-tasks">java-library 에서 지원하는 task 목록</a>과 달리, <mark class="critic"><strong>Application tasks 가 추가가 되었음</strong></mark>을 확인할 수 있습니다.</p>
+<div class="highlight"><span class="filename">plugin application으로 변경</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="hll"><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;application&#39;</span>
+</span><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="o">}</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">./gradlew tasks 결과</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Application<span class="w"> </span>tasks
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>-----------------
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="hll">run<span class="w"> </span>-<span class="w"> </span>Runs<span class="w"> </span>this<span class="w"> </span>project<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>JVM<span class="w"> </span>application
+</span><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="o">(</span>...생략...<span class="o">)</span>
+</code></pre></div>
+<h3 id="application">✅ Application 플러그인 적용해보기</h3>
+<h4 id="1-gradlebuild">1️⃣ gradle.build 파일 수정</h4>
+<p><a href="../2023-10-23-gradle3">이전 글에서 생성한 subProject</a>인 <code>moosong</code>을 실행 가능한 application으로 변경해봅시다.</p>
+<p>application 플러그인을 사용하기 위해 <mark class="critic"><strong>application id를 추가한 후 실행 할 class를 지정해주기 위해 application 블럭을 추가</strong></mark>합니다. <code>mainClass</code>에는 <code>gradle.example.Main</code>을 추가합니다.</p>
+<div class="highlight"><span class="filename">moosong/build.gradle</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">plugins</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;java-libaray&#39;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="hll"><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="s1">&#39;application&#39;</span>
+</span><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="o">}</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">application</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="hll"><span class="w">    </span><span class="n">mainClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;gradle.example.Main&#39;</span>
+</span><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="o">}</span>
+</code></pre></div>
+<h4 id="2-mainjava">2️⃣ 프로젝트 Main.java 파일 추가</h4>
+<p><code>mainClass</code>와 맞추기 위해 <code>src/main/java/gradle/example</code> 경로에 <code>Main.java</code>를 아래와 같이 추가합니다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">moosong/src/main/java/gradle/example/Main.java</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">3</a></span>
+<span class="normal"><a href="#__codelineno-5-4">4</a></span>
+<span class="normal"><a href="#__codelineno-5-5">5</a></span>
+<span class="normal"><a href="#__codelineno-5-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="kn">package</span><span class="w"> </span><span class="nn">gradle.example</span><span class="p">;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Main</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Hello World!&quot;</span><span class="p">);</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="3">3️⃣ 프로젝트 실행</h4>
+<p><mark class="critic"><strong>./gradlew :moosong:run</strong></mark>을 입력하게 되면 moosong subProject내의 Main.java 파일 안에 "Hello World!"가 출력되는 것을 확인할 수 있습니다.</p>
+<div class="highlight"><span class="filename">./gradlew :moosong:run 실행 결과</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>fromitive@dev:~/practice/gradle-example$<span class="w"> </span>./gradlew<span class="w"> </span>:moosong:run
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>&gt;<span class="w"> </span>Task<span class="w"> </span>:moosong:run
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="hll">Hello<span class="w"> </span>World!
+</span><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>BUILD<span class="w"> </span>SUCCESSFUL<span class="w"> </span><span class="k">in</span><span class="w"> </span>6s
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="m">2</span><span class="w"> </span>actionable<span class="w"> </span>tasks:<span class="w"> </span><span class="m">2</span><span class="w"> </span>executed
+</code></pre></div>
+<h2 id="repositories">🗃️ repositories</h2>
+<p>repositories의 명칭은 GitHub에서 말하는 repository와 같습니다. 즉, <mark class="critic"><strong>자바 외부 자료를 참조하기 위한 저장소</strong></mark>. 라고 생각하시면 됩니다. 현재 아래와 같이 <mark class="critic"><strong>MavenCentral()</strong></mark> 저장소를 사용하고 있으며, 이는 <a href="https://repo.maven.apache.org/maven2/">maven 저장소에 등록되어 있는 외부 자료</a>를 참조합니다.</p>
+<div class="highlight"><span class="filename">build.gradle - repositories</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">repositories</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="c1">// Use Maven Central for resolving dependencies.</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="hll"><span class="w">    </span><span class="n">mavenCentral</span><span class="o">()</span>
+</span><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="o">}</span>
+</code></pre></div>
+<h3 id="github">😺 GitHub 자료를 참조하기 위한 구문</h3>
+<p>GitHub에 등록된 repository를 참조할 수도 있습니다. "jitpack.io" 문구를 추가하면, GitHub repository를 참조하여, 해당 repository를 사용 가능합니다.</p>
+<div class="highlight"><span class="filename">build.gradle - repositories with github</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">repositories</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="n">mavenCentral</span><span class="o">()</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="hll"><span class="w">    </span><span class="n">maven</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="s1">&#39;https://jitpack.io&#39;</span><span class="w"> </span><span class="o">}</span>
+</span><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="o">}</span>
+</code></pre></div>
+<h2 id="dependencies">⛓️ dependencies</h2>
+<p>빌드할 프로젝트의 <mark class="critic"><strong>의존성 자료 목록이 있습니다.</strong></mark> 의존성 자료는 프로젝트를 빌드할 때, 필요한 자바 파일들이라고 생각하면 됩니다. <mark class="critic"><strong>이 안에 등록된 자료들을 <code>repositories</code>내에 <code>mavenCentral</code> 및 <code>jitpack.io</code>와 같은 저장소를 참고하여 다운 받습니다.</strong></mark></p>
+<p>python으로 생각한다면 <code>pip install -r requirements.txt</code>같은 역할을 한다고 하면 됩니다. </p>
+<p>파일을 자세히 살펴보면 <code>testImplementation</code>, <code>testRuntimeOnly</code>, <code>api</code>, <code>implementation</code>설정값 이 있습니다.</p>
+<div class="highlight"><span class="filename">build.gradle - dependencies</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">dependencies</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="c1">// Use JUnit Jupiter for testing.</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="hll"><span class="w">    </span><span class="n">testImplementation</span><span class="w"> </span><span class="s1">&#39;org.junit.jupiter:junit-jupiter:5.9.3&#39;</span>
+</span><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="hll"><span class="w">    </span><span class="n">testRuntimeOnly</span><span class="w"> </span><span class="s1">&#39;org.junit.platform:junit-platform-launcher&#39;</span>
+</span><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="c1">// This dependency is exported to consumers, that is to say found on their compile classpath.</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="hll"><span class="w">    </span><span class="n">api</span><span class="w"> </span><span class="s1">&#39;org.apache.commons:commons-math3:3.6.1&#39;</span>
+</span><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">    </span><span class="c1">// This dependency is used internally, and not exposed to consumers on their own compile classpath.</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="hll"><span class="w">    </span><span class="n">implementation</span><span class="w"> </span><span class="s1">&#39;com.google.guava:guava:32.1.1-jre&#39;</span>
+</span><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="o">}</span>
+</code></pre></div>
+<p>기본적으로 생성되는 프로젝트의 dependencies의 각 설정 값에 대한 설명은 아래와 같습니다. <code>implementation</code> 과 <code>api</code>이 같은기능을 하면서 접근 제어의 차이가 있습니다.</p>
+<table>
+<thead>
+<tr>
+<th>설정 값</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>testImplementation</td>
+<td>test 디렉터리에 있는 테스트들을 컴파일 할 때 필요한 자료들만 받습니다.</td>
+</tr>
+<tr>
+<td>implementation</td>
+<td>테스트와 메인에 대한 구분 없이 자료를 받습니다. 설정되어 있는 자료에 대한 내용만 접근 가능합니다.</td>
+</tr>
+<tr>
+<td>api</td>
+<td><code>implementation</code>과 다르게 외부 자료가 참조한 자료들도 직접 참조할 수 있습니다. 예로 들어 A라는 외부 자료가 B에 의존하고 있다면, api "A"를 통해 B라는 자료도 직접 접근이 가능합니다.</td>
+</tr>
+<tr>
+<td>testRuntimeOnly</td>
+<td><code>./gradlew test</code> 할 때 만 해당 외부 자료를 참조합니다.</td>
+</tr>
+</tbody>
+</table>
+<p>설정 값의 대한 설명은 아래와 같습니다. 설정 값은 아래와 같이 구성되어 있습니다.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<div class="highlight"><span class="filename">dependencies 설정 방법</span><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>`dependency 설정 이름` &quot;`그룹 명:자료 명:버전`&quot;
+</code></pre></div>
+<p>예로 들어 <code>implementation 'com.google.guava:guava:32.1.1-jre'</code> 그룹명이 <code>com.google.guava</code>이고, 자료 명은 <code>guava</code> 입니다. 마지막으로 버전은 <code>32.1.1-jre</code>를 사용한다고 해석됩니다. 실제로 mavenCentral 저장소에 해당 자료가 있는 것을 <a href="https://repo.maven.apache.org/maven2/com/google/guava/guava/32.1.1-jre/">확인</a>할 수 있습니다.</p>
+<h3 id="github-repository">😺 GitHub에 있는 repository를 의존성에 추가하는 방법</h3>
+<p>GtiHub에 저장되어 있는 자료를 추가하려면 아래와 같이 입력하면 추가할 수 있습니다. 단, <code>repositories</code>에 <code>jitpack.io</code>를 추가해야 합니다.</p>
+<div class="highlight"><span class="filename">build.gradle - GitHub 의존성 추가</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">repositories</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="n">mavenCentral</span><span class="o">()</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="hll"><span class="w">    </span><span class="n">maven</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="s1">&#39;https://jitpack.io&#39;</span><span class="w"> </span><span class="o">}</span>
+</span><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="o">}</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="n">dependencies</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="hll"><span class="w">    </span><span class="n">implementation</span><span class="w"> </span><span class="s1">&#39;com.github.[userid]:[repository name]:release&#39;</span>
+</span><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="o">}</span>
+</code></pre></div>
+<h3 id="_1">🔎 프로젝트의 의존성을 확인할 수 있는 방법</h3>
+<p>프로젝트의 의존성을 확인하기 위해서는 <mark class="critic"><strong>./gradlew dependencies를 통해 확인</strong></mark>이 가능합니다.</p>
+<p>다음은 moosong subProject의 의존성을 보여줍니다.</p>
+<p>각 task 수행 시 사용되는 의존성까지 알려주기 때문에 의존성을 바로 확인할 수 있습니다.</p>
+<div class="highlight"><span class="filename">./gradlew dependencies 명령어 결과</span><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="hll">fromitive@dev:~/practice/gradle-example$<span class="w"> </span>./gradlew<span class="w"> </span>:moosong:dependencies
+</span><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>&gt;<span class="w"> </span>Task<span class="w"> </span>:moosong:dependencies
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>------------------------------------------------------------
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>Project<span class="w"> </span><span class="s1">&#39;:moosong&#39;</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>------------------------------------------------------------
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>annotationProcessor<span class="w"> </span>-<span class="w"> </span>Annotation<span class="w"> </span>processors<span class="w"> </span>and<span class="w"> </span>their<span class="w"> </span>dependencies<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="s1">&#39;main&#39;</span>.
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>No<span class="w"> </span>dependencies
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>api<span class="w"> </span>-<span class="w"> </span>API<span class="w"> </span>dependencies<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span><span class="s1">&#39;main&#39;</span><span class="w"> </span>feature.<span class="w"> </span><span class="o">(</span>n<span class="o">)</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="se">\-</span>--<span class="w"> </span>org.apache.commons:commons-math3:3.6.1<span class="w"> </span><span class="o">(</span>n<span class="o">)</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="w">    </span><span class="o">(</span>..생략..<span class="o">)</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>implementation<span class="w"> </span>-<span class="w"> </span>Implementation<span class="w"> </span>dependencies<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span><span class="s1">&#39;main&#39;</span><span class="w"> </span>feature.<span class="w"> </span><span class="o">(</span>n<span class="o">)</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="se">\-</span>--<span class="w"> </span>com.google.guava:guava:32.1.1-jre<span class="w"> </span><span class="o">(</span>n<span class="o">)</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">    </span><span class="o">(</span>..생략..<span class="o">)</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>runtimeClasspath<span class="w"> </span>-<span class="w"> </span>Runtime<span class="w"> </span>classpath<span class="w"> </span>of<span class="w"> </span><span class="nb">source</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="s1">&#39;main&#39;</span>.
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>+---<span class="w"> </span>org.apache.commons:commons-math3:3.6.1
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="se">\-</span>--<span class="w"> </span>com.google.guava:guava:32.1.1-jre
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="w">    </span><span class="o">(</span>..생략..<span class="o">)</span>
+</code></pre></div>
+<h2 id="test">🧪 test</h2>
+<p><code>test</code> 설정 부분은 test 하기 위해 사용 할 test 프레임워크의 종류를 지정하는 부분입니다. 사용할 수 있는 설정 값은 <code>gradle init</code>할 때, 나온 test 프레임워크인 <code>JUnit-4</code>, <code>TestNG</code>, <code>JUnit Platform-based</code>입니다.</p>
+<p>아래처럼 task.test를 이용하여 작성할 수도 있지만 <code>test</code> 블럭을 이용하여 설정할 수도 있습니다</p>
+<div class="highlight"><span class="filename">build.gradle</span><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">tasks</span><span class="o">.</span><span class="na">named</span><span class="o">(</span><span class="s1">&#39;test&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="c1">// Use JUnit Platform for unit tests.</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="hll"><span class="w">    </span><span class="n">useJUnitPlatform</span><span class="o">()</span>
+</span><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="o">}</span>
+</code></pre></div>
+<h3 id="junit-platform">✔ JUnit Platform?</h3>
+<p><code>JUnit Platform</code> 테스트를 사용한다는 의미는 JUnit5를 사용한다는 의미와 같다고 합니다. JUnit은 아래와 같이 3개의 구성 요소르 이루어져 있습니다.</p>
+<div class="highlight"><span class="filename">JUnit 5 구성 요소</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>JUnit 5 = JUnit Platform + JUnit Jupiter + JUnit Vintage
+</code></pre></div>
+<p>따라서 <code>JUnit5</code>을 온전히 사용하기 위해 Gradle에서는 init 시 아래와 같은 dependencies를 추가하는 것으로 보입니다. 프로그램 실행 시 JUnit Platform을 이용하여, JUnit Jupiter 기반으로 작성된 테스트를 실행합니다.</p>
+<div class="highlight"><span class="filename">build.gradle - dependencies</span><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">dependencies</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="c1">// Use JUnit Jupiter for testing.</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="hll"><span class="w">    </span><span class="n">testImplementation</span><span class="w"> </span><span class="s1">&#39;org.junit.jupiter:junit-jupiter:5.9.3&#39;</span>
+</span><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="hll"><span class="w">    </span><span class="n">testRuntimeOnly</span><span class="w"> </span><span class="s1">&#39;org.junit.platform:junit-platform-launcher&#39;</span>
+</span><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="c1">// (..생략..)</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="o">}</span>
+</code></pre></div>
+<hr />
+<h2 id="_2">참고 자료</h2>
+<div class="admonition note">
+<p class="admonition-title">참고 자료</p>
+<ul>
+<li><a href="https://spring.io/guides/gs/gradle/">Building Java Projects with Gradle - Spring 공식 문서</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/plugins.html">Using Gradle Plugins - Gradle 공식 문서</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/plugin_reference.html">plugin reference(Gradle core plugin 종류) - Gradle 공식 문서</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/declaring_repositories.html">Declaring repositories(maven 저장소 URL) - Gradle 공식 문서</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/java_plugin.html#sec:java_plugin_and_dependency_management">Dependency management(지원 가능한 설정 값들) - Gradle 공식 문서</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_separation">API and implementation sepration(api 와 implementation의 차이) - Gradle 공식 문서</a></li>
+<li><a href="https://stackoverflow.com/questions/44413952/gradle-implementation-vs-api-configuration">implementation vs api(api 와 implementation의 차이) - StackOverflow</a></li>
+<li><a href="https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.dsl.DependencyHandler.html">DependencyHandler(dependencies 설정 값 작성 법) - Gradle 공식 문서</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/Test.html">Test Class(지원하는 Test 프레임워크 목록) - Gradle 공식 문서</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/java_testing.html#using_junit5">Using JUnit 5(JUnit5 구성 요소) - Gradle 공식 문서</a></li>
+</ul>
+</div>
+<p><br/></p>
+<div class="md-typeset">
+    <div class="blogging-tags-grid">
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#java" class="blogging-tag"><code>#java</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#gradle" class="blogging-tag"><code>#gradle</code></a>
+
+    </div>
+
+
+</div>
+
+<style>
+    .md-typeset .blogging-tags-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .md-typeset .blogging-tag {
+        color: var(--md-typeset-color);
+        background-color: var(--md-typeset-code-color);
+        white-space: nowrap;
+        display: block;
+    }
+
+    .md-typeset .blogging-tag code {
+        border-radius: 5px;
+    }
+</style>
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>설정 값에대한 표기법은 <a href="https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.dsl.DependencyHandler.html">DependencyHandler - Gradle 공식 문서</a>에서 찾을 수 있었습니다. 이 안에 다양한 표기법이 있으니, 자세히 알고 싶으시다면 해당 사이트에 접속하셔서 확인하셔도 됩니다.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+    data-repo="fromitive/fromitive-blog"
+    data-repo-id="R_kgDOJ4LF1g"
+    data-category="Q&A"
+    data-category-id="DIC_kwDOJ4LF1s4CXvhy"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="dark_dimmed"
+    data-lang="ko"
+    crossorigin="anonymous"
+    async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+
+
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">이무송</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/fromitive" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>
