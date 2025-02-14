@@ -9,6 +9,7 @@ nav:
   - Coding Interview : coding-interview.md
   - Project : project.md
   - CS : cs.md
+  - Tips: tips.md
 theme:
   name: material
   custom_dir : override
@@ -65,6 +66,7 @@ plugins:
           paging: true
           size : 3
           show_total : true
+          
         - name: project
           dirs:
             - project
@@ -75,6 +77,13 @@ plugins:
         - name: cs
           dirs:
             - cs
+          paging: true
+          size : 3
+          show_total : true
+
+        - name: tips
+          dirs:
+            - tips
           paging: true
           size : 3
           show_total : true

@@ -22,3 +22,7 @@ fromitive 개발 블로그 입니다.
 ### [CS](/fromitive-blog/cs)
 
 학습한 Computer Science에 대해 정리하는 공간입니다.
+
+### [tips](/fromitive-blog/tips)
+
+생산성 향상을 위한 팁이 준비되어 있습니다.
