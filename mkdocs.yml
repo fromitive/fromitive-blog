@@ -47,7 +47,15 @@ extra_javascript:
   - javascripts/extra.js
 
 plugins:
-  - rss
+  - rss:
+      match_path: ".*"
+      max_items: 2
+      enabled: true
+      abstract_chars_count: 160
+      date_from_meta:
+        key: "date"
+        default: "2025-01-01 00:00:00"
+
   - social:
       cards_layout_options:
         font_family: Noto Sans KR
