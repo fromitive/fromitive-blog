@@ -6,10 +6,12 @@ site_description: >-
 
 nav:
   - Home : index.md
-  - Coding Interview : coding-interview.md
+  - Security: security.md
   - Project : project.md
+  - Coding Interview : coding-interview.md
   - CS : cs.md
   - Tips: tips.md
+
 theme:
   name: material
   custom_dir : override
@@ -69,6 +71,13 @@ plugins:
   - blogging:
       # INDIVIDUAL CATEGORIES: configs for {{ blog_content name }}
       categories:
+        - name: security
+          dirs:
+            - security
+          paging: true
+          size : 3
+          show_total : true
+      
         - name: coding-interview
           dirs:
             - coding-interview
