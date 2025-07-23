@@ -8,6 +8,7 @@ nav:
   - Home : index.md
   - Security: security.md
   - Project : project.md
+  - Archive : archive.md
   - Coding Interview : coding-interview.md
   - CS : cs.md
   - Tips: tips.md
@@ -77,14 +78,7 @@ plugins:
           paging: true
           size : 3
           show_total : true
-      
-        - name: coding-interview
-          dirs:
-            - coding-interview
-          paging: true
-          size : 3
-          show_total : true
-          
+
         - name: project
           dirs:
             - project
@@ -92,6 +86,20 @@ plugins:
           size : 3
           show_total : true
 
+        - name: archive
+          dirs: 
+            - archive
+          paging: true
+          size: 5
+          show_total : true
+
+        - name: coding-interview
+          dirs:
+            - coding-interview
+          paging: true
+          size : 3
+          show_total : true
+          
         - name: cs
           dirs:
             - cs
