@@ -1,0 +1,1358 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="HTTP 캐시를 잘못 설정하면 어떻게 될까?">
+      
+      
+        <meta name="author" content="fromitive">
+      
+      
+        <link rel="canonical" href="https://fromitive.github.io/fromitive-blog/security/2025-05-02-CVE/">
+      
+      
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>CVE-2023-30861 분석 - fromitive's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-Y55B987JCP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-Y55B987JCP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-Y55B987JCP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="CVE-2023-30861 분석 - fromitive's blog" >
+      
+        <meta  property="og:description"  content="HTTP 캐시를 잘못 설정하면 어떻게 될까?" >
+      
+        <meta  property="og:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/security/2025-05-02-CVE.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://fromitive.github.io/fromitive-blog/security/2025-05-02-CVE/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="CVE-2023-30861 분석 - fromitive's blog" >
+      
+        <meta  name="twitter:description"  content="HTTP 캐시를 잘못 설정하면 어떻게 될까?" >
+      
+        <meta  name="twitter:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/security/2025-05-02-CVE.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cve" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="fromitive&#39;s blog" class="md-header__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            fromitive's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CVE-2023-30861 분석
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54s-2.94 8.27-7 9.54c.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../archive/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Archive
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../coding-interview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Coding Interview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../cs/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CS
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tips/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tips
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="fromitive&#39;s blog" class="md-nav__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    fromitive's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Coding Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cve" class="md-nav__link">
+    <span class="md-ellipsis">
+      CVE란?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cve-2023-30861" class="md-nav__link">
+    <span class="md-ellipsis">
+      CVE-2023-30861
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      취약점 발생 조건
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      취약점 테스트 환경 구축
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      소스 분석
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="소스 분석">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#login" class="md-nav__link">
+    <span class="md-ellipsis">
+      login()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#me" class="md-nav__link">
+    <span class="md-ellipsis">
+      me()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#home" class="md-nav__link">
+    <span class="md-ellipsis">
+      home()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sessionpermernent" class="md-nav__link">
+    <span class="md-ellipsis">
+      session.permernent
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="session.permernent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sessionpermernent-false" class="md-nav__link">
+    <span class="md-ellipsis">
+      session.permernent = False
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionpermernent-true" class="md-nav__link">
+    <span class="md-ellipsis">
+      session.permernent = True
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vary-cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vary: Cookie가 무엇이길래..
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      캐싱 서버 구축
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="캐싱 서버 구축">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nginx 설정
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie 캐싱하기
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#varycookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vary:Cookie가 없다면?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      원인 분석
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      마치며
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>CVE-2023-30861 분석</h1>
+
+<div class="admonition info">
+<p class="admonition-title">이 글의 독자 대상</p>
+<ul>
+<li>
+<p>서버 앞단(Nginx, CDN 등)에서 <strong>캐시 설정</strong>을 다루는 운영자, 개발자</p>
+</li>
+<li>
+<p><strong>앱 보안</strong>이나 <strong>서비스 안정성</strong>에 관심 있는 사람 </p>
+</li>
+<li>
+<p>Flask 같은 웹 프레임워크를 사용하는 개발자</p>
+</li>
+</ul>
+</div>
+<div class="admonition info 이 글의 주요 내용">
+<p class="admonition-title">Info</p>
+<ol>
+<li>
+<p><strong>CVE-2023-30861</strong>이라는 Flask 취약점이 왜 위험한지 쉽게 이해할 수 있어요.</p>
+</li>
+<li>
+<p>간단한 <strong>테스트 환경</strong>을 만들어서 문제를 직접 재현해볼 수 있어요.</p>
+</li>
+<li>
+<p>Flask 내부 코드 변화를 보면서 <strong>문제가 생긴 이유</strong>를 알 수 있어요.</p>
+</li>
+<li>
+<p><strong>어떻게 막을 수 있는지</strong> 실제 대응 방법을 알 수 있어요.</p>
+</li>
+<li>
+<p>쿠키를 캐싱할 때 <strong>주의할 점</strong>까지 생각해볼 수 있어요.</p>
+</li>
+</ol>
+</div>
+<p>어느날 서비스를 이용하다가 아무 이유 없이 다른 사람의 계정으로 로그인 된 적이 있나요? <a href="https://www.boannews.com/media/view.asp?idx=115657">RIDI 에서 CDN 캐시를 잘못 설정해서 개인정보가 유출된 사례(2023.03)</a> 에서는 41분 동안 서비스 화면에서 다른 사람의 개인정보들이 보이는 오류가 발생했고, <a href="https://m.boannews.com/html/detail.html?idx=123496&amp;page=4&amp;kind=1">지그재그에서는 페이지를 새로고침 할때마다 다른 사람으로 로그인(2023.11)</a>되는 사례가 있었습니다.</p>
+<p>이번 글은 Flask의 알려진 취약점인 <strong>CVE-2023-30861</strong>를 분석하여 해당 취약점이 어떻게 악용될 수 있는지 분석하고, 조치할 수 있는 방법을 제시합니다.  </p>
+<h3 id="cve">CVE란?</h3>
+<p>오픈소스에서 취약점을 발견하게 된다면 이를 효율적으로 관리하기 위해 붙여진 취약점 일련번호입니다. 번호는 <code>CVE-발생연도-일련번호</code>로 구성되어 있습니다. </p>
+<h3 id="cve-2023-30861">CVE-2023-30861</h3>
+<p>CVE-2023-30861은 <a href="https://nvd.nist.gov/vuln/detail/cve-2023-30861">CVSS 스코어<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>가 7.5인 High에 분류된 취약점</a> 입니다. CVSS 스코어가 높을 수록 공격이 쉽고 치명적이죠. </p>
+<p>해당 취약점은 Flask에서 세션을 생성할 때 <code>session.permernent=True</code>옵션이 설정되어 있으면 매 요청마다 Set-Cookie를 응답합니다. 이때 Flask 앞에 캐싱 서버가 있을 경우 정책에 따라 <strong>세션키가 캐싱될 수 있는 취약점입니다.</strong></p>
+<p>세션키가 캐싱이 되면 처음에 봤던 RIDI와 지그재그 처럼 다른 사용자의 세션키를 의도와 다르게 가져갈 수 있게 되고 결국 다른 사용자의 개인정보와 아이디가 탈취될 수 있는 위험이 존재하게 됩니다.</p>
+<h3 id="_1">취약점 발생 조건</h3>
+<p>CVE-2023-30861은 다음과 같은 환경일 때 발생하게 됩니다.</p>
+<div class="admonition info">
+<p class="admonition-title">CVE-2023-30861 취약점 발생 조건</p>
+<ol>
+<li>
+<p>캐시 서버가 Set-Cookie를 캐싱할 것</p>
+</li>
+<li>
+<p>flask 2.2.5 미만의 버전을 사용할 것</p>
+</li>
+<li>
+<p>flask의 session 기능을 사용할 것</p>
+</li>
+<li>
+<p>세션을 생성할 때 session.permernent = True로 설정할 것</p>
+</li>
+<li>
+<p>세션을 참조(읽기, 수정)하지 않는 페이지가 존재할 것</p>
+</li>
+</ol>
+</div>
+<h3 id="_2">취약점 테스트 환경 구축</h3>
+<p>취약점 발생 조건과 동일한 취약한 환경을 구축해서 테스트 해보겠습니다. <a href="https://github.com/fromitive/cve-2023-30861-poc">환경설정은 github</a>에 구성했습니다.</p>
+<div class="admonition danger">
+<p class="admonition-title">⚠️ 주의 (CAUTION)</p>
+<p>해당 환경은 Flask의 CVE-2023-30861 취약점을 재현하기 위한 목적의 PoC입니다.  </p>
+<p><strong>절대로 인터넷에 노출된 환경에서 실행하는 걸 금지합니다.</strong>  </p>
+<p>외부 접근이 가능한 네트워크에 연결되면 실제 공격에 악용될 수 있습니다.</p>
+</div>
+<h3 id="_3">소스 분석</h3>
+<h4 id="login">login()</h4>
+<p>id와 password가 같다면 <code>session.permanent=True</code> 옵션을 설정하고 생성된 session을 사용자에게 전달합니다.  </p>
+<div class="highlight"><span class="filename">login</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">login</span><span class="p">():</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">if</span> <span class="n">username</span> <span class="ow">in</span> <span class="n">users</span> <span class="ow">and</span> <span class="n">users</span><span class="p">[</span><span class="n">username</span><span class="p">]</span> <span class="o">==</span> <span class="n">password</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="hll">        <span class="n">session</span><span class="o">.</span><span class="n">permanent</span> <span class="o">=</span> <span class="kc">True</span>
+</span><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">username</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;로그인 성공!&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;username&quot;</span><span class="p">:</span><span class="n">username</span><span class="p">})</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;로그인 실패: 아이디 또는 비밀번호가 틀렸습니다.&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span><span class="s1">&#39;로그인실패&#39;</span><span class="p">})</span>
+</code></pre></div>
+<h4 id="me">me()</h4>
+<p>로그인할 때 <code>session</code>을 참조해 username을 읽어 사용자에게 반환합니다.</p>
+<div class="highlight"><span class="filename">me</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/me&#39;</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">me</span><span class="p">():</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="k">if</span> <span class="s1">&#39;username&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="hll">        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;username&quot;</span><span class="p">:</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]})</span>
+</span><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span><span class="s1">&#39;로그인이 필요합니다&#39;</span><span class="p">})</span>
+</code></pre></div>
+<h4 id="home">home()</h4>
+<p>고정 값인 "main page"응답이 나오게 됩니다. <strong>session은 참조하지 않습니다.</strong></p>
+<div class="highlight"><span class="filename">home</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">home</span><span class="p">():</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="hll">    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span><span class="s2">&quot;main page&quot;</span><span class="p">})</span>
+</span></code></pre></div>
+<h3 id="sessionpermernent">session.permernent</h3>
+<p><code>session.permernent</code> 옵션을 활성화 하면 <a href="https://flask.palletsprojects.com/en/stable/api/#sessions">Flask는 세션을 일정시간마다 유지하게 됩니다.</a> Flask는 세션을 유지하기 위해 매 요청마다 응답 값으로<code>Set-Cookie</code>를 보내게 됩니다. 기본값은 <code>False</code>입니다.</p>
+<p>그렇다면 위의 예제에서 <code>POST /login</code>의 응답 값이 어떻게 달라지는 확인해봅시다.</p>
+<h4 id="sessionpermernent-false">session.permernent = False</h4>
+<p><code>POST login</code> 하게 되면 응답으로 <code>Set-Cookie</code>에 생성된 세션키가 나오게 됩니다.  </p>
+<div class="highlight"><span class="filename">POST /login request</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="err">POST http://10.0.1.6:5000/login</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="err">Content-Type: application/x-www-form-urlencoded</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="err">username=admin&amp;password=admin123</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">POST /login response</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="na">Server</span><span class="o">:</span> <span class="l">Werkzeug/2.2.2 Python/3.10.12</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="na">Date</span><span class="o">:</span> <span class="l">Mon, 28 Apr 2025 02:34:17 GMT</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="na">Content-Length</span><span class="o">:</span> <span class="l">21</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="hll"><span class="na">Vary</span><span class="o">:</span> <span class="l">Cookie</span>
+</span><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="hll"><span class="na">Set-Cookie</span><span class="o">:</span> <span class="l">session=.eJzty0EKgCAQRuGr1L92IxGJV8mIycYKUqLJVXT3vEA3aPXgwXdjDDvJygLb36iuEkQWoYWh4PJkWu8yzcG47LvOVCW60WX50NYYHvWrX32oQWE8-IyUOBUdaBdWyMJnosiwoDluCc8LAlnLgw.aA7pKQ.W9lhwkIekV4R8ZFBRGme0DmKJok; HttpOnly; Path=/</span>
+</span><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="na">Connection</span><span class="o">:</span> <span class="l">close</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="p">{</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="p">}</span>
+</code></pre></div>
+<p>session을 참조하는 <code>GET /me</code> request는 <code>session.permernent=False</code>일 경우 <code>Vary: Cookie</code>만 설정되어 응답하게 됩니다.</p>
+<div class="highlight"><span class="filename">(세션이 있는 상태에서) /me request</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="err">GET http://10.0.1.6:5000/me</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">(세션이 있는 상태에서) /me response</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="na">Server</span><span class="o">:</span> <span class="l">Werkzeug/2.2.2 Python/3.10.12</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="na">Date</span><span class="o">:</span> <span class="l">Mon, 28 Apr 2025 02:39:00 GMT</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="na">Content-Length</span><span class="o">:</span> <span class="l">21</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="hll"><span class="na">Vary</span><span class="o">:</span> <span class="l">Cookie</span>
+</span><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="na">Connection</span><span class="o">:</span> <span class="l">close</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">{</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="p">}</span>
+</code></pre></div>
+<p>session을 참조하지 않은 <code>GET /</code> request는 <code>session.permernent=False</code>일 경우 <code>Vary: Cookie</code>를 설정하지 않습니다.</p>
+<div class="highlight"><span class="filename">(세션이 있는 상태에서) / request</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="err">GET http://10.0.1.6:5000/</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">(세션이 있는 상태에서) / response</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="na">Server</span><span class="o">:</span> <span class="l">Werkzeug/2.2.2 Python/3.10.12</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="na">Date</span><span class="o">:</span> <span class="l">Mon, 28 Apr 2025 02:40:41 GMT</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="na">Content-Length</span><span class="o">:</span> <span class="l">24</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="na">Connection</span><span class="o">:</span> <span class="l">close</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="p">{</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;main page&quot;</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="sessionpermernent-true">session.permernent = True</h4>
+<p>해당 옵션을 설정하게 되면 세션 참조와 상관 없이 모든 요청에 <code>Set-Cookie</code>가 붙게 됩니다. </p>
+<p><code>POST /login</code>의 응답값 중 <code>Set-Cookie</code>안에 <code>Expires</code>가 추가 되었습니다.</p>
+<div class="highlight"><span class="filename">POST /login response (session.permernent = True)</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="na">Server</span><span class="o">:</span> <span class="l">Werkzeug/2.2.2 Python/3.10.12</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="na">Date</span><span class="o">:</span> <span class="l">Mon, 28 Apr 2025 02:47:05 GMT</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="na">Content-Length</span><span class="o">:</span> <span class="l">21</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="na">Vary</span><span class="o">:</span> <span class="l">Cookie</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="hll"><span class="na">Set-Cookie</span><span class="o">:</span> <span class="l">session=.eJzty0EKgzAQRuGr2H-djRQxeJUmhDFOtNCEknFW4t3NIVy6evDgOxDSj2RjwfQ50O0tyCxCK8PA6WyH6JSWZJ3GcbRdS__u24ppeMGf5lGPulV5g_DnmqlwaXqvygYqXAtlxgRa8rfgvACLe9wK.aA7sKQ.56khpLGDhQPzFSNibX1j25IXOQ0; Expires=Thu, 29 May 2025 02:47:05 GMT; HttpOnly; Path=/</span>
+</span><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="na">Connection</span><span class="o">:</span> <span class="l">close</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="p">{</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="p">}</span>
+</code></pre></div>
+<p><code>session</code>을 참조하는 <code>GET /me</code> request엔 <code>Vary:Cookie</code>와 함께 <code>Set-Cookie</code>가 응답값에 추가되었습니다.</p>
+<div class="highlight"><span class="filename">GET /me response (session.permernent = True)</span><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="na">Server</span><span class="o">:</span> <span class="l">Werkzeug/2.2.2 Python/3.10.12</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="na">Date</span><span class="o">:</span> <span class="l">Mon, 28 Apr 2025 02:47:53 GMT</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="na">Content-Length</span><span class="o">:</span> <span class="l">21</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="hll"><span class="na">Vary</span><span class="o">:</span> <span class="l">Cookie</span>
+</span><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="hll"><span class="na">Set-Cookie</span><span class="o">:</span> <span class="l">session=.eJzty0EKgzAQRuGr2H-djRQxeJUmhDFOtNCEknFW4t3NIVy6evDgOxDSj2RjwfQ50O0tyCxCK8PA6WyH6JSWZJ3GcbRdS__u24ppeMGf5lGPulV5g_DnmqlwaXqvygYqXAtlxgRa8rfgvACLe9wK.aA7sWQ.VmteAUgHLXP7Bx-K7Jeefweo99w; Expires=Thu, 29 May 2025 02:47:53 GMT; HttpOnly; Path=/</span>
+</span><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="na">Connection</span><span class="o">:</span> <span class="l">close</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="p">{</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="p">}</span>
+</code></pre></div>
+<p>세션을 참조하지 않는 <code>GET /</code> request에선 <code>Set-Cookie</code>만 추가되었습니다. 이때 <code>Vary: Cookie</code> 를 추가하지 않았기 때문에  <mark><strong>세션키 캐싱 취약점이 발생하게 됩니다.</strong></mark></p>
+<div class="highlight"><span class="filename">GET / (session.permernent = True)</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="na">Server</span><span class="o">:</span> <span class="l">Werkzeug/2.2.2 Python/3.10.12</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="na">Date</span><span class="o">:</span> <span class="l">Mon, 28 Apr 2025 02:48:43 GMT</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="na">Content-Length</span><span class="o">:</span> <span class="l">24</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="hll"><span class="na">Set-Cookie</span><span class="o">:</span> <span class="l">session=.eJzty0EKgzAQRuGr2H-djRQxeJUmhDFOtNCEknFW4t3NNQRXDx58B0L6kWwsmD4Hur0FmUVoZRg4ne0QndKSrNM4jrZr6d99WzENL_jTPOpRt1XeIPy5Zipcmt6rsoEK10KZMYGW_C04L9ee_a4.aA7siw.hGLyxHM115s6ytG6rd0UsACH9SA; Expires=Thu, 29 May 2025 02:48:43 GMT; HttpOnly; Path=/</span>
+</span><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="na">Connection</span><span class="o">:</span> <span class="l">close</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="p">{</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;main page&quot;</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="vary-cookie">Vary: Cookie가 무엇이길래..</h3>
+<p>http response에 붙는 <a href="https://developer.mozilla.org/ko/docs/Web/HTTP/Guides/Caching#%EC%83%81%ED%99%A9%EC%97%90_%EB%94%B0%EB%A5%B8_%EC%9D%91%EB%8B%B5">Vary 헤더</a>는 캐싱을 할 때 HTTP 요청에 포함된 헤더를 대조한다고 합니다.</p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/ko/docs/Web/HTTP/Reference/Headers/Vary"><code>Vary</code></a> HTTP 응답 헤더는 원 서버로부터 새로운 리소스를 요청해야 하는지 캐시된 응답이 사용될 수 있는지를 결정하기 위해 이후의 <strong>요청 헤더를 대조하는 방식을 결정</strong>합니다.</p>
+<p>캐시가 <code>Vary</code> 헤더 필드를 지닌 요청을 수신한 경우, <strong><code>Vary</code> 헤더에 의해 지정된 모든 헤더 필드들이 원래의 (캐시된) 요청과 새로운 요청 사이에서 일치하지 않는다면</strong> 그 캐시된 응답을 사용해서는 안 됩니다.</p>
+</blockquote>
+<p>따라서 <code>Vary: Cookie</code>가 붙은 response를 받은 캐시 서버는 사용자의 http 요청 내의 <code>Cookie</code>에 설정된 값에 따라 캐싱을 다르게 하게 됩니다.</p>
+<h3 id="_4">캐싱 서버 구축</h3>
+<p>아래와 같이 웹 페이지를 캐싱하도록 인프라를 구축해보겠습니다. </p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-05-02/cve1.png" width="600" />
+  </p>
+<figcaption>그림 1 - 인프라 구성도</figcaption>
+</figure>
+<h4 id="nginx">Nginx 설정</h4>
+<p>캐싱과 프록시를 설정하기 위해 nginx를 설정합니다.  <strong>Nginx는 기본적으로 Set-Cookie를 캐싱하지 않으므로 <code>proxy_ignore_headers</code>를 설정하여 캐싱하도록 구성했습니다.</strong></p>
+<p>또한 캐시 서버에서 전달된 응답 값인지 WAS에서 전달한 응답 값인지 확인하기 위해.  <code>add_header X-Cache-Status $upstream_cache_status;</code>를 설정했습니다. </p>
+<div class="highlight"><span class="filename">default.conf</span><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">proxy_cache_path</span><span class="w"> </span><span class="s">/tmp/nginx_cache</span><span class="w"> </span><span class="s">levels=1:2</span><span class="w"> </span><span class="s">keys_zone=mycache:10m</span><span class="w"> </span><span class="s">inactive=10m</span><span class="w"> </span><span class="s">use_temp_path=off</span><span class="p">;</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">localhost</span><span class="p">;</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">        </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://cve-2023-30861-poc:5000</span><span class="p">;</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">        </span><span class="kn">proxy_cache</span><span class="w"> </span><span class="s">mycache</span><span class="p">;</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">        </span><span class="kn">proxy_cache_key</span><span class="w"> </span><span class="nv">$scheme$host$request_uri</span><span class="p">;</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">        </span><span class="kn">proxy_cache_valid</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="mi">10m</span><span class="p">;</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="hll"><span class="w">        </span><span class="kn">proxy_ignore_headers</span><span class="w"> </span><span class="s">Set-Cookie</span><span class="p">;</span><span class="w"> </span><span class="c1"># dangerous</span>
+</span><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="hll"><span class="w">        </span><span class="kn">add_header</span><span class="w"> </span><span class="s">X-Cache-Status</span><span class="w"> </span><span class="nv">$upstream_cache_status</span><span class="p">;</span>
+</span><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="cookie">Cookie 캐싱하기</h4>
+<p>로그인 후 <code>Vary: Cookie</code> 를 설정한 /me 요청을 몇 번 요청하게 되면 <code>X-Cache-Status</code>가 <code>HIT</code>상태가가 되며, 이는 nginx에서 해당 내용을 캐싱 되었다는 것을 알 수 있습니다.</p>
+<div class="highlight"><span class="filename">GET /me (캐싱 서버 응답)</span><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="na">Server</span><span class="o">:</span> <span class="l">nginx/1.25.5</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="na">Date</span><span class="o">:</span> <span class="l">Mon, 28 Apr 2025 03:17:55 GMT</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="na">Content-Length</span><span class="o">:</span> <span class="l">21</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="na">Connection</span><span class="o">:</span> <span class="l">close</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="na">Vary</span><span class="o">:</span> <span class="l">Cookie</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="na">Set-Cookie</span><span class="o">:</span> <span class="l">session=.eJzty0EKgzAQRuGr2H-djRQxeJUmhDFOtNCEknFW4t3NPXT14MF3IKQfycaC6XOg21uQWYRWhoHT2Q7RKS3JOo3jaLuW_t23FdPwgj_Nox51M-UNwp9rpsKl6b0qG6hwLZQZE2jJ34LzAtB0Do8.aA7zWw.m6l70hHPnSrjMR2zIUHxzSqBi7c; Expires=Thu, 29 May 2025 03:17:47 GMT; HttpOnly; Path=/</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="hll"><span class="na">X-Cache-Status</span><span class="o">:</span> <span class="l">HIT</span>
+</span><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="p">{</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="p">}</span>
+</code></pre></div>
+<p>새로운 브라우저를 띄워 <code>GET /me</code>를 요청하면 어떻게 될까요? nginx에 <code>Set-Cookie</code>가 캐싱되어 있어서 그대로 사용자에게 전달되지 않을까요? </p>
+<p>그렇지 않습니다. 왜냐하면 Flask가 <code>Vary: Cookie</code>를 응답 값에 넣었기 때문에 전달하는 Cookie값이 일치하지 않으면 캐시에 접근할 수 없기 때문입니다. </p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-05-02/cve2.png" width="600" />
+  </p>
+<figcaption>그림 2 - Vary: Cookie시 캐시 히트 실패</figcaption>
+</figure>
+<h4 id="varycookie">Vary:Cookie가 없다면?</h4>
+<p>이제 쿠키를 가진 상태에서 <code>/</code>를 요청 하면 <code>Set-Cookie</code>필드와 함께 응답이 캐시에 저장됩니다.</p>
+<div class="highlight"><span class="filename">GET / (캐싱 서버 응답)</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="na">Server</span><span class="o">:</span> <span class="l">nginx/1.25.5</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="na">Date</span><span class="o">:</span> <span class="l">Mon, 28 Apr 2025 03:29:44 GMT</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="na">Content-Length</span><span class="o">:</span> <span class="l">24</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="na">Connection</span><span class="o">:</span> <span class="l">close</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="na">Set-Cookie</span><span class="o">:</span> <span class="l">session=.eJztyzEKhDAQRuGr6F-nkUUMXmUjMsaJLpiwZJxKvLs5hkWqBw--C3M4SHYWjN8LzVmCyCK0MQycLrb3TmkN1qkfBtuUdJ-uLB_6FtNtqqqqqpepyWD-c46UOBV9ZmUDFc6JImMErfGXcD8GCEEF.aA72Jw.faLD0-YoHdtdjGksP9cGL3WOJwk; Expires=Thu, 29 May 2025 03:29:43 GMT; HttpOnly; Path=/</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="hll"><span class="na">X-Cache-Status</span><span class="o">:</span> <span class="l">HIT</span>
+</span><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="p">{</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;main page&quot;</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="p">}</span>
+</code></pre></div>
+<p>해당 응답값에는 <code>Vary:Cookie</code>가 존재하지 않습니다. 따라서 다른 브라우저에서 다른 사용자의 쿠키값이 아래와 같이 노출됩니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-05-02/cve3.png" />
+  </p>
+<figcaption>그림 3 - 세션 캐싱 발생</figcaption>
+</figure>
+<p>캐시서버에 저장되어 있는 쿠키 값을 가져온 뒤 <code>GET /me</code>를 요청하면 다른 사용자 정보에 접근할 수 있게 됩니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-05-02/cve4.png" />
+  </p>
+<figcaption>그림 4 - 취약점 Poc 결과</figcaption>
+</figure>
+<h3 id="_5">원인 분석</h3>
+<p>해당 취약점은 <a href="https://github.com/pallets/flask/compare/2.2.4...2.2.5">Flask 2.2.5</a>부터 해결되었습니다. Flask 개발자는 어떻게 문제를 해결했는지 살펴봅시다.</p>
+<p>발생 위치는 <code>sesions.save_session</code> 함수이며 기존 로직에서 <code>Vary: Cookie</code>를 설정하기 전 빠져 나갔기 때문에 취약점이 발생한 것으로 보입니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-05-02/cve5.png" />
+  </p>
+<figcaption>그림 5 -flask 버전 2.2.4와 2.2.5 코드 비교</figcaption>
+</figure>
+<p>취약한 곳이 어디였는지 명확하게 판단하기 위해 디버깅해보겠습니다.</p>
+<p>세션을 참조하지 않는 <code>/</code> 요청 시 <code>save_session</code>385 line에서 <code>session.accessed</code>가 <code>False</code>가 되어 <code>Vary:Cookie</code>를 설정하지 않습니다. </p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-05-02/cve6.png" />
+  </p>
+<figcaption>그림 6 - session.py 디버깅</figcaption>
+</figure>
+<p>session을 읽거나 수정하지 않으면 access가 True가 되지 않도록 비즈니스 규칙에 정의되었기 때문입니다.  </p>
+<p>SecureCookieSession 클래스를 살펴보면 <code>CallbackDict</code>를 상속받아 get, set을 할 때 accessed가 True가 되도록 오버라이딩 하고 있습니다. </p>
+<p>따라서 session을 참조할 때 session.accessed가 True가 되며 <code>Vary: Cookie</code>가 설정되는 동작 원리를 알게 됐습니다.</p>
+<p>해당 취약점은 <code>session.permernent=True</code> 일 때 session 참조와 상관 없이 <code>Set-Cookie</code>가 전송되었기 때문에 발생하게 된 것이었습니다.</p>
+<div class="highlight"><span class="filename">flask 내 session.py 일부</span><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">SecureCookieSession</span><span class="p">(</span><span class="n">CallbackDict</span><span class="p">,</span> <span class="n">SessionMixin</span><span class="p">):</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for sessions based on signed cookies.</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="sd">    This session backend will set the :attr:`modified` and</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="sd">    :attr:`accessed` attributes. It cannot reliably track whether a</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="sd">    session is new (vs. empty), so :attr:`new` remains hard coded to</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="sd">    ``False``.</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    <span class="c1">#: When data is changed, this is set to ``True``. Only the session</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>    <span class="c1">#: dictionary itself is tracked; if the session contains mutable</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>    <span class="c1">#: data (for example a nested dict) then this must be set to</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    <span class="c1">#: ``True`` manually when modifying that data. The session cookie</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>    <span class="c1">#: will only be written to the response if this is ``True``.</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>    <span class="n">modified</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>    <span class="c1">#: When data is read or written, this is set to ``True``. Used by</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>    <span class="c1"># :class:`.SecureCookieSessionInterface` to add a ``Vary: Cookie``</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>    <span class="c1">#: header, which allows caching proxies to cache different pages for</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>    <span class="c1">#: different users.</span>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>    <span class="n">accessed</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>        <span class="k">def</span><span class="w"> </span><span class="nf">on_update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">modified</span> <span class="o">=</span> <span class="kc">True</span>
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">accessed</span> <span class="o">=</span> <span class="kc">True</span>
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a>
+<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">on_update</span><span class="p">)</span>
+<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a>
+<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a><span class="hll">    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+</span><a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a><span class="hll">        <span class="bp">self</span><span class="o">.</span><span class="n">accessed</span> <span class="o">=</span> <span class="kc">True</span>
+</span><a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a><span class="hll">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</span><a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a><span class="hll">
+</span><a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a><span class="hll">    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+</span><a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a><span class="hll">        <span class="bp">self</span><span class="o">.</span><span class="n">accessed</span> <span class="o">=</span> <span class="kc">True</span>
+</span><a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a><span class="hll">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+</span><a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a><span class="hll">
+</span><a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a><span class="hll">    <span class="k">def</span><span class="w"> </span><span class="nf">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+</span><a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a><span class="hll">        <span class="bp">self</span><span class="o">.</span><span class="n">accessed</span> <span class="o">=</span> <span class="kc">True</span>
+</span><a id="__codelineno-15-40" name="__codelineno-15-40" href="#__codelineno-15-40"></a><span class="hll">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+</span></code></pre></div>
+<p>정리하자면 해당 취약점은 아래와 같이 발생하게 된 것입니다.</p>
+<div class="admonition summary">
+<p class="admonition-title">취약점 정리</p>
+<ol>
+<li>
+<p>세션을 참조(읽거나 수정)하면 session.accessed = True 상태가 되므로 Vary:Cookie 가 설정되어 캐싱을 해도 공유가 되지 않음</p>
+</li>
+<li>
+<p>그러나 세션을 전혀 참조하지 않았을 때는 session.accessed가 False인 상태로 남아 있으므로 save_session에서 Set-Cookie는 설정하나, Vary: Cookie는 설정되지 않음 &lt;-- 취약점 발생</p>
+</li>
+<li>
+<p>따라서 2.2.5 버전에서는 참조 여부와 상관 없이 save_session 마지막에 Vary: Cookie를 강제로 추가하도록 패치됨</p>
+</li>
+</ol>
+</div>
+<p>수정된 버전의 소스를 살펴보면 개발자는 패치만 적용할 뿐만 아니라 테스트 코드까지 작성하여 재발방지까지 하고 있는 것으로 보입니다.</p>
+<p>이 부분은 취약점 조치를 어느 범위까지 테스트했는지 알 수 있었습니다. /ignore 컨트롤러를 따로 만들어 <code>Vary: Cookie</code>가 설정된 것까지만 확인하고 있습니다. </p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-05-02/cve7.png" />
+  </p>
+<figcaption>그림 7 - 패치 후 테스트 코드 추가</figcaption>
+</figure>
+<h3 id="_6">마치며</h3>
+<p>분석 이전엔 CVE 내용만 보고 Flask에만 있는 마이너한 취약점이라고 생각했으나, 캐시를 잘못 설정하면 발생할 수 있는 시나리오를 잘 반영해주는 사례라 분석할 가치가 있다고 판단했습니다</p>
+<p>Cookie를 캐싱하는 경우가 과연 있을지 찾아보다가 보통 광고 추적, A/B 테스트, 사용자 통계를 낼 때 값이 고정되어 있는 쿠키를 이용한다고 합니다. </p>
+<p>또한 CDN내에서 공통으로 사용하는 전역 쿠키를 캐싱하여 시스템 성능을 향상시키기 위해 캐싱하다고 합니다.</p>
+<p>위의 사례에서 보듯 꼭 필요하지 않은 경우에는 사용자 통계는 쿠키를 사용하지 않는 방향으로 가는것이 적절해 보이긴 합니다. </p>
+<p>이때 추적을 위해 <code>Set-Cookie</code>를 캐싱하게되면 성능은 올릴 수 있어도 위와 같은 취약점이 발생할 수 있으니 난감하네요.  </p>
+<p>만일 캐시 서버를 통해 쿠키를 캐싱하는 구조일 경우 <strong>쿠키가 사용되는 범위</strong>를 고려해야 할 필요가 있겠습니다. </p>
+<p>flask 에서 <code>session.permernent</code>를 사용하지 않고 세션을 커스텀 헤더를 통해 전송하는 방안도 검토할 수 있겠습니다. 커스텀 헤더를 선택하게 된다면 <code>Cookie</code>가 제공하는 기본 보안 옵션인 <code>httpOnly, SameSite, Secure</code>를 포기할 수 있는가를 생각해봐야겠습니다. </p>
+<p>해당 옵션이 존재하지 않으면 XSS, CSRF, 암호화 되지 않은 통신이 있는지 주기적으로 점검해야하기 때문에 개발자, 운영자의 관리 포인트가 증가하기 때문입니다.</p>
+<p><strong>기술엔 은총알이 없다</strong>고 합니다. 비록 현업을 깊게 경험하진 않았지만, 여러 상황을 따져가며 최적의 조치방안을 제시하는것을 이 글을 작성하면서 간접적으로 체험할 수 있었습니다.</p>
+<p>더 좋은 해결책이 있거나 사례를 발견한다면 다시 한 번 공유하도록 하겠습니다.</p>
+<p>잘못된 부분이나 잘 이해되지 않은 부분이 있다면 피드백 부탁드립니다. 읽어 주셔서 감사합니다.</p>
+<p><br/></p>
+<div class="md-typeset">
+    <div class="blogging-tags-grid">
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#security" class="blogging-tag"><code>#security</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#python" class="blogging-tag"><code>#python</code></a>
+
+    </div>
+
+
+</div>
+
+<style>
+    .md-typeset .blogging-tags-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .md-typeset .blogging-tag {
+        color: var(--md-typeset-color);
+        background-color: var(--md-typeset-code-color);
+        white-space: nowrap;
+        display: block;
+    }
+
+    .md-typeset .blogging-tag code {
+        border-radius: 5px;
+    }
+</style>
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>CVSS란 취약점의 심각도를 수치화하기 위한 국제 표준입니다.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+    data-repo="fromitive/fromitive-blog"
+    data-repo-id="R_kgDOJ4LF1g"
+    data-category="Q&A"
+    data-category-id="DIC_kwDOJ4LF1s4CXvhy"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="dark_dimmed"
+    data-lang="ko"
+    crossorigin="anonymous"
+    async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+
+
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">이무송</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/fromitive" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

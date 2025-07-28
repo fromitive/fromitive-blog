@@ -1,0 +1,1115 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="생성된 파일들 소개 및 사용 가능한 명령어 확인 후 빌드 하기">
+      
+      
+        <meta name="author" content="fromitive">
+      
+      
+        <link rel="canonical" href="https://fromitive.github.io/fromitive-blog/cs/2023-10-23-gradle2/">
+      
+      
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>Gradle #2 - gradle이 지원하는 명령어 - fromitive's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-Y55B987JCP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-Y55B987JCP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-Y55B987JCP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Gradle #2 - gradle이 지원하는 명령어 - fromitive's blog" >
+      
+        <meta  property="og:description"  content="생성된 파일들 소개 및 사용 가능한 명령어 확인 후 빌드 하기" >
+      
+        <meta  property="og:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/cs/2023-10-23-gradle2.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://fromitive.github.io/fromitive-blog/cs/2023-10-23-gradle2/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Gradle #2 - gradle이 지원하는 명령어 - fromitive's blog" >
+      
+        <meta  name="twitter:description"  content="생성된 파일들 소개 및 사용 가능한 명령어 확인 후 빌드 하기" >
+      
+        <meta  name="twitter:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/cs/2023-10-23-gradle2.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gradle" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="fromitive&#39;s blog" class="md-header__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            fromitive's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Gradle #2 - gradle이 지원하는 명령어
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54s-2.94 8.27-7 9.54c.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../archive/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Archive
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../coding-interview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Coding Interview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CS
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tips/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tips
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="fromitive&#39;s blog" class="md-nav__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    fromitive's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Coding Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gradle" class="md-nav__link">
+    <span class="md-ellipsis">
+      🌲 Gradle 프로젝트 구조
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🌲 Gradle 프로젝트 구조">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 주요 파일 및 디렉터리 설명
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gradle_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⌨️ Gradle 명령어 종류
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⌨️ Gradle 명령어 종류">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gradle-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      gradle help
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradle-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      gradle tasks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradle-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      gradle build
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="gradle build">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build" class="md-nav__link">
+    <span class="md-ellipsis">
+      build 결과
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gradle-clean" class="md-nav__link">
+    <span class="md-ellipsis">
+      gradle clean
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      참고 자료
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Gradle #2 - gradle이 지원하는 명령어</h1>
+
+<div class="admonition info">
+<p class="admonition-title">Gradle 시리즈</p>
+<ul>
+<li>
+<p><a href="../2023-10-23-gradle1">Gradle #1 - 프로젝트 통합 빌드 툴</a></p>
+</li>
+<li>
+<p><a href="../2023-10-23-gradle2">Gradle #2 - gradle이 지원하는 명령어</a></p>
+</li>
+<li>
+<p><a href="../2023-10-24-gradle3">Gradle #3 - gradle.setting 파일 용도</a></p>
+</li>
+<li>
+<p><a href="../2023-10-24-gradle4">Gradle #4 - build.gradle 파일의 역할</a></p>
+</li>
+</ul>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">글 요약</p>
+<ol>
+<li>
+<p>Gradle 프로젝트를 생성하게 되면 2개의 중요한 파일인 <code>settings.gradle</code>파일과 <code>build.gradle</code>파일이 생성된다.</p>
+</li>
+<li>
+<p>Gradle에서 사용 가능한 task 목록을 확인하기 위해선 <code>./gradlew tasks</code> 명령어를 입력한다.</p>
+</li>
+<li>
+<p>Gradle에서 프로젝트를 컴파일하기 위해선 <code>./gradlew build</code> 명령어를 입력한다.</p>
+</li>
+<li>
+<p>Gradle에서 컴파일 된 파일을 정리하기 위해선 <code>./gradlew clean</code> 명령어를 입력한다.</p>
+</li>
+</ol>
+</div>
+<h2 id="gradle">🌲 Gradle 프로젝트 구조</h2>
+<p><a href="../2023-10-23-gradle1#gradle-java_1">이전 포스트</a>에서 생성한 프로젝트의 디렉터리 구조는 아래와 같습니다.</p>
+<div class="highlight"><span class="filename">Gradle 디렉터리 구조</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>📁<span class="w"> </span>gradle-example
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├──<span class="w"> </span>📄.gitattributes
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├──<span class="w"> </span>📄.gitignore
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├──<span class="w"> </span>📁<span class="w"> </span>gradle
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│<span class="w">   </span>└──<span class="w"> </span>📁<span class="w"> </span>wrapper
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├──<span class="w"> </span>📁<span class="w"> </span>.gradle
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│<span class="w">   </span>├──<span class="w"> </span><span class="o">(</span>..생략..<span class="o">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>├──<span class="w"> </span>📄<span class="w"> </span>gradlew
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>├──<span class="w"> </span>📄<span class="w"> </span>gradlew.bat
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>├──<span class="w"> </span>📁<span class="w"> </span>lib
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│<span class="w">   </span>├──<span class="w"> </span>📄<span class="w"> </span>build.gradle
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│<span class="w">   </span>└──<span class="w"> </span>📁<span class="w"> </span>src
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>└──<span class="w"> </span>📄<span class="w"> </span>settings.gradle
+</code></pre></div>
+<h3 id="_1">📋 주요 파일 및 디렉터리 설명</h3>
+<p>주요 파일과 디렉터리에 대한 설명은 아래와 같습니다. 특히 <mark class="critic"><strong>build.gradle 파일 및 settings.gradle 파일은 프로젝트 빌드 시 참고하는 제일 중요한 파일</strong></mark>입니다.</p>
+<table>
+<thead>
+<tr>
+<th>이름</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>📄.gitattributes</td>
+<td>git commit 후 Github와 같은 <mark class="critic"><strong>외부 저장소에 저장할 때 파일의 속성을 어떻게 할 것인지</strong></mark>에 대해 나타나 있습니다. <code>gradlew</code> 파일은 <code>Linux</code>,<code>MAC</code> 에서 동작해야하기 때문에 개행 처리를 <code>lf</code>로 지정되어 있고, <code>gradle.bat</code> 파일은 <code>Windows</code>에서 쓰이는 파일이므로 <code>crlf</code>로 설정되어 있습니다.</td>
+</tr>
+<tr>
+<td>📄.gitignore</td>
+<td>git에서 commit 시 처리하지 않을 폴더나 파일목록이 작성되어 있습니다. 빌드가 완료 된 <code>build</code> 폴더와 gradle을 실행시킬 때 임시로 생성되는 <code>.gradle</code> 폴더가 등록되어 있습니다.</td>
+</tr>
+<tr>
+<td>📁 gradle</td>
+<td>외부에서 gradle을 실행시키기 위해 사용될 gradle java 프로그램이 wrapper에 들어 있습니다.</td>
+</tr>
+<tr>
+<td>📁 wrapper</td>
+<td>실제 gradle을 실행시키기 위한 jar파일과 속성 파일이 들어 있습니다.</td>
+</tr>
+<tr>
+<td>📁 .gradle</td>
+<td>gradle을 실행한 후에 임시로 저장되는 cache 데이터들이 저장되어 있습니다.</td>
+</tr>
+<tr>
+<td>📄 gradlew</td>
+<td><code>Linux</code>,<code>MAC</code>에서 gradle을 실행 시킬 때 사용 되는 <code>bash</code>스크립트 파일입니다. 이 파일 덕분에 <mark class="critic"><strong>gradle을 설치하지 않아도, gradle을 사용할 수 있게 됩니다.</strong></mark></td>
+</tr>
+<tr>
+<td>📄 gradlew.bat</td>
+<td><code>Windows</code> 에서 실행 시킬 때 사용 되는 <code>batch</code>스크립트 파일입니다. 이 파일 덕분에 <mark class="critic"><strong>gradle을 설치하지 않아도, gradle을 사용할 수 있게 됩니다.</strong></mark></td>
+</tr>
+<tr>
+<td>📁 lib</td>
+<td><a href="../2023-10-23-gradle1#gradle-java_1">이전 포스트</a>에서 생성한 소스파일이 들어 있습니다. 실제 프로젝트를 수행 할 디렉터리 입니다. <code>gradle init</code>한 명령어에 따라 있을 수도, 없을 수 도 있습니다.</td>
+</tr>
+<tr>
+<td>📄 build.gradle</td>
+<td>⭐ gradle을 다루기 위한 <mark class="critic"><strong>필수 빌드 스크립트 입니다.</strong></mark> 이 파일로 어떻게 빌드할 것인지, 테스트 할 것인지 <code>groovy</code> 언어로 프로그래밍 할 수 있습니다.</td>
+</tr>
+<tr>
+<td>📁 src</td>
+<td>프로젝트의 소스 파일이 들어있습니다. <code>java/main</code>은 메인 소스파일이, <code>java/test</code>는 main을 테스트하기 위한 소스파일이 들어있습니다.</td>
+</tr>
+<tr>
+<td>📄 settings.gradle</td>
+<td>⭐ 프로젝트에 대한 설정 정보를 확인할 수 있습니다. 대표적으로 프로젝트가 빌드 될 때, 파일 내에 있는 <code>rootProject.name</code>또는 include 되어 있는 subProject 이름으로 빌드가 됩니다.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="gradle_1">⌨️ Gradle 명령어 종류</h2>
+<p>Gradle을 사용하기 위해선 gradle을 PC에 설치하여 이용할 수도 있지만, <code>gradlew</code> 파일을 통해 gradle 명령어를 실행 할 수 있습니다.</p>
+<p>주로 사용되는 명령어는 아래의 명령어와 같습니다. </p>
+<h3 id="gradle-help">gradle help</h3>
+<p>gradle 명령어의 대략적인 사용 방법들을 알려줍니다. 실행 결과는 다음과 같으며, 하이라이트 된 부분을 통해 build를 하기 위해선 <code>./gradlew &lt;task 명&gt;</code> 명령어를 통해 실행하면 되고, <code>./gradlew tasks</code> 명령어를 통해 사용 가능한 task 목록들을 확인할 수 있습니다.</p>
+<div class="highlight"><span class="filename">gradle help</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>fromitive@dev:~/practice/gradle-example$<span class="w"> </span>./gradlew<span class="w"> </span><span class="nb">help</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>&gt;<span class="w"> </span>Task<span class="w"> </span>:help
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Welcome<span class="w"> </span>to<span class="w"> </span>Gradle<span class="w"> </span><span class="m">8</span>.4.
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="hll">To<span class="w"> </span>run<span class="w"> </span>a<span class="w"> </span>build,<span class="w"> </span>run<span class="w"> </span>gradlew<span class="w"> </span>&lt;task&gt;<span class="w"> </span>...
+</span><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>To<span class="w"> </span>see<span class="w"> </span>a<span class="w"> </span>list<span class="w"> </span>of<span class="w"> </span>available<span class="w"> </span>tasks,<span class="w"> </span>run<span class="w"> </span>gradlew<span class="w"> </span>tasks
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>To<span class="w"> </span>see<span class="w"> </span>more<span class="w"> </span>detail<span class="w"> </span>about<span class="w"> </span>a<span class="w"> </span>task,<span class="w"> </span>run<span class="w"> </span>gradlew<span class="w"> </span><span class="nb">help</span><span class="w"> </span>--task<span class="w"> </span>&lt;task&gt;
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>To<span class="w"> </span>see<span class="w"> </span>a<span class="w"> </span>list<span class="w"> </span>of<span class="w"> </span>command-line<span class="w"> </span>options,<span class="w"> </span>run<span class="w"> </span>gradlew<span class="w"> </span>--help
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>For<span class="w"> </span>more<span class="w"> </span>detail<span class="w"> </span>on<span class="w"> </span>using<span class="w"> </span>Gradle,<span class="w"> </span>see<span class="w"> </span>https://docs.gradle.org/8.4/userguide/command_line_interface.html
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>For<span class="w"> </span>troubleshooting,<span class="w"> </span>visit<span class="w"> </span>https://help.gradle.org
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>BUILD<span class="w"> </span>SUCCESSFUL<span class="w"> </span><span class="k">in</span><span class="w"> </span>949ms
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="m">1</span><span class="w"> </span>actionable<span class="w"> </span>task:<span class="w"> </span><span class="m">1</span><span class="w"> </span>executed
+</code></pre></div>
+<h3 id="gradle-tasks">gradle tasks</h3>
+<p>사용 가능한 <code>&lt;task 명&gt;</code>을 확인하기 위해 명령어를 실행하면 아래와 같은 결과가 나타납니다. 즉, 이 프로젝트에서 사용할 수 있는 <code>&lt;tesk 명&gt;</code>은 <code>assemble</code>, <code>build</code>, <code>classes</code>.. 등이 있습니다.</p>
+<p>실제로 <code>build</code> task를 사용하기 위해선, <mark class="critic"><strong>./gradlew build</strong></mark>로 입력하면 <code>build</code>라는 task가 수행이 되는 구조입니다.</p>
+<p>흥미로운 점은, <code>Help tasks</code> 쪽 입니다. help는 주로 명령어의 사용 방법을 알려주는데, <mark class="critic"><strong><code>dependencies</code>,<code>buildEnvironment</code>등 <code>gradle-example</code>(현재 프로젝트)에 대한 정보를 알려주는 용도로 사용하고 있습니다.</strong></mark></p>
+<p>프로젝트에 대한 의존성, 상세 정보에 대해서는 help task 쪽의 명령어를 사용하면 자세히 알 수 있는 걸 확인할 수 있습니다.</p>
+<div class="highlight"><span class="filename">gradle tasks</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>fromitive@dev:~/practice/gradle-example$<span class="w"> </span>./gradlew<span class="w"> </span>tasks
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>&gt;<span class="w"> </span>Task<span class="w"> </span>:tasks
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>------------------------------------------------------------
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Tasks<span class="w"> </span>runnable<span class="w"> </span>from<span class="w"> </span>root<span class="w"> </span>project<span class="w"> </span><span class="s1">&#39;gradle-example&#39;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>------------------------------------------------------------
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>Build<span class="w"> </span>tasks
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>-----------
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="hll">assemble<span class="w"> </span>-<span class="w"> </span>Assembles<span class="w"> </span>the<span class="w"> </span>outputs<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>project.
+</span><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="hll">build<span class="w"> </span>-<span class="w"> </span>Assembles<span class="w"> </span>and<span class="w"> </span>tests<span class="w"> </span>this<span class="w"> </span>project.
+</span><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>buildDependents<span class="w"> </span>-<span class="w"> </span>Assembles<span class="w"> </span>and<span class="w"> </span>tests<span class="w"> </span>this<span class="w"> </span>project<span class="w"> </span>and<span class="w"> </span>all<span class="w"> </span>projects<span class="w"> </span>that<span class="w"> </span>depend<span class="w"> </span>on<span class="w"> </span>it.
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>buildNeeded<span class="w"> </span>-<span class="w"> </span>Assembles<span class="w"> </span>and<span class="w"> </span>tests<span class="w"> </span>this<span class="w"> </span>project<span class="w"> </span>and<span class="w"> </span>all<span class="w"> </span>projects<span class="w"> </span>it<span class="w"> </span>depends<span class="w"> </span>on.
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="hll">classes<span class="w"> </span>-<span class="w"> </span>Assembles<span class="w"> </span>main<span class="w"> </span>classes.
+</span><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>clean<span class="w"> </span>-<span class="w"> </span>Deletes<span class="w"> </span>the<span class="w"> </span>build<span class="w"> </span>directory.
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>jar<span class="w"> </span>-<span class="w"> </span>Assembles<span class="w"> </span>a<span class="w"> </span>jar<span class="w"> </span>archive<span class="w"> </span>containing<span class="w"> </span>the<span class="w"> </span>classes<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span><span class="s1">&#39;main&#39;</span><span class="w"> </span>feature.
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>testClasses<span class="w"> </span>-<span class="w"> </span>Assembles<span class="w"> </span><span class="nb">test</span><span class="w"> </span>classes.
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>Build<span class="w"> </span>Setup<span class="w"> </span>tasks
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>-----------------
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>...<span class="o">(</span>생략<span class="o">)</span>...
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>Documentation<span class="w"> </span>tasks
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>-------------------
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>javadoc<span class="w"> </span>-<span class="w"> </span>Generates<span class="w"> </span>Javadoc<span class="w"> </span>API<span class="w"> </span>documentation<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span><span class="s1">&#39;main&#39;</span><span class="w"> </span>feature.
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="hll">Help<span class="w"> </span>tasks
+</span><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>----------
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>buildEnvironment<span class="w"> </span>-<span class="w"> </span>Displays<span class="w"> </span>all<span class="w"> </span>buildscript<span class="w"> </span>dependencies<span class="w"> </span>declared<span class="w"> </span><span class="k">in</span><span class="w"> </span>root<span class="w"> </span>project<span class="w"> </span><span class="s1">&#39;gradle-example&#39;</span>.
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>dependencies<span class="w"> </span>-<span class="w"> </span>Displays<span class="w"> </span>all<span class="w"> </span>dependencies<span class="w"> </span>declared<span class="w"> </span><span class="k">in</span><span class="w"> </span>root<span class="w"> </span>project<span class="w"> </span><span class="s1">&#39;gradle-example&#39;</span>.
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>dependencyInsight<span class="w"> </span>-<span class="w"> </span>Displays<span class="w"> </span>the<span class="w"> </span>insight<span class="w"> </span>into<span class="w"> </span>a<span class="w"> </span>specific<span class="w"> </span>dependency<span class="w"> </span><span class="k">in</span><span class="w"> </span>root<span class="w"> </span>project<span class="w"> </span><span class="s1">&#39;gradle-example&#39;</span>.
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>...<span class="o">(</span>생략<span class="o">)</span>...
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>Verification<span class="w"> </span>tasks
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>------------------
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>check<span class="w"> </span>-<span class="w"> </span>Runs<span class="w"> </span>all<span class="w"> </span>checks.
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="nb">test</span><span class="w"> </span>-<span class="w"> </span>Runs<span class="w"> </span>the<span class="w"> </span><span class="nb">test</span><span class="w"> </span>suite.
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>To<span class="w"> </span>see<span class="w"> </span>all<span class="w"> </span>tasks<span class="w"> </span>and<span class="w"> </span>more<span class="w"> </span>detail,<span class="w"> </span>run<span class="w"> </span>gradlew<span class="w"> </span>tasks<span class="w"> </span>--all
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>To<span class="w"> </span>see<span class="w"> </span>more<span class="w"> </span>detail<span class="w"> </span>about<span class="w"> </span>a<span class="w"> </span>task,<span class="w"> </span>run<span class="w"> </span>gradlew<span class="w"> </span><span class="nb">help</span><span class="w"> </span>--task<span class="w"> </span>&lt;task&gt;
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>BUILD<span class="w"> </span>SUCCESSFUL<span class="w"> </span><span class="k">in</span><span class="w"> </span>608ms
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a><span class="m">1</span><span class="w"> </span>actionable<span class="w"> </span>task:<span class="w"> </span><span class="m">1</span><span class="w"> </span>executed
+</code></pre></div>
+<h3 id="gradle-build">gradle build</h3>
+<p>gradle의 <code>build</code> task를 실행하게 되면 아래와 같이 등록된 task가 실행하게 되고, 성공적으로 <code>build</code>가 수행되었음을 확인할 수 있습니다.</p>
+<div class="highlight"><span class="filename">build task 실행</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>fromitive@dev:~/practice/gradle-example$<span class="w"> </span>./gradlew<span class="w"> </span>build
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="o">(</span>..생략..<span class="o">)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="hll">BUILD<span class="w"> </span>SUCCESSFUL<span class="w"> </span><span class="k">in</span><span class="w"> </span>702ms
+</span><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="m">11</span><span class="w"> </span>actionable<span class="w"> </span>tasks:<span class="w"> </span><span class="m">11</span><span class="w"> </span>up-to-date
+</code></pre></div>
+<p>반면 <code>tasks</code>에 등록되지 않은 명령어를 수행하게 되면 아래와 같이 FALIED가 나타나게 됩니다.</p>
+<div class="highlight"><span class="filename">build task 실행</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>romitive@dev:~/practice/gradle-example$<span class="w"> </span>./gradlew<span class="w"> </span>fail
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="hll">FAILURE:<span class="w"> </span>Build<span class="w"> </span>failed<span class="w"> </span>with<span class="w"> </span>an<span class="w"> </span>exception.
+</span><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>*<span class="w"> </span>What<span class="w"> </span>went<span class="w"> </span>wrong:
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="hll">Task<span class="w"> </span><span class="s1">&#39;fail&#39;</span><span class="w"> </span>not<span class="w"> </span>found<span class="w"> </span><span class="k">in</span><span class="w"> </span>root<span class="w"> </span>project<span class="w"> </span><span class="s1">&#39;gradle-example&#39;</span><span class="w"> </span>and<span class="w"> </span>its<span class="w"> </span>subprojects.
+</span><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="o">(</span>..생략<span class="o">)</span>..
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>BUILD<span class="w"> </span>FAILED<span class="w"> </span><span class="k">in</span><span class="w"> </span>603ms
+</code></pre></div>
+<h4 id="build">build 결과</h4>
+<p>build 결과는 <code>lib</code> 디렉터리의 <code>build</code>폴더가 생성됩니다. 그 이유는, <mark class="critic"><strong><code>settings.gradle</code> 파일에 <code>lib</code> 폴더가 include 되어 있기 때문입니다.</strong></mark>.</p>
+<div class="highlight"><span class="filename">Gradle 디렉터리 구조</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>📁<span class="w"> </span>gradle-example
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="o">(</span>..생략..<span class="o">)</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>├──<span class="w"> </span>📁lib
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="hll">│<span class="w">   </span>├──<span class="w"> </span>📁<span class="w"> </span>build
+</span><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>│<span class="w">   </span>├──<span class="w"> </span>📄<span class="w"> </span>build.gradle
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>│<span class="w">   </span>└──<span class="w"> </span>📁<span class="w"> </span>src
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="o">(</span>..생략..<span class="o">)</span>
+</code></pre></div>
+<h3 id="gradle-clean">gradle clean</h3>
+<p>빌드한 프로젝트를 삭제하기 위해선 <code>./gradlew clean</code> 명령어를 입력하여 <code>clean</code> task를 수행해줍니다. <mark class="critic"><strong>소스코드가 변경되어 재 컴파일 시 변경된 부분을 확실하게 반영하기 위해 사용합니다.</strong></mark></p>
+<hr />
+<h2 id="_2">참고 자료</h2>
+<div class="admonition note">
+<p class="admonition-title">참고 자료</p>
+<ul>
+<li><a href="https://docs.gradle.org/current/userguide/part1_gradle_init.html">gradle 튜토리얼 - gradle init</a></li>
+</ul>
+</div>
+<p><br/></p>
+<div class="md-typeset">
+    <div class="blogging-tags-grid">
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#java" class="blogging-tag"><code>#java</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#gradle" class="blogging-tag"><code>#gradle</code></a>
+
+    </div>
+
+
+</div>
+
+<style>
+    .md-typeset .blogging-tags-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .md-typeset .blogging-tag {
+        color: var(--md-typeset-color);
+        background-color: var(--md-typeset-code-color);
+        white-space: nowrap;
+        display: block;
+    }
+
+    .md-typeset .blogging-tag code {
+        border-radius: 5px;
+    }
+</style>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+    data-repo="fromitive/fromitive-blog"
+    data-repo-id="R_kgDOJ4LF1g"
+    data-category="Q&A"
+    data-category-id="DIC_kwDOJ4LF1s4CXvhy"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="dark_dimmed"
+    data-lang="ko"
+    crossorigin="anonymous"
+    async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+
+
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">이무송</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/fromitive" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1130 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Java Docs 보기, VSCode에서 자바 Class 뜯어보기">
+      
+      
+        <meta name="author" content="fromitive">
+      
+      
+        <link rel="canonical" href="https://fromitive.github.io/fromitive-blog/cs/2023-10-17-java/">
+      
+      
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>더 좋은 것의 기준 - Java의 1대 제자가 되어보자 - fromitive's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-Y55B987JCP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-Y55B987JCP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-Y55B987JCP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="더 좋은 것의 기준 - Java의 1대 제자가 되어보자 - fromitive's blog" >
+      
+        <meta  property="og:description"  content="Java Docs 보기, VSCode에서 자바 Class 뜯어보기" >
+      
+        <meta  property="og:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/cs/2023-10-17-java.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://fromitive.github.io/fromitive-blog/cs/2023-10-17-java/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="더 좋은 것의 기준 - Java의 1대 제자가 되어보자 - fromitive's blog" >
+      
+        <meta  name="twitter:description"  content="Java Docs 보기, VSCode에서 자바 Class 뜯어보기" >
+      
+        <meta  name="twitter:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/cs/2023-10-17-java.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="fromitive&#39;s blog" class="md-header__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            fromitive's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              더 좋은 것의 기준 - Java의 1대 제자가 되어보자
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54s-2.94 8.27-7 9.54c.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../archive/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Archive
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../coding-interview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Coding Interview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CS
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tips/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tips
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="fromitive&#39;s blog" class="md-nav__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    fromitive's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Coding Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧐 이런 기준은 어디서 나온 것일까?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 모든 것의 기준 Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔙 다시 처음 문제로 돌아가서..
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔙 다시 처음 문제로 돌아가서..">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#google" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔎 Google에 공식 문서 찾아보기
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      👀 Java Documentation 살펴보기
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="👀 Java Documentation 살펴보기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#string-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      String Class 알아보기
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stringbuffer-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      StringBuffer Class 알아보기
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Java Document를 통해 알 수 있는 사실
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚩 Documentation은 올바르게 사용할 수 있게 도와줍니다.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      🩻 JDK 뜯어보기
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🩻 JDK 뜯어보기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integer-valueof" class="md-nav__link">
+    <span class="md-ellipsis">
+      ❓ Integer valueOf가 왜 특정 조건에서 참조 변수가 아닐까?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#java-documentation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔎 Java Documentation 살펴보기
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vscode-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      🩺 VSCode 에서 Integer 클래스 구조 보기
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>더 좋은 것의 기준 - Java의 1대 제자가 되어보자</h1>
+
+<div class="admonition abstract">
+<p class="admonition-title">글 요약</p>
+<ol>
+<li>
+<p>Java Document를 구글링할 때 <code>java [버전] [찾고자 하는 정보] documentation</code>으로 검색하기</p>
+</li>
+<li>
+<p>VSCode에서 JDK 내부구조를 확인하기 위해선 아래와 같이 진행</p>
+<ul>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack">Extention Pack for Java</a> 설치</li>
+<li><span class="keys"><kbd class="key-control">Ctrl</kbd></span> + <span class="keys"><kbd class="key-t">T</kbd></span>로 알고 싶은 class 입력 후 <span class="keys"><kbd class="key-enter">Enter</kbd></span></li>
+<li>해당 jdk class 파일 내에 있는 소스코드 확인</li>
+</ul>
+</li>
+</ol>
+</div>
+<h2 id="_1">🧐 이런 기준은 어디서 나온 것일까?</h2>
+<div class="admonition quote">
+<p class="admonition-title">문자열을 저장하는 Java API를 선택할 때</p>
+<p><code>String</code> 객체보다 <code>StringBuilder</code>가 좋아요 <code>StringBuilder</code>보다 <code>StringBuffer</code>가 좋아요</p>
+</div>
+<p>자바를 처음 공부하면 어떤 객체가 문자를 저장하는지 그 객체를 어떻게 활용할 것인지 먼저 공부하게 되는데요. 어느 순간 다른 사람들의 소스코드를 보면 문자열을 저장할 수 있는 객체를 다양하게 사용하는 것을 알게 되었습니다. </p>
+<p>물론 일반 자바를 공부하는 강좌나, 책에서도 볼 수 있는데요. 그렇다면 강사님과 저자들은 <mark class="critic"><strong>어떻게 이러한 기준을 알게 되었을까요</strong></mark>?</p>
+<h2 id="documentation">📚 모든 것의 기준 Documentation</h2>
+<p>모든 제품에는 설명서가 존재합니다. 만든이의 의도가 무엇인지, 어떻게 사용하는지 상세히 나타나 있습니다. 프로그래밍 언어도 예외는 아니죠.</p>
+<p>사용자들이 잘 사용할 수 있도록 그리고, 더 많은 사용자들이 올바르게 사용할 수 있도록 휼륭한 개발자들은 <mark class="critic"><strong>만든 프로그램에 대해 문서화</strong></mark>를 합니다. 문서화를 하지 않는 프로그램은 사용하기도 어렵고, 개발자의 의도대로 사용하지 않을 가능성이 높아집니다.</p>
+<p>그렇다면, 모든 사람들이 Documentation을 읽으면 되지 않을까? 생각하실 수도 있겠네요. 맞습니다. 프로그램을 공부하기 위해선 제일 먼저 해야 할 일은 Documentation을 읽어야 하죠. 그렇지만, Documentation은 양이 무척 방대하여, 내가 원하는 프로그램을 만들기 위한 자료를 찾지 못할 확률이 존재합니다. 따라서, <mark class="critic"><strong>Documentation은 좀 더 깊고 올바르게 이해하기 위해 사용해야 한다고 생각합니다.</strong></mark></p>
+<h2 id="_2">🔙 다시 처음 문제로 돌아가서..</h2>
+<h3 id="google">🔎 Google에 공식 문서 찾아보기</h3>
+<p><code>String</code>, <code>StringBuilder</code>, <code>StringBuffer</code>의 차이점을 알기 위해서는 Java Documentation을 찾아봐야 합니다. 자신이 사용하고 있는 Java 버전을 확인한 뒤에<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>, 구글 검색창에 <strong>java [버전] String documentation</strong>으로 검색하면 <mark class="critic"><strong>https://docs.oracle.com</strong></mark> 홈페이지가 나타나게 됩니다. 이 문서를 클릭해 봅시다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-10-17/search-java.png" width="1000" /></p>
+<figcaption>이미지 1 - Java 17 Document 찾기</figcaption>
+</figure>
+<h3 id="java-documentation">👀 Java Documentation 살펴보기</h3>
+<h4 id="string-class">String Class 알아보기</h4>
+<p><code>String</code>에 대한 Documentation을 살펴보면 <code>String</code> 클래스에 대해 어떤 특성이 있는지 확인할 수 있습니다. 아래의 이미지를 통해 <code>큰 따옴표로("")로 작성한 상수는 전부 String class</code> 이며, <code>모든 String 객체는 상수(Constant)의 성질을 가지고 있다</code>, <code>정의한 객체 자체가 변할 수 있는(mutable) 것은 String Buffer이다</code>, <code>String 객체의 성질은 변하지 않음(immutable) 이다</code>라는 힌트와 정보를 얻을 수 있게 됩니다. </p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-10-17/document1.png" width="1000" /></p>
+<figcaption>이미지 2 - String Documentation 개요</figcaption>
+</figure>
+<p>String Buffer에 대한 정보는 어떻게 알 수 있을까요? <mark class="critic"><strong>문서 내에 See Also를 살펴보면</strong></mark> <code>String</code>과 연관된 힌트를 얻을 수 있고, 그 안에 StringBuffer에 대한 문서의 링크를 찾아 볼 수 있습니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-10-17/document2.png" width="1000" /></p>
+<figcaption>이미지 3 - String 클래스의 See Also</figcaption>
+</figure>
+<h4 id="stringbuffer-class">StringBuffer Class 알아보기</h4>
+<p>아래는 StringBuffer에 대한 설명입니다. <code>mutable(변화가 가능) 하며</code>, <code>thread에 안전하다</code>고 나타나 있습니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-10-17/document3.png" width="1000" /></p>
+<figcaption>이미지 4 - StringBuffer Documentation 개요</figcaption>
+</figure>
+<p>StringBuffer의 문서를 조금 더 살펴보면, <code>StringBuilder</code>는 싱글 스레드에서 <code>StringBuffer</code>보다 빠르며 같은 기능을 가진다고 나타나에 있습니다. 이로서 어느정도 <code>String</code>, <code>StringBuffer</code>, <code>StringBuilder</code>에 대해 차이점을 알 수 있었습니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-10-17/document4.png" width="1000" /></p>
+<figcaption>이미지 5 - StringBuffer 문서 안 StringBuilder에 대한 힌트</figcaption>
+</figure>
+<h3 id="java-document">📋 Java Document를 통해 알 수 있는 사실</h3>
+<p>Documentation을 보고 알 수 있는 사실을 통해 문자열을 다루는 클래스를 정리하자면 아래와 같습니다.</p>
+<table>
+<thead>
+<tr>
+<th>특징 / 클래스명</th>
+<th>String</th>
+<th>StringBuffer</th>
+<th>StringBuilder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>변경 가능 여부</td>
+<td>immutable</td>
+<td>mutable</td>
+<td>mutable</td>
+</tr>
+<tr>
+<td>thread 적합 성</td>
+<td>?</td>
+<td>thread에 안전하다</td>
+<td>single-thread에 안전하다</td>
+</tr>
+</tbody>
+</table>
+<p>더 접근할 수록 <code>immutable과 mutable의 차이는 무엇인지</code>, <code>immutable이 thread에 적합한지</code><sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>, <code>thread의 안전성은 어떤 기준인지</code>, <code>StringBuilder는 single-thread에 왜 적합</code>한지 궁금증이 생기게 됩니다.</p>
+<h2 id="documentation_1">🚩 Documentation은 올바르게 사용할 수 있게 도와줍니다.</h2>
+<p>Documentaion은 String 클래스 예제 처럼 <mark class="critic"><strong>올바른 사용법을 알게 해주고, 자기가 몰랐던 추가적으로 고려해야 할 사항들(immutable, mutable 등)에 대한 추가 힌트</strong></mark>를 얻을 수 있습니다. 그러나, <mark class="critic"><strong>문서의 양이 방대하고, 처음 프로그래밍 언어를 접할 때는 접근하기에는 기초 지식을 요구</strong></mark>하여 읽을 때 시간이 오래 걸리는 단점이 있다고 생각합니다.</p>
+<h2 id="jdk">🩻 JDK 뜯어보기</h2>
+<p>Visual Studio Code는 우리가 타이핑을 할 때, 클래스의 정보들에 대해 아래와 같이 힌트를 보여줍니다. 이러한 힌트는 어떻게 가져오는지 살펴보겠습니다.</p>
+<h3 id="integer-valueof">❓ Integer valueOf가 왜 특정 조건에서 참조 변수가 아닐까?</h3>
+<p>Wrapper 클래스란 기본 자료형(Primitives)인 저장하여 감싸(Wrap)는 객체입니다. 기본 자료형 <code>int</code>,<code>char</code>,<code>float</code>,<code>boolean</code> 과 대응하여 <code>Integer</code>, <code>Character</code>, <code>Float</code>, <code>Boolean</code>으로 만들 수 있습니다.</p>
+<p>Intger 객체는 new 또는 valueOf를 통해 객체를 생성할 수 있습니다. valueOf를 통해 생성한 객체는 <a href="../2023-10-17-java2/">참조 변수</a>가 아닌 로컬 변수로 저장되어 불필요한 메모리 공간 할당을 방지할 수 있습니다.</p>
+<p>여기서 문제는, valueOf로 생성한 값의 범위가 일정 값 이상이 되면, 이는 참조 변수로 저장이 되어 같은 객체로 인식하지 않습니다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">valueOf 예제</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="n">jshell</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">number1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="n">number1</span><span class="w"> </span><span class="o">==&gt;</span><span class="w"> </span><span class="mi">5</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="n">jshell</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">number2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="n">number2</span><span class="w"> </span><span class="o">==&gt;</span><span class="w"> </span><span class="mi">5</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="n">jshell</span><span class="o">&gt;</span><span class="w"> </span><span class="n">number1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">number2</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="hll"><span class="n">$11</span><span class="w"> </span><span class="o">==&gt;</span><span class="w"> </span><span class="kc">true</span>
+</span><a id="__codelineno-0-9" name="__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="n">jshell</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">number3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="mi">1234</span><span class="p">);</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="n">number3</span><span class="w"> </span><span class="o">==&gt;</span><span class="w"> </span><span class="mi">1234</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="n">jshell</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">number4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="mi">1234</span><span class="p">);</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="n">number4</span><span class="w"> </span><span class="o">==&gt;</span><span class="w"> </span><span class="mi">1234</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="n">jshell</span><span class="o">&gt;</span><span class="w"> </span><span class="n">number3</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">number4</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="hll"><span class="n">$14</span><span class="w"> </span><span class="o">==&gt;</span><span class="w"> </span><span class="kc">false</span>
+</span></code></pre></div></td></tr></table></div>
+<p>알 수 있는 한가지 사실은 Integer 객체끼리 비교할 때는 <code>==</code> 과 같은 연산자를 사용 할 수는 없을 것 같습니다. 왜 이런 일이 발생하게 될까요?</p>
+<h3 id="java-documentation_1">🔎 Java Documentation 살펴보기</h3>
+<p>Java Documentation의 <code>Intger</code> 클래스의 valueOf 함수를 살펴보면, <mark class="critic"><strong>-128 ~ +127 범위로 객체를 생성하게 되면 해당 범위 안에 이미 만들어진 cache가 할당 받게 되는 규칙</strong></mark>이 있다고 합니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-10-17/document5.png" width="1000" /></p>
+<figcaption>이미지 6 - Java Documentation Intger.valueOf</figcaption>
+</figure>
+<p>이 부분에 대해서 좀더 명확하게 알기 위해 VSCode에 있는 기능을 사용하여 JDK 안에 있는 Integer.valueOf의 정의 부분을 살펴보겠습니다.</p>
+<h3 id="vscode-integer">🩺 VSCode 에서 Integer 클래스 구조 보기</h3>
+<p>JDK를 뜯어보기 위해 Extention에서 <a href="https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack">Extention Pack for Java</a>를 설치한 후 <span class="keys"><kbd class="key-control">Ctrl</kbd></span> + <span class="keys"><kbd class="key-t">T</kbd></span>를 누르면 jdk의 모든 클래스와 메소드를 살펴볼 수 있는 검색창<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>이 나타나게 됩니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-10-17/document6.png" width="1000" /></p>
+<figcaption>이미지 7 - VSCode의 Symbol 검색창</figcaption>
+</figure>
+<p>Intger 클래스 안에서 valueOf를 보면 삼항 연산자를 통해 범위 내의 값이 아니면 <code>new</code>를 통해 객체를 할당하는 모습을 볼 수 있습니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-10-17/document7.png" width="1000" /></p>
+<figcaption>이미지 8 - valueOf의 내부구조</figcaption>
+</figure>
+<p>비록, IntegerCache에 대한 내부 구조까지 들어가진 않았지만, valueOf가 128 이상의 값으로 할당되면 <code>new Intger(i)</code>를 통해 할당됨을 알 수 있었습니다.</p>
+<div class="admonition info">
+<p class="admonition-title">참고 - IntegerCache 에서 128까지 값을 할당하는 구조 확인</p>
+<p>IntegerCache 내부 구조를 살펴보면, 12줄에 나와 있는 것처럼 <code>new Integer</code>로 해당 값들을 미리 세팅하는 것을 확인할 수 있습니다.</p>
+<p>이로서 -128 ~ +127 범위 내에 있는 Integer 변수도, Heap에 미리 할당되어 있는 참조 변수임을 확인했습니다.
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Integer$IntegerCache.class</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kd">class</span> <span class="nc">Integer$IntegerCache</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">    </span><span class="c1">// (...중략...)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">        </span><span class="n">high</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="p">;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">        </span><span class="n">CDS</span><span class="p">.</span><span class="na">initializeFromArchive</span><span class="p">(</span><span class="n">Integer$IntegerCache</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">high</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="o">-</span><span class="mi">128</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">archivedCache</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">archivedCache</span><span class="p">.</span><span class="na">length</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">            </span><span class="n">Integer</span><span class="o">[]</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Integer</span><span class="o">[</span><span class="n">size</span><span class="o">]</span><span class="p">;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">128</span><span class="p">;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="w">            </span><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="hll"><span class="w">                </span><span class="n">c</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Integer</span><span class="p">(</span><span class="n">j</span><span class="o">++</span><span class="p">);</span>
+</span><a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">            </span><span class="n">archivedCache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">    </span><span class="c1">// (...중략...)</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+</div>
+<p><br/></p>
+<div class="md-typeset">
+    <div class="blogging-tags-grid">
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#java" class="blogging-tag"><code>#java</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#computer science" class="blogging-tag"><code>#computer science</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#soft-skill" class="blogging-tag"><code>#soft-skill</code></a>
+
+    </div>
+
+
+</div>
+
+<style>
+    .md-typeset .blogging-tags-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .md-typeset .blogging-tag {
+        color: var(--md-typeset-color);
+        background-color: var(--md-typeset-code-color);
+        white-space: nowrap;
+        display: block;
+    }
+
+    .md-typeset .blogging-tag code {
+        border-radius: 5px;
+    }
+</style>
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>명령 프롬프트 창을 열어서 java --version을 쓰면 확인할 수 있습니다.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>이 부분은 immutable Object에 대한 <a href="https://docs.oracle.com/javase/tutorial/essential/concurrency/immutable.html">Java documentation</a>을 찾아본 결과 변경이 불가능하기 때문에 데이터 변경에 안전하다는 답변을 받을 수 있었습니다.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>해당 검색창은 <span class="keys"><kbd class="key-control">Ctrl</kbd></span> + <span class="keys"><kbd class="key-shift">Shift</kbd></span> + <span class="keys"><kbd class="key-p">P</kbd></span> 를 입력하여 'Go to Symbol in Workspace'로 들어가서 확인할 수도 있습니다.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+    data-repo="fromitive/fromitive-blog"
+    data-repo-id="R_kgDOJ4LF1g"
+    data-category="Q&A"
+    data-category-id="DIC_kwDOJ4LF1s4CXvhy"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="dark_dimmed"
+    data-lang="ko"
+    crossorigin="anonymous"
+    async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+
+
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">이무송</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/fromitive" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

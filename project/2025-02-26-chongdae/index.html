@@ -1,0 +1,1153 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="EntityManager 생명주기를 제대로 보자">
+      
+      
+        <meta name="author" content="fromitive">
+      
+      
+        <link rel="canonical" href="https://fromitive.github.io/fromitive-blog/project/2025-02-26-chongdae/">
+      
+      
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>Spring Data JPA를 사용할 때 주의해야 할 점 - fromitive's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-Y55B987JCP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-Y55B987JCP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-Y55B987JCP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Spring Data JPA를 사용할 때 주의해야 할 점 - fromitive's blog" >
+      
+        <meta  property="og:description"  content="EntityManager 생명주기를 제대로 보자" >
+      
+        <meta  property="og:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/project/2025-02-26-chongdae.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://fromitive.github.io/fromitive-blog/project/2025-02-26-chongdae/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Spring Data JPA를 사용할 때 주의해야 할 점 - fromitive's blog" >
+      
+        <meta  name="twitter:description"  content="EntityManager 생명주기를 제대로 보자" >
+      
+        <meta  name="twitter:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/project/2025-02-26-chongdae.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="fromitive&#39;s blog" class="md-header__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            fromitive's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spring Data JPA를 사용할 때 주의해야 할 점
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54s-2.94 8.27-7 9.54c.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../archive/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Archive
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../coding-interview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Coding Interview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../cs/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CS
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tips/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tips
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="fromitive&#39;s blog" class="md-nav__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    fromitive's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Coding Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      요약
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      통합 테스트는 성공하고 서비스 테스트는 실패하는 이유
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-in-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      open-in-view
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="open-in-view">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 트렌젝션 로그 확인
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 트렌젝션 로그 확인">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      API 테스트 결과
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      서비스 테스트 결과
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-openentitymanagerinviewinterceptor" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. OpenEntityManagerInViewInterceptor 분석하기
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. OpenEntityManagerInViewInterceptor 분석하기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#openentitymanagerinviewinterceptor" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpenEntitymanagerInviewInterceptor는 언제 등록될까?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 결론
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Spring Data JPA를 사용할 때 주의해야 할 점</h1>
+
+<h2 id="_1">요약</h2>
+<p>이 글은 아래와 같은 내용을 다룹니다.</p>
+<ul>
+<li>open-in-view 옵션</li>
+<li>transaction과 EntityManager의 생명주기를 로그로 확인하는 법</li>
+<li>open-in-view를 활성화 했을 때 EntityManager의 생명주기와 비활성화 했을때의 생명주기</li>
+<li>Spring Interceptor의 동작 과정</li>
+</ul>
+<h2 id="_2">통합 테스트는 성공하고 서비스 테스트는 실패하는 이유</h2>
+<p>Spring Boot 프로젝트에 JPA를 활용하여 닉네임 변경 로직을 작성했습니다. </p>
+<p>JPA는 Update에 관한 메서드를 직접 제공하지 않으나 <code>@Transaction</code>을 빠져나갈 때 관리하고 있는 엔티티의 속성값이 변경되면 이를 감지하여(Dirty-Check) 데이터베이스에 업데이트 하는 것으로 알고 있습니다. </p>
+<p><code>ArugmentResolver</code>에서 가져온 <code>MemberEntity</code>를 재활용하기 위해 서비스 메서드의 매개변수로 받고 필드값을 변경했습니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@Transactional</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">public</span><span class="w"> </span><span class="n">MemberChangeResponse</span><span class="w"> </span><span class="nf">changeNickname</span><span class="p">(</span><span class="n">MemberEntity</span><span class="w"> </span><span class="n">member</span><span class="p">,</span><span class="w"> </span><span class="n">MemberChangeRequest</span><span class="w"> </span><span class="n">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">member</span><span class="p">.</span><span class="na">changeNickname</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">nickname</span><span class="p">());</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MemberChangeResponse</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">nickname</span><span class="p">());</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="c1">// 변경감지가 일어나서 닉네임이 업데이트 되겠지?</span>
+</code></pre></div>
+<p><code>@Transactional</code> 어노테이션을 빠져나가니 변경감지가 일어나고 업데이트가 되었습니다. 기능을 구현하고 마무리 하려고 했으나 <strong>서비스 테스트가 실패함을 알았습니다.</strong> <del>(에?)</del> </p>
+<p>사실 이 상황이 매우 이상했습니다. <code>EntityManager</code>는 트렌젝션이 끝나면 닫히는 걸로 알고있는데 <code>ArgumentResolver</code>가 반환한 <code>MemberEntity</code>는  <strong>준영속(detach) 상태</strong>이고 서비스 로직에서 변경해도 변경감지(Dirty-Check)가 되지 않기 때문입니다. 지금부터 그 이유를 알아보려고 합니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-02-26/osiv1.png" width="300" />
+  </p>
+<figcaption>왜 API테스트는 정상 작동하고 서비스 테스트는 그렇지 않을까?</figcaption>
+</figure>
+<h2 id="open-in-view">open-in-view</h2>
+<p>Spring Data JPA를 사용하면 <strong>open-in-view 옵션이 기본으로 켜져있습니다.</strong> 이 기능은 한 유저가 API를 요청할 때 <strong>HTTP Response를 전달하기 전까지 EntityManager를 유지</strong>합니다. SpringBoot를 실행하면 아래와 같이 경고 문구로 켜져 있음을 안내하고 있습니다.  </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+</code></pre></div>
+<p>뷰를 처리하기 전까지 <code>EntityManager</code>를 유지하므로 <code>@Transactional</code>이 붙은 서비스 로직을 빠저나가면 변경 감지로 인해 업데이트 쿼리가 작동하게 됩니다. 그러나 서비스 테스트에선 open-in-view 옵션과 상관 없이 트렌젝션이 종료되면 사라지게 됩니다 왜 그런걸까요?</p>
+<h3 id="1">1. 트렌젝션 로그 확인</h3>
+<p>trasnaction의 생명주기와, EntityManager객체의 생명주기를 확인하기 위해 <code>application.yml</code> 파일에 아래의 옵션을 추가했습니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>logging:
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  level:
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    org.springframework.orm.jpa: DEBUG
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    org.springframework.transaction.interceptor: TRACE
+</code></pre></div>
+<p><code>org.springframework.orm.jpa</code> : Transaction의 생명주기와 EntityManager의 생명주기를 한눈에 볼 수 있게 합니다.
+<code>org.springframework.transaction.interceptor</code> : <code>@Transactional</code>이 붙은 메서드의 시작과 끝을 명확하게 알 수 있도록 로깅을 보여줍니다. </p>
+<h4 id="api">API 테스트 결과</h4>
+<p>API 테스트 로깅 결과를 보면 <mark><code>argumentResolver</code>에서 <code>OpenEntityManagerInViewInterceptor</code>에서 생성한 <code>EntityManager</code>를 사용하고 있었습니다.</mark></p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span>
+<span class="normal"><a href="#__codelineno-3-14">14</a></span>
+<span class="normal"><a href="#__codelineno-3-15">15</a></span>
+<span class="normal"><a href="#__codelineno-3-16">16</a></span>
+<span class="normal"><a href="#__codelineno-3-17">17</a></span>
+<span class="normal"><a href="#__codelineno-3-18">18</a></span>
+<span class="normal"><a href="#__codelineno-3-19">19</a></span>
+<span class="normal"><a href="#__codelineno-3-20">20</a></span>
+<span class="normal"><a href="#__codelineno-3-21">21</a></span>
+<span class="normal"><a href="#__codelineno-3-22">22</a></span>
+<span class="normal"><a href="#__codelineno-3-23">23</a></span>
+<span class="normal"><a href="#__codelineno-3-24">24</a></span>
+<span class="normal"><a href="#__codelineno-3-25">25</a></span>
+<span class="normal"><a href="#__codelineno-3-26">26</a></span>
+<span class="normal"><a href="#__codelineno-3-27">27</a></span>
+<span class="normal"><a href="#__codelineno-3-28">28</a></span>
+<span class="normal"><a href="#__codelineno-3-29">29</a></span>
+<span class="normal"><a href="#__codelineno-3-30">30</a></span>
+<span class="normal"><a href="#__codelineno-3-31">31</a></span>
+<span class="normal"><a href="#__codelineno-3-32">32</a></span>
+<span class="normal"><a href="#__codelineno-3-33">33</a></span>
+<span class="normal"><a href="#__codelineno-3-34">34</a></span>
+<span class="normal"><a href="#__codelineno-3-35">35</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="nd">@Test</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">닉네임을_변경할_수_있다</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">    </span><span class="n">RestAssured</span><span class="p">.</span><span class="na">given</span><span class="p">().</span><span class="na">log</span><span class="p">().</span><span class="na">all</span><span class="p">()</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">            </span><span class="p">.</span><span class="na">body</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">            </span><span class="p">.</span><span class="na">contentType</span><span class="p">(</span><span class="n">ContentType</span><span class="p">.</span><span class="na">JSON</span><span class="p">)</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">        </span><span class="cm">/*</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="cm">        argumentResolver 처리</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="hll"><span class="cm">            o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor</span>
+</span><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="hll"><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1601516819&lt;open&gt;)] for JPA transaction</span>
+</span><a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT,readOnly</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@45a2aba9]</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="cm">            o.s.t.i.TransactionInterceptor           : Getting transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="cm">        argumentResolver 처리 후</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="cm">            o.s.t.i.TransactionInterceptor           : Completing transaction for [org.springframework.data.jpa.repository.support.SimpleJpaRepository.findById]</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="hll"><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1601516819&lt;open&gt;)]</span>
+</span><a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="cm">        changeNickname 서비스 호출</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="hll"><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1601516819&lt;open&gt;)] for JPA transaction</span>
+</span><a id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.example.springboot_jpa_osiv.service.MemberService.changeNickname]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@2638b14e]</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22"></a><span class="cm">            o.s.t.i.TransactionInterceptor           : Getting transaction for [com.example.springboot_jpa_osiv.service.MemberService.changeNickname]</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23"></a><span class="cm">        changeNickname 서비스 호출 후</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24"></a><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25"></a><span class="hll"><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1601516819&lt;open&gt;)]</span>
+</span><a id="__codelineno-3-26" name="__codelineno-3-26"></a><span class="cm">        */</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27"></a><span class="w">            </span><span class="p">.</span><span class="na">when</span><span class="p">().</span><span class="na">patch</span><span class="p">(</span><span class="s">&quot;/member&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28"></a><span class="w">            </span><span class="p">.</span><span class="na">then</span><span class="p">().</span><span class="na">log</span><span class="p">().</span><span class="na">all</span><span class="p">()</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29"></a><span class="w">        </span><span class="cm">/*</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30"></a><span class="cm">            o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31"></a><span class="hll"><span class="cm">            o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor</span>
+</span><a id="__codelineno-3-32" name="__codelineno-3-32"></a><span class="cm">        */</span>
+<a id="__codelineno-3-33" name="__codelineno-3-33"></a><span class="w">            </span><span class="p">.</span><span class="na">statusCode</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34"></a>
+<a id="__codelineno-3-35" name="__codelineno-3-35"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="_3">서비스 테스트 결과</h4>
+<p><code>createMember</code>로 회원을 생성한 상태에서 <code>changeNickname</code>메서드를 실행시켜 해당 회원의 닉네임을 변경합니다. 메서드 호출에 따른 로깅정보는 주석에 담았습니다.</p>
+<p>흥미로운 점은 <mark>API 테스트는 <code>OpenEntityManagerInViewInterceptor</code>에서 얻은 EntityManager를 활용했으나 서비스 테스트는 서비스 메서드를 직접 호출하기 때문에 Interceptor를 거치지 않고 트렌젝션 시작 시 새로운 EntityManager를 생성(Opened new EntityManager)한다는 점이었습니다.</mark></p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span>
+<span class="normal"><a href="#__codelineno-4-25">25</a></span>
+<span class="normal"><a href="#__codelineno-4-26">26</a></span>
+<span class="normal"><a href="#__codelineno-4-27">27</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nd">@Test</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">회원_이름을_변경할_수_있다</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">    </span><span class="c1">// given</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">    </span><span class="n">Member</span><span class="w"> </span><span class="n">member</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memberFixture</span><span class="p">.</span><span class="na">createMember</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">);</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">    </span><span class="n">MemberChangeRequest</span><span class="w"> </span><span class="n">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MemberChangeRequest</span><span class="p">(</span><span class="s">&quot;changeNick&quot;</span><span class="p">);</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="w">    </span><span class="c1">// when</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="w">    </span><span class="cm">/*</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="cm">    o.s.orm.jpa.JpaTransactionManager : Creating new transaction with name [com.example.springboot_jpa_osiv.service.MemberService.changeNickname]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="hll"><span class="cm">    o.s.orm.jpa.JpaTransactionManager : Opened new EntityManager [SessionImpl(1953436933&lt;open&gt;)] for JPA transaction</span>
+</span><a id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="cm">    o.s.orm.jpa.JpaTransactionManager : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@1507bc3]</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="cm">    o.s.t.i.TransactionInterceptor    : Getting transaction for [com.example.springboot_jpa_osiv.service.MemberService.changeNickname]</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="cm">        */</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="w">    </span><span class="n">memberService</span><span class="p">.</span><span class="na">changeNickname</span><span class="p">(</span><span class="n">member</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p">);</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="w">    </span><span class="cm">/*</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="cm">    o.s.t.i.TransactionInterceptor    : Completing transaction for [com.example.springboot_jpa_osiv.service.MemberService.changeNickname]</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="cm">    o.s.orm.jpa.JpaTransactionManager : Initiating transaction commit</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19"></a><span class="cm">    o.s.orm.jpa.JpaTransactionManager : Committing JPA transaction on EntityManager [SessionImpl(1953436933&lt;open&gt;)]</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="hll"><span class="cm">    o.s.orm.jpa.JpaTransactionManager : Closing JPA EntityManager [SessionImpl(1953436933&lt;open&gt;)] after transaction</span>
+</span><a id="__codelineno-4-21" name="__codelineno-4-21"></a><span class="cm">        */</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22"></a>
+<a id="__codelineno-4-23" name="__codelineno-4-23"></a><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">actual</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memberRepository</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">member</span><span class="p">.</span><span class="na">getId</span><span class="p">()).</span><span class="na">get</span><span class="p">().</span><span class="na">getNickname</span><span class="p">();</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24"></a>
+<a id="__codelineno-4-25" name="__codelineno-4-25"></a><span class="w">    </span><span class="c1">// then</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26"></a><span class="w">    </span><span class="n">assertThat</span><span class="p">(</span><span class="n">actual</span><span class="p">).</span><span class="na">isEqualTo</span><span class="p">(</span><span class="s">&quot;changeNick&quot;</span><span class="p">);</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="2-openentitymanagerinviewinterceptor">2. OpenEntityManagerInViewInterceptor 분석하기</h3>
+<p><code>OpenEntityManagerInViewInterceptor</code>는 등록된 Interceptor들과 똑같이 처리됩니다.</p>
+<p><code>DispatcherServlet</code>이 <code>Controller</code> 메서드를 실행하기 전 <code>preHandle</code>을 호출하고 <code>Controller</code> 메서드 실행 후 <code>postHandle</code>를 호출합니다.  마지막엔 예외와 상관 없이 <code>afterCompletion</code>을 호출하게 됩니다. </p>
+<p>OSIV를 켜면 EntityManager의 생명주기는 아래의 그림처럼 클라이언트 요청을 받은 순간 부터 Viewer에서 랜더링 하기 까지 범위가 확장이 됩니다. 반면 OSIV를 끄게 되면 트렌젝션 범위와 동일합니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-02-26/osiv2.png" width="800" />
+  </p>
+<figcaption>OSIV on/off에 따른 EntityManager의 생명주기</figcaption>
+</figure>
+<h4 id="openentitymanagerinviewinterceptor">OpenEntitymanagerInviewInterceptor는 언제 등록될까?</h4>
+<p>등록 주체는 위에서 소개한 <code>spring.jpa.open-in-view is enabled by default.</code>로그를 출력한 <code>JpaBaseConfiguration</code> 입니다.  <code>open-in-view=true</code>일 때 아래와 같이 Bean으로 등록하고 <code>WebMvcConfigurer</code>를 생성해서 등록하고 있습니다.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span>
+<span class="normal"><a href="#__codelineno-5-19">19</a></span>
+<span class="normal"><a href="#__codelineno-5-20">20</a></span>
+<span class="normal"><a href="#__codelineno-5-21">21</a></span>
+<span class="normal"><a href="#__codelineno-5-22">22</a></span>
+<span class="normal"><a href="#__codelineno-5-23">23</a></span>
+<span class="normal"><a href="#__codelineno-5-24">24</a></span>
+<span class="normal"><a href="#__codelineno-5-25">25</a></span>
+<span class="normal"><a href="#__codelineno-5-26">26</a></span>
+<span class="normal"><a href="#__codelineno-5-27">27</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="kn">package</span><span class="w"> </span><span class="nn">org.springframework.boot.autoconfigure.orm.jpa</span><span class="p">;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="kd">public</span><span class="w"> </span><span class="kd">abstract</span><span class="w"> </span><span class="kd">class</span> <span class="nc">JpaBaseConfiguration</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">JpaWebConfiguration</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">        </span><span class="c1">//...</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">        </span><span class="nd">@Bean</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">OpenEntityManagerInViewInterceptor</span><span class="w"> </span><span class="nf">openEntityManagerInViewInterceptor</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="hll"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">jpaProperties</span><span class="p">.</span><span class="na">getOpenInView</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="w">                </span><span class="n">logger</span><span class="p">.</span><span class="na">warn</span><span class="p">(</span><span class="s">&quot;spring.jpa.open-in-view is enabled by default. &quot;</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;Therefore, database queries may be performed during view &quot;</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="w">                        </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;rendering. Explicitly configure spring.jpa.open-in-view to disable this warning&quot;</span><span class="p">);</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">OpenEntityManagerInViewInterceptor</span><span class="p">();</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15"></a>
+<a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="w">        </span><span class="nd">@Bean</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">WebMvcConfigurer</span><span class="w"> </span><span class="nf">openEntityManagerInViewInterceptorConfigurer</span><span class="p">(</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18"></a><span class="w">                </span><span class="n">OpenEntityManagerInViewInterceptor</span><span class="w"> </span><span class="n">interceptor</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19"></a><span class="hll"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">WebMvcConfigurer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><a id="__codelineno-5-20" name="__codelineno-5-20"></a><span class="hll"><span class="w">                </span><span class="nd">@Override</span>
+</span><a id="__codelineno-5-21" name="__codelineno-5-21"></a><span class="hll"><span class="w">                </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">addInterceptors</span><span class="p">(</span><span class="n">InterceptorRegistry</span><span class="w"> </span><span class="n">registry</span><span class="p">){</span>
+</span><a id="__codelineno-5-22" name="__codelineno-5-22"></a><span class="hll"><span class="w">                    </span><span class="n">registry</span><span class="p">.</span><span class="na">addWebRequestInterceptor</span><span class="p">(</span><span class="n">interceptor</span><span class="p">);</span>
+</span><a id="__codelineno-5-23" name="__codelineno-5-23"></a><span class="hll"><span class="w">                </span><span class="p">}</span>
+</span><a id="__codelineno-5-24" name="__codelineno-5-24"></a><span class="hll"><span class="w">            </span><span class="p">};</span>
+</span><a id="__codelineno-5-25" name="__codelineno-5-25"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Interceptor인걸 알았으니 <code>WebMvcConfigurer</code>를 상속 받아 커스텀 Interceptor를 등록할때 사용하는 <code>InterceptorRegistry</code>에서 받아올 수 있지 않을까요? 그러나 예상과 다르게 받아올 수 없었습니다. </p>
+<p>그 이유는 <code>OpenEntityManagerInViewInterceptor</code>는 유저가 작성한 Interceptor보다 나중에 등록 되었기 때문입니다. 하지만 이 순서는 스프링에서 보장이 되지 않기 때문에 무조건 나중에 등록된다고 볼 수 없었습니다. </p>
+</div>
+<h3 id="4">4. 결론</h3>
+<p>서비스 테스트와 API 테스트가 왜 다른 결과가 나오는지 고민하다가 Spring Data JPA의 기본옵션인 open-in-view으로 인해 예상과 다른 실행결과가 나올 수 있음을 분석하면서 어떤 기술을 도입할 때는 문제 해결을 위해 바로 도입하기 이전에 해당 기술의 올바른 사용법 부터 익혀야 함을 알게 되었습니다.</p>
+<p>그러나 문제를 해결하기 위해 기술부터 적용하면 프로젝트가 커질 때 사이드 이팩트가 늦게 발견되어 버릴 수 있습니다. 그렇다고 JPA 같은 기술을 완벽하게 학습하는건 시간이 오래 걸리는 일입니다. 위와 같은 트레이드 오프는 어떻게 기준을 삼아야 할까요?</p>
+<p><strong>지금의 저</strong>는 <mark>주의사항 보다는 기술을 도입할 때의 장점</mark> 을 먼저 생각합니다. 기술을 도입하기 전 얼마나 편해질 지(코드가 간결해고 유지보수가 쉬어지는 방향인지, 이전에 사용한 기술의 문제점을 효과적으로 해결하는지)부터 생각하고 난 후 기술이 가지고 있는 성질을 파악했습니다. </p>
+<p>도입하고 난 뒤 문제가 발생하면 위와 같이 분석하기 시작합니다. 해당 문제는 <strong>닉네임을 변경하는 기능</strong>을 개발 하고나서야 발견되었습니다. 기술의 문제점을 발견하기 전까진 저희팀은 JPA를 편하게 사용하고 있었습니다(약 6개월 동안이요).</p>
+<p>문제를 발견했으니 <code>ArgumentResolver</code>에서 repository를 사용하지 않도록 구조를 변경하는 것과 같이 효과적으로 해결할 수 있는 방법을 찾아봐야겠습니다. 프로젝트 기간이 길어짐에 따라 수정 사항이 많아지고 사이드 이팩트도 파악해야 합니다. 이런 상황에선 코드를 과감하게 변경하기 쉽지 않습니다.</p>
+<p>그러나 지금까지 꼼꼼히 작성한 테스트 코드로 실패 내역을 바로 확인할 수 있어 걱정없이 바꿀 수 있습니다. 위와 같은 사건을 겪고 나서 테스트 코드가 기술 부채를 줄여준다는 효과를 알게되었습니다.</p>
+<details class="info">
+<summary>참고자료</summary>
+<ul>
+<li>handler interceptor 동작 과정 -  https://www.baeldung.com/spring-mvc-handlerinterceptor</li>
+<li>transaction 로깅 방법 - https://www.baeldung.com/spring-transaction-active</li>
+<li>persistance-context 생명주기- https://www.baeldung.com/jpa-hibernate-persistence-context</li>
+<li>transaction persistance-context - https://docs.oracle.com/html/E13946_01/ejb3_overview_emfactory_perscontext.html</li>
+<li>jakarta JPA persistance-context type - https://jakarta.ee/specifications/persistence/2.2/apidocs/javax/persistence/persistencecontext</li>
+<li>entity 라이프 사이클 - https://tecoble.techcourse.co.kr/post/2020-09-20-entity-lifecycle-2/</li>
+<li>open-session-in-view - https://www.baeldung.com/spring-open-session-in-view</li>
+<li>OpenEntityManagerInViewInterceptor - https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/orm/jpa/support/OpenEntityManagerInViewInterceptor.html</li>
+</ul>
+</details>
+<p><br/></p>
+<div class="md-typeset">
+    <div class="blogging-tags-grid">
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#spring" class="blogging-tag"><code>#spring</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#jpa" class="blogging-tag"><code>#jpa</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#java" class="blogging-tag"><code>#java</code></a>
+
+    </div>
+
+
+</div>
+
+<style>
+    .md-typeset .blogging-tags-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .md-typeset .blogging-tag {
+        color: var(--md-typeset-color);
+        background-color: var(--md-typeset-code-color);
+        white-space: nowrap;
+        display: block;
+    }
+
+    .md-typeset .blogging-tag code {
+        border-radius: 5px;
+    }
+</style>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+    data-repo="fromitive/fromitive-blog"
+    data-repo-id="R_kgDOJ4LF1g"
+    data-category="Q&A"
+    data-category-id="DIC_kwDOJ4LF1s4CXvhy"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="dark_dimmed"
+    data-lang="ko"
+    crossorigin="anonymous"
+    async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+
+
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">이무송</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/fromitive" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

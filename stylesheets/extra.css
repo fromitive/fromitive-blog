@@ -1,0 +1,31 @@
+
+.md-header{
+    background-image: url('ocean.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.md-tabs{
+    background-color: transparent;
+}
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+body {
+    font-family: 'Pretendard', sans-serif;
+}
+
+p {
+    line-height: 1.7; 
+}
+
+[data-md-color-scheme="slate"] {
+    --md-hue: 219; 
+}
+
+.md-typeset h4 {
+    font-size: 1.1em;
+}
+
+.md-typeset h3 {
+    font-weight: 700;
+}

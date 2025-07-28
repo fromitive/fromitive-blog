@@ -1,0 +1,1293 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="docker를 활용한 SSL 인증서 발급 재갱신 자동화">
+      
+      
+        <meta name="author" content="fromitive">
+      
+      
+        <link rel="canonical" href="https://fromitive.github.io/fromitive-blog/project/2025-02-18-chongdae/">
+      
+      
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>인증서. 명령어 한방으로 관리하자 - Docker, Let's Encrypt - fromitive's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-Y55B987JCP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-Y55B987JCP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-Y55B987JCP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="인증서. 명령어 한방으로 관리하자 - Docker, Let's Encrypt - fromitive's blog" >
+      
+        <meta  property="og:description"  content="docker를 활용한 SSL 인증서 발급 재갱신 자동화" >
+      
+        <meta  property="og:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/project/2025-02-18-chongdae.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://fromitive.github.io/fromitive-blog/project/2025-02-18-chongdae/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="인증서. 명령어 한방으로 관리하자 - Docker, Let's Encrypt - fromitive's blog" >
+      
+        <meta  name="twitter:description"  content="docker를 활용한 SSL 인증서 발급 재갱신 자동화" >
+      
+        <meta  name="twitter:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/project/2025-02-18-chongdae.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="fromitive&#39;s blog" class="md-header__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            fromitive's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              인증서. 명령어 한방으로 관리하자 - Docker, Let's Encrypt
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54s-2.94 8.27-7 9.54c.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../archive/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Archive
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../coding-interview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Coding Interview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../cs/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CS
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tips/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tips
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="fromitive&#39;s blog" class="md-nav__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    fromitive's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Coding Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      인증서 관리의 불편함 인식
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lets-encrypt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Let's Encrypt 인증서
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lets-encrypt-certbot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Let's Encrypt 클라이언트(certbot) 설치
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lets-encrypt_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Let's Encrypt 발급 방식
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Let&#39;s Encrypt 발급 방식">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. dns 방식
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-webroot" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. webroot 방식
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      인프라 구조 고민
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="인프라 구조 고민">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-certbot" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 기존 리버스 프록시에 certbot 설정 추가
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 인증서 갱신용 컨테이너를 새로 띄움(채택)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 인증서 갱신용 서버를 별도 생성
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-certbot" class="md-nav__link">
+    <span class="md-ellipsis">
+      docker를 활용한 certbot 자동화
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="docker를 활용한 certbot 자동화">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      인증서 발급
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      인증서 적용
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      인증서 갱신
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      결론
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>인증서. 명령어 한방으로 관리하자 - Docker, Let's Encrypt</h1>
+
+<div class="admonition info">
+<p class="admonition-title">이 글의 목적</p>
+<p>해당 글은 docker와 certbot를 활용하여 SSL인증서를 간편하게 발급하고 갱신하는 방법에 대해 다룹니다.</p>
+<p>실습을 진행하기 위해선 최소 공인 ip가 할당되어 있는 서버가 필요합니다.</p>
+<p>도메인 주소는 선택사항입니다.</p>
+<p>자동화 소스코드는 <a href="https://github.com/fromitive/infra-docker-nginx-certbot">github 레포지토리에 공개되어 있습니다.</a></p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">글 요약</p>
+<p>SSL 인증서 발급 간편하게 발급 받는 방법</p>
+<ol>
+<li>
+<p>docker 설치</p>
+</li>
+<li>
+<p><a href="https://github.com/fromitive/infra-docker-nginx-certbot">발급 자동화 스크립트</a> 를 clone한다.</p>
+</li>
+<li>
+<p><code>nginx-for-cert</code> 디렉터리에 있는 <code>run.sh</code> 을 <code>도메인명</code> <code>이메일 주소</code>를 넣어 실행한다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>./run.sh<span class="w"> </span><span class="o">[</span>domain.com<span class="o">]</span><span class="w"> </span>youremail@mail.com
+</code></pre></div>
+<ol>
+<li>
+<p>사전 작업 : 구입한 도메인 공인 IP와 매핑되어 있어야 함</p>
+</li>
+<li>
+<p>구입한 도메인이 없다면 nip.io 를 이용해서 발급하는 방법도 있음 </p>
+<p>실행 예시: <code>./run.sh 1.2.3.4.nip.io example@email.com</code></p>
+</li>
+</ol>
+</li>
+<li>
+<p><code>certifications</code>에서 발급한 인증서 확인</p>
+</li>
+</ol>
+</div>
+<h2 id="_1">인증서 관리의 불편함 인식</h2>
+<p>현재 운영하고 있는 '<a href="https://github.com/woowacourse-teams/2024-chongdae-market">총대마켓</a>' 프로젝트의 인프라는 아래와 같이 설계되어 있습니다. HTTPS적용을 각 서버 용도별로 각각 설정해주면 관리가 불편하여 현재는 개발, 운영서버 모두 리버스 프록시 서버에서 SSL을 통합해서 관리하고 있습니다. </p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-02-18/certbot1.png" width="800" /></p>
+</figure>
+<p>이 구조의 장점은 클라이언트는 https 요청을 그대로 사용할 수 있으며 WAS도 별도의 SSL 설정 없이 붙일 수 있어 개발자는 https 환경을 별도로 고려하지 않아도 되는 장점이 있었습니다. 그러나 리버스 프록시 서버는 이중화되어 있지 않기 때문에 단일 실패 지점이 될 수 있는 위험이 존재하게 됩니다. 현재는 프로젝트가 소규모이기 때문에 해당 구조를 유지하고 있습니다.</p>
+<p>프로젝트가 끝나고 <a href="https://letsencrypt.org">Let's Encrypt</a>에서 발급 받은 무료 SSL 인증서가 만료가 도래되었다는 메일을 받고나서 재발급을 해야 하는데, 이전에 AWS로 운영하던 프로젝트에서 가져온 인증서로 마이그레이션을 했기 때문에 자동화 설정이 적용되지 않아 수동으로 발급하는 상황이 왔습니다. </p>
+<p>자동화를 하기 위해선 80 포트를 오픈해야 했었는데 이는 SSL Stripping<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>공격 위협이 있기 때문에 적용하지 않았습니다.</p>
+<p>하지만 공격하는 방식이 까다롭기 때문에 무시하고 80 포트를 열수도 있었지만 하인리히 법칙처럼 작은 문제점들이 나중에 이어져 큰 사고가 날 수 있기 때문에 보수적으로 생각했습니다. </p>
+<p><mark>자동화의 필요성을 느끼게 된건 온프레미스 환경에서 하나의 공인 IP로 여러 서버를 운영해야 했기 때문입니다.</mark> 따라서 인증서도 그만큼 많이 필요하게 되었습니다.</p>
+<p>또한 이미지 서버 접근 시 SSL을 적용해야 했고, 개발(애플리케이션 + 이미지) 및 운영(애플리케이션 + 이미지) 환경을 포함해 총 4개의 인증서를 수동으로 관리해야 했기 때문에 상당한 불편함이 있었습니다.</p>
+<p>그리고 얼마 후 팀 프로젝트가 마무리 된 시점에서 위와 같은 단점과 위협의 영향도를 최소화 하는 방법을 찾게 되어 이를 공유하고자 합니다.</p>
+<h2 id="lets-encrypt">Let's Encrypt 인증서</h2>
+<p>Let's Encrypt는 SSL 인증서를 무료로 발급해줄 수 있는 기관입니다. 그러나 인증서의 유효기간이 짧아(90일) 계속 재갱신 해야하는 불편함이 있었습니다.</p>
+<p>Let's Encrypt로 발급하지 않고 인증서를 구매하여 관리하는 방법들이 있습니다. <a href="https://yesnic.com/?_task=ssl&amp;_action=index&amp;utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=예스닉SSL_구글_검색&amp;utm_content=&amp;utm_term=ssl인증서발급&amp;gad_source=1">yesnic</a> <a href="https://sslhosting.gabia.com/service?gad_source=1&amp;gbraid=0AAAAAD8QPLG_z-7FkEzp885EOsixdFDf1&amp;gclid=CjwKCAiAtsa9BhAKEiwAUZAszd8WPp0yFpi72Tvq3qyeoeqceVKzk-GhdGutZB9r07O3zHgGFfoR6xoC4GMQAvD_BwE">가비아</a> 심지어 <a href="https://aws.amazon.com/ko/certificate-manager/">AWS의 ACM</a> 을 활용하여 발급과 갱신까지 관리할 수 있지만 이는 소규모프로젝트를 하기엔 적지않은 비용이 들어갔습니다. </p>
+<p>따라서 소규모 프로젝트에 적합하고 HTTPS를 문제없이 적용할 수 있는 Let's Encrypt에서 발급하여 관리했습니다.</p>
+<h2 id="lets-encrypt-certbot">Let's Encrypt 클라이언트(certbot) 설치</h2>
+<p>Let's Encrypt 인증서를 발급하기 위해선 클라이언트 프로그램인 <a href="https://certbot.eff.org">certbot</a>을 설치해야 합니다.  설치하는 방법은 이 글의 주제가 아니니 생략합니다.</p>
+<h2 id="lets-encrypt_1">Let's Encrypt 발급 방식</h2>
+<h3 id="1-dns">1. dns 방식</h3>
+<p>dns 방식은 도메인(DNS) 서버를 이용해 발급하는 방법입니다. 아래의 그림과 같이 let's encrypt 측에서 랜덤으로 발급한 TXT 레코드를 설정한 후 요청해서 해당 도메인 주소를 가지고 있음을 검증하고 발급하는 방식입니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-02-18/certbot2.png" width="800" /></p>
+</figure>
+<p>이 방법은 DNS 서버만 접근 가능하면 공인 IP가 있는 서버 없이 개발자 노트북으로 인증서를 쉽게 발급할 수 있는 장점이 있습니다. </p>
+<p>하지만 <code>dns</code>방식으로 생성한 인증서는 Route53이나 CloudFlare를 활용하지 않은 이상 재갱신을 할 수 없었습니다.</p>
+<p>프로젝트를 한창 진행하고 있을 때는 최소한의 인프라 관리로 해당 방식을 사용했습니다. </p>
+<p>발급 기간도 프로젝트 기간동안 재갱신이 필요 없을 것으로 판단했습니다. 또한 AWS환경을 사용하고 있어 개발 서버와 운영 서버의 IP 발급이 자유로웠습니다. </p>
+<p>인증서는 운영 서버(chongdae.site)만 발급하면 되기 때문에 webroot로 할 필요성은 없었습니다.</p>
+<h3 id="2-webroot">2. webroot 방식</h3>
+<p>webroot방식은 도메인을 설정한 서버가 존재하는지 검증하여 인증서를 발급하는 방법입니다. </p>
+<p>도메인의 소유주가 공인 IP를 설정할 수 있기 때문에 Let's Encrypt는 해당 서버에 발급 대상 도메인에 직접 가능한지 확인하면 인증서를 생성합니다. </p>
+<p>그러나 가짜 도메인을 생성하고 SSL을 발급하는 경우를 방지하기 위해 http 서버의 특정 디렉터리에 예측 불가능한 랜덤 값이 적힌 파일을 생성하여 이 값을 검증합니다. </p>
+<p>랜덤 값 기입은 웹서버에 설치되어 있는 certbot을 활용하여 웹 서버의 특정 디렉터리에 파일을 생성합니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-02-18/certbot3.png" width="800" /></p>
+</figure>
+<p>이 방식의 장점은 자동 재갱신하기 쉽습니다. 인증서를 한 번 발급하면 <code>certbot renew</code>명령어를 입력하여 알아서 발급해주기 때문입니다. </p>
+<p>그러나 해당 방식을 사용하면 기존에 사용하고 있는 80포트 프로세스를 중지해야 하고 방화벽도 예외 처리해야 하는 단점이 존재합니다.</p>
+<p>공격 실현 가능성은 낮지만 <code>http</code>통신을 하기 때문에 앞서 설명드린 SSL Stripping 공격에 노출 될 수 있습니다.</p>
+<p>AWS 그렇다면 <code>webroot</code>방식을 활용하면서 웹 서버를 안전하게 관리하려면 어떻게 해야할까요?</p>
+<h2 id="_2">인프라 구조 고민</h2>
+<h3 id="1-certbot">1. 기존 리버스 프록시에 certbot 설정 추가</h3>
+<p>아래의 그림처럼 리버스 프록시 서버에 80포트를 할당하여 webroot를 사용하기 위한 설정을 추가할 수 있습니다.  </p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-02-18/certbot4.png" width="800" /></p>
+</figure>
+<p>이렇게 하면 설정파일 하나만 관리할 수 있고 단순한 구조를 유지할 수 있습니다. </p>
+<p>그러나 인증서 재발급만을 위해 80포트를 점유하며 어플리케이션에서 처리하는 패킷이 해당 서버에 지나가기 때문에 책임이 합처져 버려 결합도가 증가하게 됩니다. </p>
+<p>따라서 해당 방법은 사용하지 않았습니다.</p>
+<h3 id="2">2. 인증서 갱신용 컨테이너를 새로 띄움(채택)</h3>
+<p>다음은 이전의 1단계와 비슷해 보이지만 nginx 컨테이너를 2개를 운영하는 방식으로 변경된 버전입니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-02-18/certbot5.png" width="800" /></p>
+</figure>
+<p>이 구조는 웹 서비스용 nginx와 인증서 갱신용 nginx 설정을 별도로 관리할 수 있기 때문에 확장이 가능합니다.</p>
+<p>또한 컨테이너가 분리되어 있기 때문에 서로의 환경이 각각 격리되어 있음을 보장하고 인증서가 필요할때만 80포트를 열 수 있습니다. </p>
+<p>그러나 앞서 말한 80포트를 점유하는 문제와 웹 서비스에 부하가 발생하면 인증서 갱신 서버도 같이 영향 받는 단점이 있습니다. </p>
+<p>반대로 인증서 갱신 서버에 부하가 발생하면 웹 서비스에도 영향을 미칠 수 있습니다.</p>
+<h3 id="3">3. 인증서 갱신용 서버를 별도 생성</h3>
+<p>마지막으로 생각했던 방법은 인증서 서버를 새로 띄어 앞단의 방화벽의 포트포워딩을 이용하여 서버 수준으로 격리하는 방법을 생각했습니다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2025-02-18/certbot6.png" width="800" /></p>
+</figure>
+<p>이 구조를 채택하면 리버스 프록시 서버의 부하와 상관없이 인증서 서버를 통해 인증서를 갱신할 수 있습니다. 하지만 소규모 프로젝트로 쓰기에는 과한 분리라고 생각했습니다.</p>
+<p>개발 서버가 사설 네트워크를 통해서만 접속할 수 있는 복잡한 환경도 아니었고, NFS를 통해 인증서를 공유해야 하는 관리 포인트가 하나 더 생기게 됩니다.</p>
+<p>따라서 해당 방법은 떠올랐지만 채택하지 않았습니다.</p>
+<h2 id="docker-certbot">docker를 활용한 certbot 자동화</h2>
+<h3 id="_3">인증서 발급</h3>
+<p>docker를 활용해 인증서를 자동 발급해주는 스크립트를 작성하였습니다. 사용방법은 아래와 같습니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>chmod<span class="w"> </span>u+x<span class="w"> </span>run.sh
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./run.sh<span class="w"> </span><span class="o">[</span>도메인<span class="w"> </span>명<span class="o">]</span><span class="w"> </span><span class="o">[</span>이메일주소<span class="o">]</span>
+</code></pre></div>
+<p>이 스크립트를 작성하기 위해 몇가지 고려사항이 있었습니다. 이미 리버스 프록시용 컨테이너를 docker compose로 관리하고 있기 때문에 인증서 컨테이너를 종료하기 위해 <code>docker compose stop</code>명령어를 실행하게 되면 리버스 프록시가 종료되는 문제가 있었습니다.</p>
+<p>docker compose를 프로젝트 단위로 실행하도록 설정을 추가하면 certbot과 관련된 컨테이너만 종료시킬 수 있습니다. <code>run.sh</code>안에는 project명을 명령 실행 일자와 추가해서 관리하고 있습니다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">run.sh</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span>
+<span class="normal"><a href="#__codelineno-2-18">18</a></span>
+<span class="normal"><a href="#__codelineno-2-19">19</a></span>
+<span class="normal"><a href="#__codelineno-2-20">20</a></span>
+<span class="normal"><a href="#__codelineno-2-21">21</a></span>
+<span class="normal"><a href="#__codelineno-2-22">22</a></span>
+<span class="normal"><a href="#__codelineno-2-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="nb">set</span><span class="w"> </span>-e
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$2</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Usage: ./run.sh [yourdomain.com] [youremail@example.com]&quot;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">  </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="k">fi</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="nv">DOMAIN</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="nv">EMAIL</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$2</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="nv">CURRENT_DATE</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+<span class="s2">&quot;%y%m%d&quot;</span><span class="k">)</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="nv">PROJECT_NAME</span><span class="o">=</span><span class="s2">&quot;certbot_</span><span class="nv">$CURRENT_DATE</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14"></a>
+<a id="__codelineno-2-15" name="__codelineno-2-15"></a>sed<span class="w"> </span><span class="s2">&quot;s/DOMAIN_HERE/</span><span class="si">${</span><span class="nv">DOMAIN</span><span class="si">}</span><span class="s2">/g&quot;</span><span class="w"> </span>./nginx/conf.d/default.conf.template<span class="w"> </span>&gt;<span class="w"> </span>./nginx/conf.d/default.conf
+<a id="__codelineno-2-16" name="__codelineno-2-16"></a>
+<a id="__codelineno-2-17" name="__codelineno-2-17"></a><span class="hll">docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROJECT_NAME</span><span class="s2">&quot;</span><span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>nginx_for_cert
+</span><a id="__codelineno-2-18" name="__codelineno-2-18"></a><span class="hll">
+</span><a id="__codelineno-2-19" name="__codelineno-2-19"></a><span class="hll">docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROJECT_NAME</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><a id="__codelineno-2-20" name="__codelineno-2-20"></a><span class="hll"><span class="w">    </span>run<span class="w"> </span>--rm<span class="w"> </span>certbot<span class="w"> </span>certonly<span class="w"> </span>--webroot<span class="w"> </span>-w<span class="w"> </span>/var/www/html<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$DOMAIN</span><span class="s2">&quot;</span><span class="w"> </span>--agree-tos<span class="w"> </span>--email<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$EMAIL</span><span class="s2">&quot;</span><span class="w"> </span>--non-interactive
+</span><a id="__codelineno-2-21" name="__codelineno-2-21"></a><span class="hll">
+</span><a id="__codelineno-2-22" name="__codelineno-2-22"></a><span class="hll">docker<span class="w"> </span>compose<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PROJECT_NAME</span><span class="s2">&quot;</span><span class="w"> </span>down
+</span><a id="__codelineno-2-23" name="__codelineno-2-23"></a>rm<span class="w"> </span>-rf<span class="w"> </span>./nginx/conf.d/default.conf
+</code></pre></div></td></tr></table></div>
+<p><code>docker-compose.yml</code>은 certbot과 nginx를 연결하기 위해 <code>certbot-webroot</code>를 마운트 합니다. 발급이 성공하면 <code>certifications</code>에 인증서가 저장되는 구조입니다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">docker-compose.yml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span>
+<span class="normal"><a href="#__codelineno-3-14">14</a></span>
+<span class="normal"><a href="#__codelineno-3-15">15</a></span>
+<span class="normal"><a href="#__codelineno-3-16">16</a></span>
+<span class="normal"><a href="#__codelineno-3-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>version: &#39;3.8&#39;
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a>services:
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a>  nginx_for_cert:
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a>    image: nginx
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a>    container_name: nginx_for_cert
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a>    ports:
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a>      - &quot;80:80&quot;
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a>    volumes:
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="hll">      - ./certbot-webroot:/var/www/html
+</span><a id="__codelineno-3-11" name="__codelineno-3-11"></a>      - ./nginx/conf.d:/etc/nginx/conf.d
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13"></a>  certbot:
+<a id="__codelineno-3-14" name="__codelineno-3-14"></a>    image: certbot/certbot
+<a id="__codelineno-3-15" name="__codelineno-3-15"></a>    volumes:
+<a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="hll">      - ./certbot-webroot:/var/www/html
+</span><a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="hll">      - ../certifications:/etc/letsencrypt
+</span></code></pre></div></td></tr></table></div>
+<h3 id="_4">인증서 적용</h3>
+<p>이제 리버스 프록시에 쓸 인증서 폴더와 nginx를 띄울 docker-compose.yml 파일을 작성합니다. 인증서는 내용이 컨테이너에서 훼손됨을 방지하기 위해 ro 옵션을 추가로 주었습니다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">docker-compose.yml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a>services:
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a>  nginx_ssl:
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a>    image: nginx:latest
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a>    container_name: nginx_ssl
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a>    ports:
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a>      - &quot;443:443&quot;
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a>    volumes:
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a>      - ./nginx/conf.d:/etc/nginx/conf.d
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="hll">      - ../certifications/live:/etc/letsencrypt/live:ro
+</span><a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="hll">      - ../certifications/archive:/etc/letsencrypt/archive:ro
+</span></code></pre></div></td></tr></table></div>
+<h3 id="_5">인증서 갱신</h3>
+<p>인증서 갱신은 간단합니다. <del>certbot 도커이미지와 이전에 발급 받은 인증서 폴더와 연결하면 바로 재갱신이 가능합니다.</del><sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> 인증서 발급때 썼던 nginx_for_cert를 다시 띄운 후 certbot과 연결해야합니다. </p>
+<p>갱신을 위해선 <code>renew</code> 명령어만 있어도 되지만 확실히 갱신하기 위해 <code>--force-renewal</code>을 추가로 적용했습니다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">docker-compose.yml</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span>
+<span class="normal"><a href="#__codelineno-5-19">19</a></span>
+<span class="normal"><a href="#__codelineno-5-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>services:
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a>  nginx_for_cert:
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a>    image: nginx
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a>    container_name: nginx_for_cert
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a>    ports:
+<a id="__codelineno-5-6" name="__codelineno-5-6"></a>      - &quot;80:80&quot;
+<a id="__codelineno-5-7" name="__codelineno-5-7"></a>    volumes:
+<a id="__codelineno-5-8" name="__codelineno-5-8"></a>      - ./certbot-webroot:/var/www/html
+<a id="__codelineno-5-9" name="__codelineno-5-9"></a>      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+<a id="__codelineno-5-10" name="__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11"></a>  certbot:
+<a id="__codelineno-5-12" name="__codelineno-5-12"></a>    image: certbot/certbot
+<a id="__codelineno-5-13" name="__codelineno-5-13"></a>    volumes:
+<a id="__codelineno-5-14" name="__codelineno-5-14"></a>      - ./certbot-webroot:/var/www/html
+<a id="__codelineno-5-15" name="__codelineno-5-15"></a>      - ../certifications:/etc/letsencrypt
+<a id="__codelineno-5-16" name="__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17"></a>    command: [&quot;renew&quot;, &quot;--force-renewal&quot;]
+<a id="__codelineno-5-18" name="__codelineno-5-18"></a>    depends_on:
+<a id="__codelineno-5-19" name="__codelineno-5-19"></a>      - nginx_for_cert
+<a id="__codelineno-5-20" name="__codelineno-5-20"></a>~
+</code></pre></div></td></tr></table></div>
+<p>재갱신 뒤에는 자동으로 nginx에 적용하기 위해 예약 작업을 설정하기 위한 스크립트를 작성합니다.
+인증서 디렉터리는 각 서버마다 다르기 때문에 상대경로로 설정해주었습니다. crontab으로 스크립트를 실행하게 되면 작업 디렉터리가 어디인지 불분명하기 때문에 스크립트 위치 기준으로 작업 디렉터리를 이동하는 코드를 추가했습니다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">run.sh</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span>
+<span class="normal"><a href="#__codelineno-6-13">13</a></span>
+<span class="normal"><a href="#__codelineno-6-14">14</a></span>
+<span class="normal"><a href="#__codelineno-6-15">15</a></span>
+<span class="normal"><a href="#__codelineno-6-16">16</a></span>
+<span class="normal"><a href="#__codelineno-6-17">17</a></span>
+<span class="normal"><a href="#__codelineno-6-18">18</a></span>
+<span class="normal"><a href="#__codelineno-6-19">19</a></span>
+<span class="normal"><a href="#__codelineno-6-20">20</a></span>
+<span class="normal"><a href="#__codelineno-6-21">21</a></span>
+<span class="normal"><a href="#__codelineno-6-22">22</a></span>
+<span class="normal"><a href="#__codelineno-6-23">23</a></span>
+<span class="normal"><a href="#__codelineno-6-24">24</a></span>
+<span class="normal"><a href="#__codelineno-6-25">25</a></span>
+<span class="normal"><a href="#__codelineno-6-26">26</a></span>
+<span class="normal"><a href="#__codelineno-6-27">27</a></span>
+<span class="normal"><a href="#__codelineno-6-28">28</a></span>
+<span class="normal"><a href="#__codelineno-6-29">29</a></span>
+<span class="normal"><a href="#__codelineno-6-30">30</a></span>
+<span class="normal"><a href="#__codelineno-6-31">31</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="nv">ORIGINAL_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="s2">&quot;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="nv">ABSOLUTE_SCRIPT_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>dirname<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$0</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">pwd</span><span class="k">)</span><span class="s2">&quot;</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">ABSOLUTE_SCRIPT_DIR</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="nb">set</span><span class="w"> </span>-e
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Usage: ./run.sh [applied_ssl_nginx_container_name]&quot;</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">  </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="k">fi</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15"></a>
+<a id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="nv">CONTAINER_NAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="nv">CERTIFICATIONS_PATH</span><span class="o">=</span><span class="s2">&quot;../certifications&quot;</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18"></a>
+<a id="__codelineno-6-19" name="__codelineno-6-19"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[+] Renew certificate&quot;</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20"></a>docker<span class="w"> </span>compose<span class="w"> </span>run<span class="w"> </span>certbot
+<a id="__codelineno-6-21" name="__codelineno-6-21"></a>
+<a id="__codelineno-6-22" name="__codelineno-6-22"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[+] apply new certificate&quot;</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span><span class="nv">$CONTAINER_NAME</span><span class="w"> </span>nginx<span class="w"> </span>-s<span class="w"> </span>reload
+<a id="__codelineno-6-24" name="__codelineno-6-24"></a>
+<a id="__codelineno-6-25" name="__codelineno-6-25"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[-] stop nginx for cert&quot;</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+<a id="__codelineno-6-27" name="__codelineno-6-27"></a>
+<a id="__codelineno-6-28" name="__codelineno-6-28"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;change all certification permission&quot;</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29"></a>find<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CERTIFICATIONS_PATH</span><span class="s2">&quot;</span><span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-exec<span class="w"> </span>chmod<span class="w"> </span><span class="m">400</span><span class="w"> </span><span class="o">{}</span><span class="w"> </span><span class="se">\;</span>
+<a id="__codelineno-6-30" name="__codelineno-6-30"></a>
+<a id="__codelineno-6-31" name="__codelineno-6-31"></a><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">ORIGINAL_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<p>이제  아래와 같이 기입하면 아래와 같이 예약 작업을 등록할 수 있습니다.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>crontab -e
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>0 3 * * * /재갱신/스크립트/절대경로/run.sh 
+</code></pre></div>
+<h2 id="_6">결론</h2>
+<p>어떻게 수동으로 작업한 인증서 발급과 갱신을 자동화 할 수 있을지, 재활용 하기 위해 스크립트를 어떻게 설계할지, 만약 80포트를 한 서버에서 점유하고 있으면 어떤 인프라 구조를 채택해야하는지 등 고민해야하는 포인트가 많았습니다.</p>
+<p>이 글에는 없지만 정말로 SSL Stripping 공격이 가능한 취약점이 있음을 가정할 때 웹 서버엔 어떻게 조치해야할지 고민도 해봤습니다. </p>
+<p>리버스 프록시 서버에 HSTS(HTTP Strict Transport Security)<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup> 를 적용하면 해결가능하나, <strong>현재 SSL 도메인을 받기 위한 webroot방식이 HSTS 헤더가 적용되어 80포트로 통신하지 못하면 어떻게 해야하지?</strong> 고민이 추가로 나오게 되는 문제였습니다. </p>
+<p>위의 우려가 실제 생기는지 직접 테스트해가면서 작업을 진행하니 예상보다 작업속도가 늦어졌습니다.(webroot방식은 다행히 HSTS 설정과 무관하게 동작했습니다.) 그러나 이런 테스트를 반복적으로 하면서 자신감은 생기는 것 같습니다.</p>
+<p><br/></p>
+<div class="md-typeset">
+    <div class="blogging-tags-grid">
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#docker" class="blogging-tag"><code>#docker</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#project" class="blogging-tag"><code>#project</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#ssl" class="blogging-tag"><code>#ssl</code></a>
+
+    </div>
+
+
+</div>
+
+<style>
+    .md-typeset .blogging-tags-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .md-typeset .blogging-tag {
+        color: var(--md-typeset-color);
+        background-color: var(--md-typeset-code-color);
+        white-space: nowrap;
+        display: block;
+    }
+
+    .md-typeset .blogging-tag code {
+        border-radius: 5px;
+    }
+</style>
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>공격자가 같은 도메인을 대상으로 http로 통신하도록 링크를 숨겨서 암호화되지 않은 통신으로 변경한 후 패킷을 감청하는 공격. 공격자는 공격대상의 패킷을 감청할 수 있는 네트워크 위치에 있어야 함&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>2025.05.02 기준 인증서가 자동으로 갱신되지 않아서 확인해보니 여전히 인증서 발급용 nginx가 필요했습니다.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>HTTP 헤더 속성 값 Strict-Transport-Security에 기입된 max-age 기간동안 80포트로 요청하는 HTTP를 내부에서 443 포트로 통신하도록 전달하는 속성입니다. 이를 설정하면 클라이언트(브라우저)가 443으로 리디렉션하는 것이 아닌 처음부터 HTTPS로 요청할 수 있도록 요청값을 보냅니다.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+    data-repo="fromitive/fromitive-blog"
+    data-repo-id="R_kgDOJ4LF1g"
+    data-category="Q&A"
+    data-category-id="DIC_kwDOJ4LF1s4CXvhy"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="dark_dimmed"
+    data-lang="ko"
+    crossorigin="anonymous"
+    async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+
+
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">이무송</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/fromitive" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

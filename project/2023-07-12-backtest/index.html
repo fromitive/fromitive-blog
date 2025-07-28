@@ -1,0 +1,1111 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="youtube에서 본 유명한 전략을 추가해볼까?">
+      
+      
+        <meta name="author" content="fromitive">
+      
+      
+        <link rel="canonical" href="https://fromitive.github.io/fromitive-blog/project/2023-07-12-backtest/">
+      
+      
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>유튜브에서 발견한 backtest 전략 추가하기 #3 - fromitive's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-Y55B987JCP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-Y55B987JCP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-Y55B987JCP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="유튜브에서 발견한 backtest 전략 추가하기 #3 - fromitive's blog" >
+      
+        <meta  property="og:description"  content="youtube에서 본 유명한 전략을 추가해볼까?" >
+      
+        <meta  property="og:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/project/2023-07-12-backtest.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://fromitive.github.io/fromitive-blog/project/2023-07-12-backtest/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="유튜브에서 발견한 backtest 전략 추가하기 #3 - fromitive's blog" >
+      
+        <meta  name="twitter:description"  content="youtube에서 본 유명한 전략을 추가해볼까?" >
+      
+        <meta  name="twitter:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/project/2023-07-12-backtest.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="fromitive&#39;s blog" class="md-header__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            fromitive's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              유튜브에서 발견한 backtest 전략 추가하기 #3
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54s-2.94 8.27-7 9.54c.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../archive/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Archive
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../coding-interview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Coding Interview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../cs/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CS
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tips/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tips
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="fromitive&#39;s blog" class="md-nav__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    fromitive's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Coding Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      코드 작성 전 고려해야 할 사항
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      가상 코드 작성
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="가상 코드 작성">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      백테스팅 결과 확인
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vectorbt" class="md-nav__link">
+    <span class="md-ellipsis">
+      vectorbt 사용
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      다음은?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>유튜브에서 발견한 backtest 전략 추가하기 #3</h1>
+
+<div class="admonition note">
+<p>사이드 프로젝트 링크 : <a href="https://www.github.com/fromitive/backtest">https://www.github.com/fromitive/backtest</a></p>
+</div>
+<div class="admonition info">
+<p>이전 글 : <a href="/fromitive-blog/project/2023-07-11-backtest">유튜브에서 발견한 backtest 전략 추가하기 #2</a></p>
+</div>
+<h2 id="_1">코드 작성 전 고려해야 할 사항</h2>
+<p>지난 시간에는 Stocastic RSI 값이 실제 거래소 값과 차이가 있어서 이를 줄여보았다.</p>
+<p>이번에는 buy signal이 어디에 발생했는지 확인 후 수정할 사항이 없나 살펴볼 것이다.</p>
+<p>결과는 아래의 그림과 같으며, <mark class="critic">BUY 시그널이 연속적으로 나타나는 구간이 다수 존재</mark>하는걸 볼 수 있다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-07-12/07-12-backtest1.png" width="800" />
+  </p>
+<figcaption>그림 1 - BUY 시그널 분포</figcaption>
+</figure>
+<p>이렇게 되면 사고 팔때, 돈이 부족하거나, 백테스팅의 결과가 불규칙적으로 나타날 수 있으므로<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> <strong>인접한 BUY 시그널은 없애도록 하자</strong></p>
+<p>그렇다면 아래의 요구사항을 추가하여 가상코드를 작성하자.</p>
+<div class="highlight"><span class="filename">추가 요구사항</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>1. 인접한 캔들차트에 BUY시그널이 붙어있으면, KEEP으로 변환한다.
+</code></pre></div>
+<h2 id="_2">가상 코드 작성</h2>
+<p>구매한 주식을 어느 시점에 팔지는 처음 글에서도 설명했으나, 아래의 <mark class="critic">매도 조건</mark>을 참고하여 작성한다.</p>
+<div class="highlight"><span class="filename">롱 포지션 함수 작업</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>준비작업 : EMA 200 곡선, Stocastic RSI, RSI
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>- 매수 
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  1. ema 200 값보다 캔들이 위에 있어야 함
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  2. stocastic rsi가 25 미만이어야 함
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  3. k(파란색 선)가 d(주황색 선)보다 위에 있어야 한다(이전 캔들과 비교하여 돌파 하는 걸 캐치하면 될 것 같다.)
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>- 매도 :
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="hll">  1. 매수를 진행하고 나서 3퍼센트 이상 넘으면 매도하라고 하는데 여기서는 2 퍼센트 이상일 때 매도 한다.
+</span><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="hll">  2. 손절을 1퍼센트 밑으로 떨어질 때 매도
+</span></code></pre></div>
+<p>매도는 <code>매수</code>를 해야 할 수 있으므로, <code>매수</code>한 주식을 기준으로 수익율을 계산한다.</p>
+<p><mark class="critic">만약 매도 조건이 나타나지 않았을 경우, 어떻게 해야 할까?</mark> 그건 위의 <a href="/fromitive-blog/project/2023-07-12-backtest/#_1">추가 요구사항</a>을 응용하여 </p>
+<p>다음 BUY 시그널이 일정 캔들차트 개수 이상 떨어져 있을 경우 그자리에서 매도하는 걸로 결정한다.</p>
+<p>그렇다면 아래와 같이 추가 요구사항이 생겨야 한다.</p>
+<div class="highlight"><span class="filename">추가 요구사항2</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>1. 인접한 캔들차트에 BUY시그널이 붙어있으면, KEEP으로 변환한다.
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="hll">2. 다음 BUY 시그널이 인접한 차트에 있지 않고, 이전 BUY 시그널이 SELL을 하지 않았을 경우 
+</span><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="hll">   그 즉시 SELL을 하고, 다음 캔들에 BUY 시그널을 넣는다. 
+</span></code></pre></div>
+<p>이제 본격적으로 가상코드를 작성한다. buy시그널을 발견하면, bucket이라는 공간에 담아서 <mark class="critic">수익율이 기준점 이상이거나 손절 포인트 이하일 경우 매도</mark> 한다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">가상 코드.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span>
+<span class="normal"><a href="#__codelineno-3-14">14</a></span>
+<span class="normal"><a href="#__codelineno-3-15">15</a></span>
+<span class="normal"><a href="#__codelineno-3-16">16</a></span>
+<span class="normal"><a href="#__codelineno-3-17">17</a></span>
+<span class="normal"><a href="#__codelineno-3-18">18</a></span>
+<span class="normal"><a href="#__codelineno-3-19">19</a></span>
+<span class="normal"><a href="#__codelineno-3-20">20</a></span>
+<span class="normal"><a href="#__codelineno-3-21">21</a></span>
+<span class="normal"><a href="#__codelineno-3-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">stocastic_rsi_ema_mix_funnction</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a>  <span class="o">...</span><span class="p">(</span><span class="n">매수</span> <span class="n">시그널</span> <span class="n">세팅</span> <span class="n">완료</span><span class="p">)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a>  <span class="n">bucket</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a>  <span class="k">for</span> <span class="n">날짜</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a>    <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="n">날짜</span><span class="p">]</span> <span class="o">==</span> <span class="n">매수</span> <span class="n">시그널</span><span class="p">:</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a>      <span class="k">if</span> <span class="n">empty</span><span class="p">(</span><span class="n">bucket</span><span class="p">):</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a>        <span class="n">bucket</span> <span class="o">=</span> <span class="n">해당</span> <span class="n">날짜</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a>      <span class="k">else</span><span class="p">:</span>  <span class="c1"># 매수 시그널이 있는데 아직 팔지 못한 경우</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a>        <span class="c1"># case 1: 인접한 BUY 시그널일 경우</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a>        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">매수</span> <span class="n">날짜</span> <span class="o">-</span> <span class="n">날짜</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">일정</span> <span class="n">기간</span><span class="p">:</span> 
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a>          <span class="n">df</span><span class="p">[</span><span class="n">날짜</span><span class="p">]</span> <span class="o">==</span> <span class="n">KEEP</span>  <span class="c1"># 매수 시그널을 지운다</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13"></a>        <span class="c1"># case 2: 인접하지 않지만, 팔지 못했을 경우</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15"></a>          <span class="n">df</span><span class="p">[</span><span class="n">날짜</span><span class="p">]</span> <span class="o">=</span> <span class="n">매도</span> <span class="n">시그널</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16"></a>          <span class="k">if</span> <span class="n">날짜</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">마지막</span> <span class="n">날짜</span><span class="p">:</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17"></a>            <span class="n">df</span><span class="p">[</span><span class="n">날짜</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">매수</span> <span class="n">시그널</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18"></a>    <span class="c1"># 매수 신호가 아닌 모든 날에 대해서</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">(</span><span class="n">bucket</span><span class="p">):</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20"></a>      <span class="k">if</span> <span class="n">수익율</span> <span class="o">&gt;=</span> <span class="n">수익율</span> <span class="n">기준점</span> <span class="ow">or</span> <span class="n">수익율</span> <span class="o">&lt;=</span> <span class="n">손절</span> <span class="n">포인트</span><span class="p">:</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21"></a>        <span class="n">df</span><span class="p">[</span><span class="n">날짜</span><span class="p">]</span> <span class="o">=</span> <span class="n">매도</span> <span class="n">시그널</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22"></a>        <span class="n">bucket</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 판매한 bucket은 비운다.</span>
+</code></pre></div></td></tr></table></div>
+<p>이로서 추가 요구사항을 만족하며 유튜브에서 소개한 전략을 코드로 옮길 준비가 완료 된 것이다.</p>
+<p>코드는 아래와 같다. <mark class="critic">22번 줄 부터 46번 줄까지가 추가한 매도 루틴</mark>이다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">stocastic_rsi_ema_mix_funnction_complete.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span>
+<span class="normal"><a href="#__codelineno-4-25">25</a></span>
+<span class="normal"><a href="#__codelineno-4-26">26</a></span>
+<span class="normal"><a href="#__codelineno-4-27">27</a></span>
+<span class="normal"><a href="#__codelineno-4-28">28</a></span>
+<span class="normal"><a href="#__codelineno-4-29">29</a></span>
+<span class="normal"><a href="#__codelineno-4-30">30</a></span>
+<span class="normal"><a href="#__codelineno-4-31">31</a></span>
+<span class="normal"><a href="#__codelineno-4-32">32</a></span>
+<span class="normal"><a href="#__codelineno-4-33">33</a></span>
+<span class="normal"><a href="#__codelineno-4-34">34</a></span>
+<span class="normal"><a href="#__codelineno-4-35">35</a></span>
+<span class="normal"><a href="#__codelineno-4-36">36</a></span>
+<span class="normal"><a href="#__codelineno-4-37">37</a></span>
+<span class="normal"><a href="#__codelineno-4-38">38</a></span>
+<span class="normal"><a href="#__codelineno-4-39">39</a></span>
+<span class="normal"><a href="#__codelineno-4-40">40</a></span>
+<span class="normal"><a href="#__codelineno-4-41">41</a></span>
+<span class="normal"><a href="#__codelineno-4-42">42</a></span>
+<span class="normal"><a href="#__codelineno-4-43">43</a></span>
+<span class="normal"><a href="#__codelineno-4-44">44</a></span>
+<span class="normal"><a href="#__codelineno-4-45">45</a></span>
+<span class="normal"><a href="#__codelineno-4-46">46</a></span>
+<span class="normal"><a href="#__codelineno-4-47">47</a></span>
+<span class="normal"><a href="#__codelineno-4-48">48</a></span>
+<span class="normal"><a href="#__codelineno-4-49">49</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">stocastic_rsi_ema_mix_funnction</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">StockData</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeperiod</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">rsi_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span> <span class="n">fastk_period</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fastd_period</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fastd_matype</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a>                                <span class="n">buy_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">25.0</span><span class="p">,</span> <span class="n">sell_profit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">sell_lose</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.015</span><span class="p">):</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a>    <span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">talib</span><span class="o">.</span><span class="n">EMA</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;close&#39;</span><span class="p">],</span> <span class="n">timeperiod</span><span class="o">=</span><span class="n">timeperiod</span><span class="p">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RSI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">talib</span><span class="o">.</span><span class="n">RSI</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;close&#39;</span><span class="p">],</span> <span class="n">timeperiod</span><span class="o">=</span><span class="n">rsi_period</span><span class="p">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fastk&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fastd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">talib</span><span class="o">.</span><span class="n">STOCH</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RSI&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RSI&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RSI&#39;</span><span class="p">],</span> <span class="n">fastk_period</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span><span class="n">slowk_period</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">slowk_matype</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">slowd_period</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">slowd_matype</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;before_fastk&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fastk&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;before_fastd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fastd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_buy_signal</span><span class="p">(</span><span class="n">r</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11"></a>        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">close</span> <span class="o">&gt;</span> <span class="n">r</span><span class="o">.</span><span class="n">ema</span><span class="p">:</span>  <span class="c1"># buy condition 1</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12"></a>            <span class="c1"># buy condition 2</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13"></a>            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">fastk</span> <span class="o">&lt;</span> <span class="n">buy_rate</span> <span class="ow">and</span> <span class="n">r</span><span class="o">.</span><span class="n">fastd</span> <span class="o">&lt;</span> <span class="n">buy_rate</span><span class="p">:</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14"></a>                <span class="c1"># buy_condition 3</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15"></a>                <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">before_fastk</span> <span class="o">&lt;</span> <span class="n">r</span><span class="o">.</span><span class="n">fastk</span> <span class="ow">and</span> <span class="n">r</span><span class="o">.</span><span class="n">before_fastd</span> <span class="o">&lt;</span> <span class="n">r</span><span class="o">.</span><span class="n">fastd</span><span class="p">:</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16"></a>                    <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">fastk</span> <span class="o">&gt;</span> <span class="n">r</span><span class="o">.</span><span class="n">fastd</span><span class="p">:</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17"></a>                        <span class="k">return</span> <span class="p">(</span><span class="n">StrategyResultColumnType</span><span class="o">.</span><span class="n">BUY</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18"></a>        <span class="k">return</span> <span class="p">(</span><span class="n">StrategyResultColumnType</span><span class="o">.</span><span class="n">KEEP</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19"></a>
+<a id="__codelineno-4-20" name="__codelineno-4-20"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">_buy_signal</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21"></a>
+<a id="__codelineno-4-22" name="__codelineno-4-22"></a><span class="hll">    <span class="c1"># add sell strategy</span>
+</span><a id="__codelineno-4-23" name="__codelineno-4-23"></a>    <span class="n">buy_buffer</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;idx&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24"></a>
+<a id="__codelineno-4-25" name="__codelineno-4-25"></a>    <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">):</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26"></a>        <span class="n">strategy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;result&#39;</span><span class="p">]</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27"></a>        <span class="c1"># buy signal meet</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28"></a>        <span class="k">if</span> <span class="n">strategy</span> <span class="o">==</span> <span class="n">StrategyResultColumnType</span><span class="o">.</span><span class="n">BUY</span><span class="p">:</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29"></a>            <span class="k">if</span> <span class="n">buy_buffer</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">buy_buffer</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30"></a>                <span class="n">buy_buffer</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31"></a>                <span class="n">buy_buffer</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32"></a>            <span class="k">else</span><span class="p">:</span>  <span class="c1"># buy_buffer already exist</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33"></a>                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">count</span> <span class="o">-</span> <span class="n">buy_buffer</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">7</span><span class="p">:</span>
+<a id="__codelineno-4-34" name="__codelineno-4-34"></a>                    <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">StrategyResultColumnType</span><span class="o">.</span><span class="n">KEEP</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35"></a>                <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-4-36" name="__codelineno-4-36"></a>                    <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">StrategyResultColumnType</span><span class="o">.</span><span class="n">SELL</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+<a id="__codelineno-4-37" name="__codelineno-4-37"></a>                    <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+<a id="__codelineno-4-38" name="__codelineno-4-38"></a>                        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iat</span><span class="p">[</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">StrategyResultColumnType</span><span class="o">.</span><span class="n">BUY</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+<a id="__codelineno-4-39" name="__codelineno-4-39"></a>                    <span class="n">buy_buffer</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;idx&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>  <span class="c1"># init buy_buffer</span>
+<a id="__codelineno-4-40" name="__codelineno-4-40"></a>
+<a id="__codelineno-4-41" name="__codelineno-4-41"></a>        <span class="k">if</span> <span class="n">buy_buffer</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">buy_buffer</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+<a id="__codelineno-4-42" name="__codelineno-4-42"></a>            <span class="n">buy_buffer_idx</span> <span class="o">=</span> <span class="n">buy_buffer</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">]</span>
+<a id="__codelineno-4-43" name="__codelineno-4-43"></a>            <span class="n">profit_rate</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;close&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">buy_buffer_idx</span><span class="p">,</span> <span class="s1">&#39;close&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">buy_buffer_idx</span><span class="p">,</span> <span class="s1">&#39;close&#39;</span><span class="p">]</span> <span class="c1"># calc profit_rate</span>
+<a id="__codelineno-4-44" name="__codelineno-4-44"></a>            <span class="k">if</span> <span class="n">profit_rate</span> <span class="o">&gt;=</span> <span class="n">sell_profit</span> <span class="ow">or</span> <span class="n">profit_rate</span> <span class="o">&lt;=</span> <span class="n">sell_lose</span><span class="p">:</span> 
+<a id="__codelineno-4-45" name="__codelineno-4-45"></a>                <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">StrategyResultColumnType</span><span class="o">.</span><span class="n">SELL</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+<a id="__codelineno-4-46" name="__codelineno-4-46"></a><span class="hll">                <span class="n">buy_buffer</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;idx&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>  <span class="c1"># init buy_buffer</span>
+</span><a id="__codelineno-4-47" name="__codelineno-4-47"></a>
+<a id="__codelineno-4-48" name="__codelineno-4-48"></a>    <span class="n">df</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span>
+<a id="__codelineno-4-49" name="__codelineno-4-49"></a>    <span class="k">return</span> <span class="n">df</span><span class="p">[[</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;ema&#39;</span><span class="p">,</span> <span class="s1">&#39;fastk&#39;</span><span class="p">,</span> <span class="s1">&#39;fastd&#39;</span><span class="p">]]</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="_3">백테스팅 결과 확인</h3>
+<p>해당 전략을 그래프로 그린 결과, 얼추 수익을 창출(?)하는 것 같은 그래프가 완성되었다. 이제는 해당 전략이 적절한지 검증하기 위해 <a href="https://vectorbt.dev/">vectorbt</a> 모듈을 추가로 사용 할 것이다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-07-12/07-12-backtest2.png" width="1000" />
+  </p>
+<figcaption>그림 2 - 최종 시그널 분포 결과</figcaption>
+</figure>
+<h3 id="vectorbt">vectorbt 사용</h3>
+<p>vectorbt는 지금 만들고 있는 프로젝트와 동일하게 주식에 대한 전략을 검색해주는 모듈이다.</p>
+<p>동작 구조는 다음과 같다.</p>
+<blockquote>
+<p>매수 신호가 나오면, 그 다음날은 매도 신호가 나와야 수익율 계산을 한다. <mark class="critic">두 번 매수하거나, 두 번 매도하는 신호가 나오면</mark> 무시가 된다.
+즉, 매수 신호와 매도 신호가 짝을 지어야 한다.</p>
+</blockquote>
+<p>위의 동작 구조에 만족시키도록 전략 함수를 작성하였고, vectorbt를 이용해 해당전략이 적절하게 동작했는지 확인한다.</p>
+<p>코드는 아래와 같다.</p>
+<div class="admonition warning">
+<p class="admonition-title">주의사항</p>
+<p>해당 코드는 이해하기 쉽게 하기 위한 가상코드이고 실제 코드와는 차이가 있습니다.</p>
+</div>
+<div class="highlight"><span class="filename">backtest.py</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">vectorbt</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vbt</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># stock_df.close - dataframe 중 close(종가) 값 세팅</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># buy_result - stock_df와 같은 인덱스를 가지며 매수일 경우 True 그렇지 않을 경우 False인 DataFrame</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># sell_result - stock_df와 같은 인덱스를 가지며 매도일 경우 True 그렇지 않을 경우 False인 DataFrame</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">pf</span> <span class="o">=</span> <span class="n">vbt</span><span class="o">.</span><span class="n">Portfolio</span><span class="o">.</span><span class="n">from_signals</span><span class="p">(</span><span class="n">stock_df</span><span class="o">.</span><span class="n">close</span><span class="p">,</span><span class="n">buy_result</span><span class="p">,</span><span class="n">sell_result</span><span class="p">)</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">pf</span><span class="o">.</span><span class="n">stats</span><span class="p">()</span> <span class="c1"># 결과검증 </span>
+</code></pre></div>
+<p>코드에 대한 결과값은 다음과 같이 나타나며, 수익을 내지 못했음을 확인했다.</p>
+<div class="highlight"><span class="filename">backtest 결과 값</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Start                         2023-06-19 09:00:00
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>End                           2023-07-12 22:00:00
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Period                                       1124
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>Start Value                                 100.0
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>End Value                               98.500282
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="hll">Total Return [%]                        -1.499718
+</span><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>Benchmark Return [%]                     9.296149
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>Max Gross Exposure [%]                      100.0
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>Total Fees Paid                               0.0
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>Max Drawdown [%]                         6.122818
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>Max Drawdown Duration                       413.0
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>Total Trades                                   17
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>Total Closed Trades                            17
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>Total Open Trades                               0
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>Open Trade PnL                                0.0
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>Win Rate [%]                            41.176471
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>Best Trade [%]                           2.734218
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>Worst Trade [%]                         -1.909587
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>Avg Winning Trade [%]                    1.230347
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>Avg Losing Trade [%]                    -0.996401
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>Avg Winning Trade Duration              26.428571
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>Avg Losing Trade Duration                    20.7
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>Profit Factor                            0.849372
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>Expectancy                              -0.088219
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>dtype: object
+</code></pre></div>
+<p>자세한 그래프를 그리기 위해서는 아래와 같이 <code>pf.plot().show()</code>를 호출하면 나타나게 된다.</p>
+<div class="highlight"><span class="filename">plot.py</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">pf</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-07-12/07-12-backtest3.png" width="800" />
+  </p>
+<figcaption>그림  3 - backtest 시각화 결과  </figcaption>
+</figure>
+<h2 id="_4">다음은?</h2>
+<p>아쉽게도 해당 전략은 수익을 내지 못했다. 그 이유는 이 전략은 <code>롱 포지션</code> 이며 <code>상승장</code>에서 통하는 전략이기 때문이다.</p>
+<p>따라서, 다음 게시글은 유튜브에 나와있는 것처럼 <code>하이킨아시 차트</code>를 적용하여, 상승장, 하락장을 구별하여 매수하는 기능을 추가할 것이다.</p>
+<div class="admonition info">
+<p>다음 글 : <a href="/fromitive-blog/project/2023-07-13-backtest">유튜브에서 발견한 backtest 전략 추가하기 #4</a></p>
+</div>
+<p><br/></p>
+<div class="md-typeset">
+    <div class="blogging-tags-grid">
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#backtest" class="blogging-tag"><code>#backtest</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#project" class="blogging-tag"><code>#project</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#quant trading" class="blogging-tag"><code>#quant trading</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#vectorbt" class="blogging-tag"><code>#vectorbt</code></a>
+
+    </div>
+
+
+</div>
+
+<style>
+    .md-typeset .blogging-tags-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .md-typeset .blogging-tag {
+        color: var(--md-typeset-color);
+        background-color: var(--md-typeset-code-color);
+        white-space: nowrap;
+        display: block;
+    }
+
+    .md-typeset .blogging-tag code {
+        border-radius: 5px;
+    }
+</style>
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>밑에서 설명하겠지만 백테스팅 검증 시 <code>vectorbt</code>를 이용해서 검증하기 때문이다.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+    data-repo="fromitive/fromitive-blog"
+    data-repo-id="R_kgDOJ4LF1g"
+    data-category="Q&A"
+    data-category-id="DIC_kwDOJ4LF1s4CXvhy"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="dark_dimmed"
+    data-lang="ko"
+    crossorigin="anonymous"
+    async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+
+
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">이무송</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/fromitive" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

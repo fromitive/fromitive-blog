@@ -1,0 +1,2632 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="본질과 핵심을 기록할수록 성장한다.">
+      
+      
+        <meta name="author" content="fromitive">
+      
+      
+        <link rel="canonical" href="https://fromitive.github.io/fromitive-blog/coding-interview/">
+      
+      
+        <link rel="prev" href="../archive/">
+      
+      
+        <link rel="next" href="../cs/">
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>Coding Interview - fromitive's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-Y55B987JCP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-Y55B987JCP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-Y55B987JCP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Coding Interview - fromitive's blog" >
+      
+        <meta  property="og:description"  content="본질과 핵심을 기록할수록 성장한다." >
+      
+        <meta  property="og:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/coding-interview.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://fromitive.github.io/fromitive-blog/coding-interview/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Coding Interview - fromitive's blog" >
+      
+        <meta  name="twitter:description"  content="본질과 핵심을 기록할수록 성장한다." >
+      
+        <meta  name="twitter:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/coding-interview.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="fromitive&#39;s blog" class="md-header__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            fromitive's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Coding Interview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54s-2.94 8.27-7 9.54c.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../project/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../archive/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Archive
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Coding Interview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../cs/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CS
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../tips/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tips
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="fromitive&#39;s blog" class="md-nav__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    fromitive's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Coding Interview
+    
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Coding Interview</h1>
+
+<p>
+
+
+<style>
+    .md-typeset .blog-post:first-of-type h3 {
+        margin-top: 0;
+    }
+
+    .md-typeset .blog-post-title {
+        margin-bottom: 0;
+    }
+
+    .md-typeset .blog-post-extra {
+        color: var(--md-default-fg-color--light);
+    }
+
+    .md-typeset .blog-center {
+        text-align: center;
+    }
+
+    .md-typeset .blog-pagination {
+        display: inline-block;
+        margin-top: 20px;
+    }
+
+    .md-typeset .blog-pagination a {
+        color: var(--md-typeset-color);
+        float: left;
+        padding: .25em 1em;
+        text-decoration: none;
+        border-radius: 1em;
+        margin-left: .25em;
+        margin-right: .25em;
+        transition: all .15s ease-in-out;
+    }
+
+    .md-typeset .blog-pagination a.active {
+        background-color: var(--md-typeset-a-color);
+        color: white;
+        font-weight: bold;
+    }
+
+    .md-typeset .blog-pagination a:hover:not(.active) {
+        background-color: #dddddda1;
+    }
+
+    .md-typeset .blog-hidden {
+        display: none;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <style>
+    .md-typeset .blogging-tags-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .md-typeset .blogging-tag {
+        color: var(--md-typeset-color);
+        background-color: var(--md-typeset-code-color);
+        white-space: nowrap;
+        display: block;
+    }
+
+    .md-typeset .blogging-tag code {
+        border-radius: 5px;
+    }
+</style>
+
+    
+
+
+
+
+
+
+
+
+<div class = "md-typeset">
+    <div class="pages">
+        
+            
+            <div class="page" id="page1">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2025-01-25-leetcode-1/">Monotonic Stack, Queue 활용</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#알고리즘" class="blogging-tag"><code>#알고리즘</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#python" class="blogging-tag"><code>#python</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        Monotonic을 활용해보자
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2025-01-25 20:00
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2025-01-24-leetcode-1/">Leetcode : Contiguous Array</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#알고리즘" class="blogging-tag"><code>#알고리즘</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#python" class="blogging-tag"><code>#python</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        계속 햇갈리는 hash map 유형의 문제
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2025-01-24 18:00
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2025-01-14-two-pointer/">배열 탐색 전략 - two-pointer</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#two-pointer" class="blogging-tag"><code>#two-pointer</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#array" class="blogging-tag"><code>#array</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        Two Pointer를 활용하여 정렬된 배열을 효율적으로 탐색하기
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2025-01-14 17:44
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page2">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-02-12-leetcode/">Leetcode - 368. Largest Divisible Subset</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#two-pointer" class="blogging-tag"><code>#two-pointer</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-02-09 14:14
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-02-11-leetcode/">Leetcode 49. Group Anagrams</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#sorting" class="blogging-tag"><code>#sorting</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        Sorting과 Hashing을 이용한 문제
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-02-09 11:05
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-02-10-leetcode/">Leetcode 279. Perfect Squares</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#dynamic-programming" class="blogging-tag"><code>#dynamic-programming</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        Dynamic Programming 이용
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-02-09 10:23
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page3">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-29-leetcode-1/">Leetcode - K-inverse pairs array</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#dynamic-programming" class="blogging-tag"><code>#dynamic-programming</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#sliding-window" class="blogging-tag"><code>#sliding-window</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        DP 메모리 최적화 방법 및 Sliding-Window 패턴 연습
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-29 17:30
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-24-leetcode-1/">Leetcode - 1457. Pseudo-Palindromic Paths in a Binary Tree</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#bitmask" class="blogging-tag"><code>#bitmask</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#dfs" class="blogging-tag"><code>#dfs</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        DFS과 Bitmask의 절묘한 조화
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-24 13:58
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-23-leetcode-1/">Leetcode - 907. Sum of Subarray Minimums</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#dynamic-programming" class="blogging-tag"><code>#dynamic-programming</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#monotonic-stack" class="blogging-tag"><code>#monotonic-stack</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        다양한 규칙 찾기
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-23 09:10
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page4">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-22-leetcode-1/">Leetcode 115. Distinct Subsequences</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        Dynamic Programming - Subsequence 찾기
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-22 13:58
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-19-leetcode-3/">Leetcode - 931. Minimum Falling Path Sum</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        Graph 탐색과 Dynamic Programming의 차이
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-19 16:02
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-19-leetcode-2/">Leetcode - 70. Climbing Stairs</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#dynamic-programming" class="blogging-tag"><code>#dynamic-programming</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        다이나믹 프로그래밍의 기초
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-19 13:05
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page5">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-19-leetcode-1/">1207. Unique Number of Occurrences</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#None" class="blogging-tag"><code>#None</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-19 12:50
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-17-leetcode/">Leetcode - 380. Insert Delete Getrandom O(1)</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        List와 HashTable 이용하여 O(1)로 만드는 방법
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-17 13:30
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-16-leetcode-1/">LeetCode -2225. Find Players With Zero or One Losses</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hashing" class="blogging-tag"><code>#hashing</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        hash table의 다양한 표현 방법
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-16 11:17
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page6">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-10-leetcode/">LeetCode - 2385. Amount of Time for Binary Tree to Be Infected</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#graph" class="blogging-tag"><code>#graph</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        TreeNode를 옆으로 돌리면 Graph가 된다. Tree는 Graph의 일종이다.
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-10 14:57
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-13-leetcode/">LeetCode - 1347. Minimum Number of Steps to Make Two Strings Anagram</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hashmap" class="blogging-tag"><code>#hashmap</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        목표 대상과, 현재 가지고 있는 자료의 형태를 유심히 봐야 한다.
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-10 14:57
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-09-leetcode/">LeetCode - 872. Leaf-Similar Trees</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#graph" class="blogging-tag"><code>#graph</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#leetcode" class="blogging-tag"><code>#leetcode</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        BFS, DFS의 차이와 탐색 순서를 명확히 아는가?
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-09 12:04
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page7">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2024-01-08-leetcode/">Add Two Numbers</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#coding-interview" class="blogging-tag"><code>#coding-interview</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#python" class="blogging-tag"><code>#python</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        LeetCode 문제 풀이
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2024-01-08 14:08
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-09-07-hackerrank-1/">HackerRank - Sparse Arrays</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#arrays" class="blogging-tag"><code>#arrays</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#data structure" class="blogging-tag"><code>#data structure</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hash maps" class="blogging-tag"><code>#hash maps</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        Hash Map의 사용 예제
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-09-07 17:24
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-28-hackerrank-3/">HackerRank - Delete a Node</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#data structures" class="blogging-tag"><code>#data structures</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#Linked List" class="blogging-tag"><code>#Linked List</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        Delete a Node 문제 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-28 22:20
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page8">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-28-hackerrank-2/">HackerRank - Dyanamic Array</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#data structures" class="blogging-tag"><code>#data structures</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#Array" class="blogging-tag"><code>#Array</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        Dynamic Array 문제 분석
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-28 21:52
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-28-hackerrank-1/">HackerRank - Left Rotation</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#data structures" class="blogging-tag"><code>#data structures</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#Array" class="blogging-tag"><code>#Array</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        Left Rotation 리뷰 - 배열을 순환하는 방법
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-28 21:34
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-21-hackerrank-1/">HackerRank - Components in a graph</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#data structures" class="blogging-tag"><code>#data structures</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#Graph" class="blogging-tag"><code>#Graph</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#DFS" class="blogging-tag"><code>#DFS</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank Components in a graph 문제 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-27 21:09
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page9">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-20-hackerrank-1/">HackerRank - QHEAP1</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#data structures" class="blogging-tag"><code>#data structures</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#Heap" class="blogging-tag"><code>#Heap</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank QHEAP1 문제 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-20 15:20
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-18-hackerrank-1/">HackerRank - Queue using Two Stacks</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#data structures" class="blogging-tag"><code>#data structures</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#Queue" class="blogging-tag"><code>#Queue</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank Queue using Two Stacks 문제 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-18 11:50
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-17-hackerrank-1/">HackerRank - Maximum Element</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#data structures" class="blogging-tag"><code>#data structures</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#Stack" class="blogging-tag"><code>#Stack</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank Maximum Element 문제 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-17 17:10
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page10">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-15-hackerrank-1/">HackerRank - Tree Series</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#data structures" class="blogging-tag"><code>#data structures</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#Tree" class="blogging-tag"><code>#Tree</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank Tree 문제 모음 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-15 17:07
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-14-hackerrank-1/">HackerRank - Single Linked List Series</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#data structures" class="blogging-tag"><code>#data structures</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#Linked Lists" class="blogging-tag"><code>#Linked Lists</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank Single Linked List 문제 모음 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-14 12:20
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-13-hackerrank-1/">HackerRank - 2D Array - DS</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#data structures" class="blogging-tag"><code>#data structures</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank 문제 2D Array - DS 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-13 14:15
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page11">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-12-hackerrank-1/">HackerRank - Minimum Absolute Difference in an Array</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#algorithms" class="blogging-tag"><code>#algorithms</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#greedy" class="blogging-tag"><code>#greedy</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank 문제 Minimum Absolute Difference in an Array 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-12 14:27
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-11-hackerrank-1/">HackerRank - Hackerland Radio Transmitters #2</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#algorithms" class="blogging-tag"><code>#algorithms</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#searching" class="blogging-tag"><code>#searching</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank 문제 Hackerland Radio Transmitters 리뷰 (해결)
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-11 15:37
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-10-hackerrank-1/">HackerRank - Hackerland Radio Transmitters #1</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#algorithms" class="blogging-tag"><code>#algorithms</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#searching" class="blogging-tag"><code>#searching</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank 문제 Hackerland Radio Transmitters 리뷰 (미해결)
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-10 14:45
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page12">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-09-hackerrank-1/">HackerRank - Big Sorting</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#algorithms" class="blogging-tag"><code>#algorithms</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#sorting" class="blogging-tag"><code>#sorting</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank 문제 Big Sorting 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-09 18:33
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-08-hackerrank-2/">HackerRank - Super Reduced String</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#algorithms" class="blogging-tag"><code>#algorithms</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank 문제 Super Reduced String 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-08 20:47
+    </div>
+    <hr />
+</div>
+
+                    
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-08-hackerrank-1/">HackerRank - Number Line Jumps</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#hackerrank" class="blogging-tag"><code>#hackerrank</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#problem solving" class="blogging-tag"><code>#problem solving</code></a>
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#algorithms" class="blogging-tag"><code>#algorithms</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        HackerRank 문제 Number Line Jumps 리뷰
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-08 18:10
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+            
+            <div class="page" id="page13">
+
+                
+                    
+                    
+                    
+                    
+
+                    
+                    
+                        
+                    
+
+                    
+                    
+                        
+                    
+                    
+                    <div class="blog-post">
+    <h3 class="blog-post-title">
+        <a class="link" href="https://fromitive.github.io/fromitive-blog/coding-interview/2023-07-07/">첫 게시물</a>
+    </h3>
+    
+        <div class="blogging-tags-grid">
+        
+        <a href="https://fromitive.github.io/fromitive-blog/tags#etc" class="blogging-tag"><code>#etc</code></a>
+        
+    </div>
+    
+        
+
+    
+    <p class="blog-post-description">
+        첫 게시물이에요
+    </p>
+    <div class="blog-post-extra">
+        Published at: 2023-07-07 13:00
+    </div>
+    <hr />
+</div>
+
+                    
+                
+            </div>
+        
+    </div>
+
+    <div class="blog-center ">
+        <div class="blog-pagination " id="blog-pagination">
+            
+                
+                    
+                
+                <a class="page-number" href="">1</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p2">2</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p3">3</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p4">4</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p5">5</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p6">6</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p7">7</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p8">8</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p9">9</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p10">10</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p11">11</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p12">12</a>
+            
+                
+                    
+                
+                <a class="page-number" href="#blog-p13">13</a>
+            
+        </div>
+        
+            <div>Total <b>37</b> posts.</div>
+        
+    </div>
+</div></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">이무송</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/fromitive" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.50899def.min.js"></script>
+      
+        <script src="../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html><script>var currentPage = 0
+const lastComponent = window.location.href.split("/").slice(-1).pop()
+
+if (lastComponent && lastComponent.slice(0, 7) == "#blog-p") {
+  const page = parseInt(lastComponent.slice(7))
+  if (page) {
+    currentPage = page - 1
+  }
+}
+
+function scrollToTop() {
+  setTimeout(function () {
+    window.scrollTo(0, 0);
+  }, 100);
+}
+
+const onButtonClick = (ele) => {
+  var current = pagination.getElementsByClassName("active");
+  if (current.length) {
+    current[0].className = current[0].className.replace(
+      " active", ""
+    );
+  }
+  ele.className += " active";
+
+  // Togglg visibility of pages
+  const destPage = parseInt(ele.textContent)
+  var pages = document.getElementsByClassName("page")
+  if (destPage && pages.length) {
+    for (var j = 0; j < pages.length; j++) {
+      const pageId = parseInt(pages[j].id.replace("page", ""))
+      if (pageId != destPage) {
+        // This is not the destination page
+        if (!pages[j].className.includes("blog-hidden")) {
+          pages[j].className += " blog-hidden"
+        }
+      } else {
+        // This is the destination page
+        pages[j].className = pages[j].className.replace(" blog-hidden", "")
+      }
+    }
+    scrollToTop();
+  }
+};
+
+var pagination = document.getElementById("blog-pagination");
+if (pagination) {
+  var links = pagination.getElementsByClassName("page-number");
+  if (links.length) {
+    for (var i = 0; i < links.length; i++) {
+      // Toggle pagination highlight
+      links[i].addEventListener("click", function () {
+        onButtonClick(this);
+      });
+    }
+    links[currentPage].className += " active"
+    onButtonClick(links[currentPage]);
+  }
+}
+</script>

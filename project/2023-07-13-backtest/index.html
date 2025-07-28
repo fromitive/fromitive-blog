@@ -1,0 +1,1150 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="youtube에서 본 유명한 전략을 추가해볼까?">
+      
+      
+        <meta name="author" content="fromitive">
+      
+      
+        <link rel="canonical" href="https://fromitive.github.io/fromitive-blog/project/2023-07-13-backtest/">
+      
+      
+      
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS feed" href="../../feed_rss_created.xml">
+        <link rel="alternate" type="application/rss+xml" title="RSS feed of updated content" href="../../feed_rss_updated.xml">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>유튜브에서 발견한 backtest 전략 추가하기 #4 - fromitive's blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-Y55B987JCP"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-Y55B987JCP",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-Y55B987JCP",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="유튜브에서 발견한 backtest 전략 추가하기 #4 - fromitive's blog" >
+      
+        <meta  property="og:description"  content="youtube에서 본 유명한 전략을 추가해볼까?" >
+      
+        <meta  property="og:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/project/2023-07-13-backtest.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://fromitive.github.io/fromitive-blog/project/2023-07-13-backtest/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="유튜브에서 발견한 backtest 전략 추가하기 #4 - fromitive's blog" >
+      
+        <meta  name="twitter:description"  content="youtube에서 본 유명한 전략을 추가해볼까?" >
+      
+        <meta  name="twitter:image"  content="https://fromitive.github.io/fromitive-blog/assets/images/social/project/2023-07-13-backtest.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="fromitive&#39;s blog" class="md-header__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            fromitive's blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              유튜브에서 발견한 backtest 전략 추가하기 #4
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 2c-1.05 0-2.05.16-3 .46 4.06 1.27 7 5.04 7 9.54s-2.94 8.27-7 9.54c.95.3 1.95.46 3 .46a10 10 0 0 0 10-10A10 10 0 0 0 9 2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../security/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Security
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../archive/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Archive
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../coding-interview/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Coding Interview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../cs/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  CS
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tips/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tips
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="fromitive&#39;s blog" class="md-nav__button md-logo" aria-label="fromitive's blog" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.56 9.09C14.66 7.18 12.54 6 11 6c.47 1.4.28 2.57-.05 3.43C8.45 10 6 11 6 11S3 7 1 7l2 6-1 4c2 0 4-3 4-3s5 2 8 2v2c.65 0 1.91-.83 2.73-2.23 1.24-.21 2.27-.56 3.14-.96-.15-.18-.34-.37-.59-.51-.65-.39-1.46-.63-2.28-.8.82-.16 1.67-.28 2.59-.15.46.06.95.19 1.41.51.1.06.17.14.24.19C22.4 13.26 23 12.44 23 12c0-.87-3.81-2.5-7.44-2.91M18 12c-.55 0-1-.45-1-1 0-.24.1-.45.23-.62.61.12 1.2.29 1.74.46.03.05.03.1.03.16 0 .55-.45 1-1 1"/></svg>
+
+    </a>
+    fromitive's blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../archive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Archive
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../coding-interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Coding Interview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tips
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      코드 작성 전 고려해야 할 사항
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      요구사항 분석
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="요구사항 분석">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      하이킨아시 차트를 구하는법
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      하이킨아시 차트를 일봉으로 봐야 하는 이유
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      연속적으로 양봉임을 확인하는 방법
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      코드 구현 및 검증
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="코드 구현 및 검증">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      코드 구현
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      백테스팅 결과
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      다음은?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>유튜브에서 발견한 backtest 전략 추가하기 #4</h1>
+
+<div class="admonition note">
+<p>사이드 프로젝트 링크 : <a href="https://www.github.com/fromitive/backtest">https://www.github.com/fromitive/backtest</a></p>
+</div>
+<div class="admonition info">
+<p>이전 글 : <a href="/fromitive-blog/project/2023-07-12-backtest">유튜브에서 발견한 backtest 전략 추가하기 #3</a></p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">따라하지 마세요!</p>
+<p>2023-07-24 Update : 해당 전략은 <code>compare_movement</code>로 승률을 올리고 있지만, 코드 상 <code>compare_movement</code>는 사실, 트레이딩 시 <mark class="critic">이미 미래의 결과를 반영했기 때문에</mark>, 수익율이 잘나온 것임을 분석하였습니다.
+좀더 확실하게 투자를 할 수 있게 추 후 연구중이니, 과거의 데이터는 과거의 결과일 뿐 현실과 차이가 있으므로 절대 따라하지 마시길 부탁드립니다 🙏</p>
+</div>
+<h2 id="_1">코드 작성 전 고려해야 할 사항</h2>
+<p>지난시간에는 유튜브 에서 나온 전략이 아쉽게도 수익을 내지 못했다. 그 이유는 <code>상승장</code>에서만 통하는 전략이기 때문이다.</p>
+<p>유튜브에서는 <code>롱 포지션</code> 전략을 <code>하이킨아시(Heikin Ashi) 차트</code><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>로 변환하여 <mark class="critic">상승장 일때</mark> 이 전략을 사용하고 있다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-07-13/07-13-backtest1.png" width="800" />
+  </p>
+<figcaption>그림 1 - 하이킨아시 차트</figcaption>
+<p><a href="https://www.youtube.com/watch?v=Gi5G7UXjX6Q">유튜브자료 참조</a></p>
+</figure>
+<p>따라서, <code>Heikin ashi</code>는 어떻게 양봉과, 음봉을 구별하는지 확인해야 하고, <mark class="critic">상승장을 파악할 때 양봉이 연속적으로 나올 경우에</mark>만 거래를 하도록 기능을 추가한다.</p>
+<h2 id="_2">요구사항 분석</h2>
+<p>오늘의 요구사항은 아래와 같이 작성했으며, 요구사항대로 코드를 작성한 후 실제 백테스팅 결과가 비슷하게 나오는지 확인해보겠다.</p>
+<div class="highlight"><span class="filename">요구사항</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>1. StockData가 주어지면, 하이킨아시 차트에서 양봉인지 음봉인지 얻을 수 있는 함수를 만들어야 함.
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>2. 하이킨아시 일봉 차트를 30분 봉으로 쪼개어 적용
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>3. 하이킨아시 차트에서 연속적으로 양봉임을 검증하는 기능 추가.
+</code></pre></div>
+<h3 id="_3">하이킨아시 차트를 구하는법</h3>
+<p>Heikin Ashi 차트를 구하는 소스코드는 아래와 같으며, 'Movment' 열을 통해 현재 시간의 봉이 <code>양봉</code>인지 <code>음봉</code>인지 확인할 수 있다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">heikin_ashi.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span>
+<span class="normal"><a href="#__codelineno-1-18">18</a></span>
+<span class="normal"><a href="#__codelineno-1-19">19</a></span>
+<span class="normal"><a href="#__codelineno-1-20">20</a></span>
+<span class="normal"><a href="#__codelineno-1-21">21</a></span>
+<span class="normal"><a href="#__codelineno-1-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">calculate_heikin_ashi</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="nb">open</span><span class="p">,</span><span class="n">high</span><span class="p">,</span><span class="n">low</span><span class="p">,</span><span class="n">close</span><span class="p">):</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="sd">    df    : 주식 DataFrame</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="sd">    open  : 시가의 열 이름</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="sd">    high  : 고가의 열 이름</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="sd">    low   : 저가의 열 이름</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="sd">    close : 종가의 열 이름</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10"></a>    <span class="c1"># 하이킨 아시 캔들 계산</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11"></a>    <span class="n">ha_close</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="nb">open</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="n">high</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="n">low</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="n">close</span><span class="p">])</span> <span class="o">/</span> <span class="mi">4</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12"></a>    <span class="n">ha_open</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="nb">open</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="n">close</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13"></a>    <span class="n">ha_high</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">high</span><span class="p">,</span><span class="nb">open</span><span class="p">,</span><span class="n">close</span><span class="p">]]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14"></a>    <span class="n">ha_low</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">low</span><span class="p">,</span><span class="nb">open</span><span class="p">,</span><span class="n">close</span><span class="p">]]</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15"></a>
+<a id="__codelineno-1-16" name="__codelineno-1-16"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;HA_Close&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ha_close</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;HA_Open&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ha_open</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;HA_High&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ha_high</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;HA_Low&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ha_low</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20"></a>
+<a id="__codelineno-1-21" name="__codelineno-1-21"></a>    <span class="c1"># 양봉인지 음봉인지 확인</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Movement&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;HA_Close&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;HA_Open&#39;</span><span class="p">],</span> <span class="s1">&#39;Up&#39;</span><span class="p">,</span> <span class="s1">&#39;Down&#39;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p>양봉 음봉은 일반 캔들차트와 동일하게 <code>종가</code>가 <code>시가</code>보다 크면 <code>양봉</code> 그 반대면 음봉이다. 다만, <code>종가</code>와<code>시가</code>를 하이킨 아시 종가, 시가로 계산하여 비교한다는 점에서 차이가 있다.</p>
+<p>이로써 요구사항 1번은 해결되었다.</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> StockData가 주어지면, 하이킨아시 차트에서 양봉인지 음봉인지 얻을 수 있는 함수를 만들어야 함.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 하이킨아시 일봉 차트를 30분 봉으로 쪼개어 적용</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 하이킨아시 차트에서 연속적으로 양봉임을 검증하는 기능 추가.</li>
+</ul>
+<h3 id="_4">하이킨아시 차트를 일봉으로 봐야 하는 이유</h3>
+<p>일봉으로 봐야 하는 이유는, <code>하루 상승장</code>은 수익을 낼 확률이 높다고 생각하기 때문이다.</p>
+<p>그리고, 연속적으로 상승장을 향하고 있는 추세를 발견하면, 오늘의 거래도 상승장일 확률이 높아진다. 즉, 관성을 따른다.</p>
+<p>따라서 30분봉 차트로 백테스팅 자료를 만들 때 같은 종목의 하이킨아시 일봉 차트를 가져와서, 30분 봉에 대입해야 한다.</p>
+<p>어떻게 1일 봉을 30분 봉으로 쪼갤 수 있을까? pandas는 이미 그런 기능을 가지고 있어서 아주 간단하게 해결된다.</p>
+<p>코드는 아래와 같다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">day_2_minute.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span>
+<span class="normal"><a href="#__codelineno-2-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>    <span class="n">day_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">day_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a>    <span class="n">day_df</span> <span class="o">=</span> <span class="n">day_df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;bfill&#39;</span><span class="p">)</span>  <span class="c1"># 뒤의 NaN값을 현재 값으로 채운다. </span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a>    <span class="n">day_df</span> <span class="o">=</span> <span class="n">day_df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">minute_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;ffill&#39;</span><span class="p">)</span> <span class="c1"># 앞의 NaN값을 현재 값으로 채운다. 결국엔 모든 값이 NaN이 아니도록 된다.</span>
+</code></pre></div></td></tr></table></div>
+<p><strong>resample을 하게 되면, <code>day_df</code>의 일단위 index가 1분단위로 확장되고, 이를 <code>minute_df</code>의 index를 세팅하면, 일단위 데이터를 30분봉 데이터에 대입하여 사용할 수 있게 된다.</strong></p>
+<p>이를 이용해 <code>day_df</code>에는 <code>하이킨 아시</code> 1일봉 차트, <code>minute_df</code>에는 우리가 백테스팅 돌릴 30분봉 차트를 대입해주자.</p>
+<p>이로써 요구사항 2번도 해결되었다.</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> StockData가 주어지면, 하이킨아시 차트에서 양봉인지 음봉인지 얻을 수 있는 함수를 만들어야 함.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 하이킨아시 일봉 차트를 30분 봉으로 쪼개어 적용</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 하이킨아시 차트에서 연속적으로 양봉임을 검증하는 기능 추가.</li>
+</ul>
+<h3 id="_5">연속적으로 양봉임을 확인하는 방법</h3>
+<div class="admonition warning">
+<p class="admonition-title">오류 수정</p>
+<p>수정 날짜 : 2023-07-14
+수정 이유 : 1일 차트로 N일 연속 양봉인지 확인할 때, 쪼개어진 하이킨아시 차트를 대상으로 하는게 아님</p>
+</div>
+<p><del>30분 봉으로 하이킨아시 차트를 쪼개었다면 매수 신호를 만들기 전에 연속적으로 양봉인지 확인해야 한다.</del></p>
+<p><del>이럴 땐, 이전 값을 앞으로 당길 수 있는 <code>.shift()</code>를 이용하면 된다.</del></p>
+<p><del><mark class="critic">n일 연속 양봉임을 확인하기 위해 <ins>여러개의 shift 열을 추가하는 반복문을 추가한다.</ins> </mark></del></p>
+<p><del>양봉인지 음봉인지 확인하는 열은 <code>Movement</code>로 이를 대상으로 추가한다.</del></p>
+<p>1일 봉으로 만들어진 하이킨 아시 차트에서 N일 연속 양봉을 검증한 후 그 결과값을 <code>tradable</code> 열에 저장하려면 아래와 같은 작업이 필요하다.</p>
+<p>일단 N일 까지의 열을 <code>.shift()</code> 함수를 통해 현재 날짜까지 앞당긴 후, 해당 결과값이 전부 Up 인지 확인하면 된다.</p>
+<div class="highlight"><span class="filename">continuos_up_detect.py</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">continue_day</span><span class="p">):</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">heikin_ashi_df</span><span class="p">[</span><span class="s1">&#39;Movement_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">heikin_ashi_df</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">_is_tradeable</span><span class="p">(</span><span class="n">r</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">continue_day</span><span class="p">):</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;Movement_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">==</span> <span class="s1">&#39;Down&#39;</span><span class="p">:</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>            <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="n">heikin_ash_df</span><span class="p">[</span><span class="s1">&#39;tradable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">heikinn_ash_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">_is_tradeable</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>이로서 마지막의 요구사항도 깔끔하게 적용할 수 있었다.</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> StockData가 주어지면, 하이킨아시 차트에서 양봉인지 음봉인지 얻을 수 있는 함수를 만들어야 함.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 하이킨아시 일봉 차트를 30분 봉으로 쪼개어 적용</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> 하이킨아시 차트에서 연속적으로 양봉임을 검증하는 기능 추가.</li>
+</ul>
+<h2 id="_6">코드 구현 및 검증</h2>
+<h3 id="_7">코드 구현</h3>
+<p>유튜브 전략의 최종 함수는 아래와 같으며, 하이라이트 된 부분이 <ins><strong>위의 요구사항</strong></ins> 을 반영한 것이다.</p>
+<div class="highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">stocastic_rsi_ema_mix_function_final.py</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span>
+<span class="normal"><a href="#__codelineno-4-25">25</a></span>
+<span class="normal"><a href="#__codelineno-4-26">26</a></span>
+<span class="normal"><a href="#__codelineno-4-27">27</a></span>
+<span class="normal"><a href="#__codelineno-4-28">28</a></span>
+<span class="normal"><a href="#__codelineno-4-29">29</a></span>
+<span class="normal"><a href="#__codelineno-4-30">30</a></span>
+<span class="normal"><a href="#__codelineno-4-31">31</a></span>
+<span class="normal"><a href="#__codelineno-4-32">32</a></span>
+<span class="normal"><a href="#__codelineno-4-33">33</a></span>
+<span class="normal"><a href="#__codelineno-4-34">34</a></span>
+<span class="normal"><a href="#__codelineno-4-35">35</a></span>
+<span class="normal"><a href="#__codelineno-4-36">36</a></span>
+<span class="normal"><a href="#__codelineno-4-37">37</a></span>
+<span class="normal"><a href="#__codelineno-4-38">38</a></span>
+<span class="normal"><a href="#__codelineno-4-39">39</a></span>
+<span class="normal"><a href="#__codelineno-4-40">40</a></span>
+<span class="normal"><a href="#__codelineno-4-41">41</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">stocastic_rsi_ema_mix_function</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">StockData</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeperiod</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">rsi_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span> <span class="n">fastk_period</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fastd_period</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fastd_matype</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a>                                <span class="n">buy_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">25.0</span><span class="p">,</span> <span class="n">sell_profit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">sell_lose</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">heikin_ashi</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">compare_movement</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="hll">    <span class="n">heikin_ashi_df</span> <span class="o">=</span> <span class="kc">None</span>
+</span><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="hll">    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">symbol</span> <span class="ow">in</span> <span class="n">heikin_ashi</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+</span><a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="hll">        <span class="n">heikin_ashi_stockdata</span> <span class="o">=</span> <span class="n">heikin_ashi</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">symbol</span><span class="p">]</span>
+</span><a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="hll">        <span class="n">heikin_ashi_df</span> <span class="o">=</span> <span class="n">heikin_ashi_stockdata</span><span class="o">.</span><span class="n">data</span>
+</span><a id="__codelineno-4-7" name="__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="hll">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">compare_movement</span><span class="p">):</span>
+</span><a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="hll">        <span class="n">heikin_ashi_df</span><span class="p">[</span><span class="s1">&#39;Movement_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">heikin_ashi_df</span><span class="p">[</span><span class="s1">&#39;Movement&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span><a id="__codelineno-4-10" name="__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="hll">    <span class="k">def</span><span class="w"> </span><span class="nf">_is_tradeable</span><span class="p">(</span><span class="n">r</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+</span><a id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="hll">        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">compare_movement</span><span class="p">):</span>
+</span><a id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="hll">            <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;Movement_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">==</span> <span class="s1">&#39;Down&#39;</span><span class="p">:</span>
+</span><a id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="hll">                <span class="k">return</span> <span class="kc">False</span>
+</span><a id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="hll">        <span class="k">return</span> <span class="kc">True</span>
+</span><a id="__codelineno-4-16" name="__codelineno-4-16"></a>
+<a id="__codelineno-4-17" name="__codelineno-4-17"></a>    <span class="c1"># resample heikin_ashi_df</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18"></a>    <span class="k">if</span> <span class="n">heikin_ashi_stockdata</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;D&#39;</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19"></a>        <span class="n">heikin_ashi_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">heikin_ashi_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20"></a>        <span class="n">heikin_ashi_df</span> <span class="o">=</span> <span class="n">heikin_ashi_df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;bfill&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21"></a>        <span class="n">heikin_ashi_df</span> <span class="o">=</span> <span class="n">heikin_ashi_df</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;ffill&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22"></a>
+<a id="__codelineno-4-23" name="__codelineno-4-23"></a><span class="hll">    <span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>
+</span><a id="__codelineno-4-24" name="__codelineno-4-24"></a><span class="hll">    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;tradeable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">heikin_ashi_df</span><span class="p">[</span><span class="s1">&#39;tradeable&#39;</span><span class="p">]</span>
+</span><a id="__codelineno-4-25" name="__codelineno-4-25"></a>
+<a id="__codelineno-4-26" name="__codelineno-4-26"></a>    <span class="c1"># ...(중략)...</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27"></a>
+<a id="__codelineno-4-28" name="__codelineno-4-28"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_buy_signal</span><span class="p">(</span><span class="n">r</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29"></a><span class="hll">        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">tradeable</span><span class="p">:</span>
+</span><a id="__codelineno-4-30" name="__codelineno-4-30"></a>            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">close</span> <span class="o">&gt;</span> <span class="n">r</span><span class="o">.</span><span class="n">ema</span><span class="p">:</span>  <span class="c1"># buy condition 1</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31"></a>                <span class="c1"># buy condition 2</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32"></a>                <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">fastk</span> <span class="o">&lt;</span> <span class="n">buy_rate</span> <span class="ow">and</span> <span class="n">r</span><span class="o">.</span><span class="n">fastd</span> <span class="o">&lt;</span> <span class="n">buy_rate</span><span class="p">:</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33"></a>                    <span class="c1"># buy_condition 3</span>
+<a id="__codelineno-4-34" name="__codelineno-4-34"></a>                    <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">before_fastk</span> <span class="o">&lt;</span> <span class="n">r</span><span class="o">.</span><span class="n">fastk</span> <span class="ow">and</span> <span class="n">r</span><span class="o">.</span><span class="n">before_fastd</span> <span class="o">&lt;</span> <span class="n">r</span><span class="o">.</span><span class="n">fastd</span><span class="p">:</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35"></a>                        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">fastk</span> <span class="o">&gt;</span> <span class="n">r</span><span class="o">.</span><span class="n">fastd</span><span class="p">:</span>
+<a id="__codelineno-4-36" name="__codelineno-4-36"></a>                            <span class="k">return</span> <span class="p">(</span><span class="n">StrategyResultColumnType</span><span class="o">.</span><span class="n">BUY</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+<a id="__codelineno-4-37" name="__codelineno-4-37"></a>        <span class="k">return</span> <span class="p">(</span><span class="n">StrategyResultColumnType</span><span class="o">.</span><span class="n">KEEP</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-4-38" name="__codelineno-4-38"></a>
+<a id="__codelineno-4-39" name="__codelineno-4-39"></a>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">_buy_signal</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-4-40" name="__codelineno-4-40"></a>
+<a id="__codelineno-4-41" name="__codelineno-4-41"></a>    <span class="c1"># ...(생략)...</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="_8">백테스팅 결과</h3>
+<p><code>vectorbt</code>를 이용해 어제와 같은 데이터로 백테스팅을 확인한 결과, 아래와 같이 수익을 벌어들였다. 승률이 50퍼센트라도, 한번 이기면 손절하는 것 보다 더욱 수익을 벌어서 결국엔 이득이다.</p>
+<div class="highlight"><span class="filename">백테스팅 결과</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Start                         2023-06-19 09:00:00
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>End                           2023-07-13 18:00:00
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Period                                       1164
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Start Value                                 100.0
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>End Value                              102.866105
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="hll">Total Return [%]                         2.866105
+</span><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>Benchmark Return [%]                     8.012395
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Max Gross Exposure [%]                      100.0
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>Total Fees Paid                               0.0
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>Max Drawdown [%]                         6.122818
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>Max Drawdown Duration                       354.0
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>Total Trades                                   10
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>Total Closed Trades                            10
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>Total Open Trades                               0
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>Open Trade PnL                                0.0
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>Win Rate [%]                                 50.0
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>Best Trade [%]                           2.734218
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>Worst Trade [%]                         -1.610954
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>Avg Winning Trade [%]                    1.856504
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>Avg Losing Trade [%]                    -1.261333
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>Avg Winning Trade Duration                   29.0
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>Avg Losing Trade Duration                    20.8
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>Profit Factor                            1.456966
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>Expectancy                               0.286611
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>dtype: object
+</code></pre></div>
+<p>그래프를 확인하면, 하락장에선 매수를 하지 않도록 제어를 하고 있는 것으로 보인다.</p>
+<figure>
+<p><img alt="Image title" src="/fromitive-blog/assets/2023-07-13/07-13-backtest2.png" width="800" />
+  </p>
+<figcaption>그림  2 - backtest 시각화 결과</figcaption>
+</figure>
+<h2 id="_9">다음은?</h2>
+<p>왜 100만 조회수가 넘은 유튜브인지 알겠다. 승률이 높고, 지속적으로 수익을 가져다 주기 때문일 거라 생각한다.</p>
+<p>다음은, 실제 거래소 시스템과 연동하는 방법을 생각하여 실제로 이 전략을가지고 투자를 해볼 예정이다.</p>
+<p><br/></p>
+<div class="md-typeset">
+    <div class="blogging-tags-grid">
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#backtest" class="blogging-tag"><code>#backtest</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#project" class="blogging-tag"><code>#project</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#quant trading" class="blogging-tag"><code>#quant trading</code></a>
+
+        <a href="https://fromitive.github.io/fromitive-blog/tags#Heiken Ashi" class="blogging-tag"><code>#Heiken Ashi</code></a>
+
+    </div>
+
+
+</div>
+
+<style>
+    .md-typeset .blogging-tags-grid {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .md-typeset .blogging-tag {
+        color: var(--md-typeset-color);
+        background-color: var(--md-typeset-code-color);
+        white-space: nowrap;
+        display: block;
+    }
+
+    .md-typeset .blogging-tag code {
+        border-radius: 5px;
+    }
+</style>
+
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p><code>하이킨아시(Heikin Ashi) 차트는</code> 양봉과 음봉을 시가, 고가, 저가, 종가의 평균값들을 활용하여 만들어지는 차트이다.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+
+
+
+  <h2 id="__comments">Comments</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+    data-repo="fromitive/fromitive-blog"
+    data-repo-id="R_kgDOJ4LF1g"
+    data-category="Q&A"
+    data-category-id="DIC_kwDOJ4LF1s4CXvhy"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="dark_dimmed"
+    data-lang="ko"
+    crossorigin="anonymous"
+    async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    /* Set palette on initial load */
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate" ? "dark" : "light"
+      giscus.setAttribute("data-theme", theme) 
+
+
+    }
+
+    /* Register event handlers after documented loaded */
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate" ? "dark" : "light"
+
+          /* Instruct Giscus to change theme */
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      &copy; 2025 <a href="https://github.com/fromitive"  target="_blank" rel="noopener">이무송</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/fromitive" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/%EB%AC%B4%EC%86%A1-%EC%9D%B4-7b6b681b9/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.code.copy"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>
